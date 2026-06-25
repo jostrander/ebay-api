@@ -55,6 +55,10 @@ apis:
     root: specs/commerce_message_v1_oas3.json
     x-openapi-ts:
       output: src/types/restful/specs/commerce_message_v1_oas3.ts
+  commerce_feedback_v1_beta:
+    root: specs/commerce_feedback_v1_beta_oas3.json
+    x-openapi-ts:
+      output: src/types/restful/specs/commerce_feedback_v1_beta_oas3.ts
   commerce_notification_v1:
     root: specs/commerce_notification_v1_oas3.json
     x-openapi-ts:

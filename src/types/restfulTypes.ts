@@ -27,6 +27,7 @@ import {components as commerceMedia} from './restful/specs/commerce_media_v1_bet
 import {components as commerceNotification} from './restful/specs/commerce_notification_v1_oas3.js';
 import {components as commerceTranslation} from './restful/specs/commerce_translation_v1_beta_oas3.js';
 import {components as commerceMessage} from './restful/specs/commerce_message_v1_oas3.js';
+import {components as commerceFeedback} from './restful/specs/commerce_feedback_v1_beta_oas3.js';
 
 import {components as sellAccountV1} from './restful/specs/sell_account_v1_oas3.js';
 import {components as sellAccountV2} from './restful/specs/sell_account_v2_oas3.js';
@@ -445,6 +446,9 @@ export type InputStream = commerceMedia['schemas']['InputStream'];
 export type UpdateConversationRequest = commerceMessage['schemas']['UpdateConversationRequest'];
 export type BulkUpdateConversationRequest = commerceMessage['schemas']['BulkUpdateConversationsRequest'];
 export type CommerceMessageSendMessageRequest = commerceMessage['schemas']['SendMessageRequest'];
+
+export type LeaveFeedbackRequest = commerceFeedback['schemas']['LeaveFeedbackRequest'];
+export type RespondToFeedbackRequest = commerceFeedback['schemas']['RespondToFeedbackRequest'];
 
 export type AttributeNameValue = buyBrowse['schemas']['AttributeNameValue']
 export type CompatibilityPayload = buyBrowse['schemas']['CompatibilityPayload']
