@@ -15,9 +15,6 @@
   types AddCartItemInput, RemoveCartItemInput, UpdateCartItemInput, SuppressViolationRequest. These operations were deprecated by eBay and no longer available in updated API
   specs.
 
-# Conflicts:
-#	specs/sell_fulfillment_v1_oas3.json
-
 ### Features
 
 * upgrading several APIs to latest version ([2364543](https://github.com/hendt/ebay-api/commit/236454318c7fbd3ca0a8d3abd353801f47380c60))
@@ -27,23 +24,38 @@
 
 * trailing space ([de793bf](https://github.com/hendt/ebay-api/commit/de793bfcae34d02cb9ab385b3c5a61c08243f81c))
 
-## [10.0.0-RC.0](https://github.com/hendt/ebay-api/compare/v9.2.1...v10.0.0-RC.0) (2025-09-08)
-
-
-### ⚠ BREAKING CHANGES
-
-* Removed methods getAlsoBoughtByProduct, getAlsoViewedByProduct from buy marketing API and suppressViolation from sell compliance API. Removed corresponding
-  types AddCartItemInput, RemoveCartItemInput, UpdateCartItemInput, SuppressViolationRequest. These operations were deprecated by eBay and no longer available in updated API
-  specs.
-
-### Features
-
-* upgrading several APIs to latest version ([2364543](https://github.com/hendt/ebay-api/commit/236454318c7fbd3ca0a8d3abd353801f47380c60))
+### [9.5.2](https://github.com/hendt/ebay-api/compare/v9.5.1...v9.5.2) (2026-05-11)
 
 
 ### Bug Fixes
 
-* trailing space ([de793bf](https://github.com/hendt/ebay-api/commit/de793bfcae34d02cb9ab385b3c5a61c08243f81c))
+* resolve high-severity serialize-javascript CVEs and fast-xml-parser isArray type ([c380413](https://github.com/hendt/ebay-api/commit/c3804136e4e56c611d5b17366169d2823607f30e))
+
+### [9.5.1](https://github.com/hendt/ebay-api/compare/v9.5.0...v9.5.1) (2026-04-04)
+
+
+### Bug Fixes
+
+* add missing type for GetSellerListResponse ([4e6448a](https://github.com/hendt/ebay-api/commit/4e6448a13a7a6b68d745c9fa41b2f35bcf0e0b94))
+
+## [9.5.0](https://github.com/hendt/ebay-api/compare/v9.4.4...v9.5.0) (2026-03-18)
+
+
+### Features
+
+* add configurable XML entity expansion limits and global parseOptions ([80e2645](https://github.com/hendt/ebay-api/commit/80e26453d1d571a48380583d4769ddda42934522))
+
+
+### Bug Fixes
+
+* deep-merge processEntities and remove redundant getParseOptions ([26b2e41](https://github.com/hendt/ebay-api/commit/26b2e41bfc6832412872a232383bab92b4931834))
+
+### [9.4.4](https://github.com/hendt/ebay-api/compare/v9.4.3...v9.4.4) (2026-03-02)
+
+
+### Bug Fixes
+
+* error handling for restful ([770a43a](https://github.com/hendt/ebay-api/commit/770a43ad29450b0ce5f4e1fecfa5842021f2faa6))
 
 ### [9.4.3](https://github.com/hendt/ebay-api/compare/v9.4.2...v9.4.3) (2026-02-21)
 

@@ -6,6 +6,7 @@ import Notification from './notification/index.js';
 import Taxonomy from './taxonomy/index.js';
 import Translation from './translation/index.js';
 import Message from './message/index.js';
+import Feedback from './feedback/index.js';
 
 export type Commerce = {
   catalog: Catalog;
@@ -16,6 +17,7 @@ export type Commerce = {
   translation: Translation;
   media: Media;
   message: Message;
+  feedback: Feedback;
 };
 
 export {
@@ -26,5 +28,6 @@ export {
   Taxonomy,
   Translation,
   Media,
-  Message
+  Message,
+  Feedback
 };

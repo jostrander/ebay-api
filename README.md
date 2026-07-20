@@ -111,7 +111,7 @@ For more examples, check out the [examples directory](./examples).
 | API                | Implemented                                                                                                                                                                                                                                                                                                                                                                          |
 |:-------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Buy API**        | ✔ Browse API `v1.10.0`<br>✔  Deal API `v1.3.0`<br>✔ Feed API `v1.3.1`<br>✔ Marketing API `v1_beta.1.0`<br>✔ Offer API `v1_beta.0.0`<br>✔ Order API `v1_beta.20.0`<br>✔ Marketplace Insights API `v1_beta.2.2`                                                                                                                                                                        |
-| **Commerce API**   | ✔ Catalog API `v1_beta.3.1`<br>✔ Charity API `v1.2.0`<br>✔ Identity API `v1.0.0`<br>✔ Notification API `v1.2.0`<br>✔ Taxonomy API `v1.0.0`<br>✔ Translation API `v1_beta.1.4`<br>✔ Media API `v1_beta.1.0`<br>✔ Message API `v1.0.0`                                                                                                                                            |
+| **Commerce API**   | ✔ Catalog API `v1_beta.3.1`<br>✔ Charity API `v1.2.0`<br>✔ Identity API `v1.0.0`<br>✔ Notification API `v1.2.0`<br>✔ Taxonomy API `v1.0.0`<br>✔ Translation API `v1_beta.1.4`<br>✔ Media API `v1_beta.1.0`<br>✔ Message API `v1.0.0`<br>✔ Feedback API `v1_beta.1.0.0`                                                                                                                                            |
 | **Developer API**  | ✔ Analytics API                                                                                                                                                                                                                                                                                                                                                                      |
 | **Post Order API** | ✔ Cancellation API<br>✔ Case Management API<br>✔ Inquiry API<br>✔ Return API                                                                                                                                                                                                                                                                                                         |
 | **Sell API**       | ✔ Account API `v1.9.0`<br>✔ Analytics API `v1.3.0`<br>✔ Compliance API `v1.4.1`<br>✔ Feed API `v1.3.1`<br>✔ Finance API `v1.9.0`<br>✔ Fulfillment API `v1.19.10`<br>✔ Inventory API `v1.18.0`<br>✔ Listing API `v1_beta.2.1`<br>✔ Logistics API `v1_beta.0.0`<br>✔ Marketing API `v1.17.0`<br>✔ Metadata API `v1.7.1`<br>✔ Negotiation API `v1.1.0`<br>✔ Recommendation API `v1.1.0` |
@@ -213,6 +213,7 @@ The first (required) parameter in eBayApi instance takes an object with followin
 | autoRefreshToken                  | Required<pre>Default: `true`</pre>                                                   | Auto refresh the token if it's expired.                                                                                                                                                                                                                                                                        |
 | siteId<br><i>Traditional</i>      | Required<br><pre>Default: `SiteId.EBAY_US`</pre>                                     | eBay site to which you want to send the request (Trading API, Shopping API).                                                                                                                                                                                                                                   |
 | authToken<br><i>Traditional</i>   | Optional                                                                             | The Auth'N'Auth token. The traditional authentication and authorization technology used by the eBay APIs.                                                                                                                                                                                                      |
+| parseOptions<br><i>Traditional</i> | Optional<br><pre>Default: `{ processEntities: { maxTotalExpansions: 10000 } }`</pre> | Global [fast-xml-parser](https://github.com/NaturalIntelligence/fast-xml-parser) parse options applied to all Traditional API responses. Can be overridden per-call. |
 | marketplaceId<br><i>RESTful</i>   | Required<br><pre>Default: `MarketplaceId.EBAY_US`</pre>                              | [Docs](https://developer.ebay.com/api-docs/static/rest-request-components.html#marketpl) REST HTTP Header. X-EBAY-C-MARKETPLACE-ID identifies the user's business context and is specified using a marketplace ID value. Note that this header does not indicate a language preference or consumer location.   |
 | scope<br><i>RESTful</i>           | Conditionally<bre><pre>Default:<br>`['https://api.ebay.com/oauth/api_scope']` </pre> | The scopes assigned to your application allow access to different API resources and functionality.                                                                                                                                                                                                             |
 | endUserCtx<br><i>RESTful</i>      | Conditionally recommended<br><i>RESTful</i>                                          | [Docs](https://developer.ebay.com/api-docs/static/rest-request-components.html#headers) X-EBAY\_C\_ENDUSERCTX provides various types of information associated with the request.                                                                                                                               |
@@ -592,12 +593,34 @@ The `errorCode` is extracted from the first error in the API response.
 
 ## Controlling Traditional XML request and response
 
+### Global parse options (constructor)
+
+Pass `parseOptions` in the constructor config to apply [fast-xml-parser](https://github.com/NaturalIntelligence/fast-xml-parser) options to **all** Traditional API responses:
+
+```typescript
+const eBay = new eBayApi({
+  appId: '...',
+  certId: '...',
+  devId: '...',
+  siteId: eBayApi.SiteId.EBAY_DE,
+  parseOptions: {
+    processEntities: {
+      maxTotalExpansions: 20000 // raise limit for stores with rich HTML descriptions (default: 10000)
+    }
+  }
+});
+```
+
+Per-call `parseOptions` (see below) are merged on top and take precedence.
+
+### Per-call options
+
 The second parameter in the traditional API has the following options:
 
 ```typescript
 export type Options = {
   raw?: boolean // return raw XML
-  parseOptions?: X2jOptions // https://github.com/NaturalIntelligence/fast-xml-parser
+  parseOptions?: X2jOptions // https://github.com/NaturalIntelligence/fast-xml-parser — merged with global parseOptions
   xmlBuilderOptions?: XmlBuilderOptions // https://github.com/NaturalIntelligence/fast-xml-parser
   useIaf?: boolean // use IAF in header instead of Bearer
   headers?: Headers // additional Headers (key, value)
@@ -607,6 +630,8 @@ export type Options = {
 
 [Fast XML](https://github.com/NaturalIntelligence/fast-xml-parser) is used to parse the XML. You can pass the parse
 option to `parseOptions` parameter.
+
+Important for Traditional request bodies: when an element has both attributes and text content, the text must go under `#value`, not `#text`, because the XML builder is configured with `textNodeName: '#value'`. For example, use `StartPrice: { '@_currencyID': 'EUR', '#value': '20.00' }`. If you use `#text` instead, it will be serialized literally as `<#text>...</#text>`, which causes eBay XML parse errors that do not clearly point back to the JS-to-XML mapping.
 
 ### Parse JSON Array
 ```js

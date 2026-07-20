@@ -150,7 +150,20 @@ export default class Traditional extends Api {
   }
 
   private createXMLRequest = (callName: string, api: TraditionalApi) => async (fields: Fields, opts: TraditionalApiConfig) => {
-    const apiConfig = {...defaultApiConfig, ...opts};
+    const apiConfig = {
+      ...defaultApiConfig,
+      ...opts,
+      parseOptions: {
+        ...defaultApiConfig.parseOptions,
+        ...this.config.parseOptions,
+        ...opts?.parseOptions,
+        processEntities: {
+          ...(defaultApiConfig.parseOptions.processEntities as object),
+          ...(this.config.parseOptions?.processEntities as object),
+          ...(opts?.parseOptions?.processEntities as object)
+        }
+      }
+    };
 
     try {
       return await this.request(apiConfig, api, callName, fields);

@@ -14,6 +14,7 @@ import {
   Catalog,
   Charity,
   Commerce,
+  Feedback,
   Identity,
   Media,
   Message,
@@ -71,7 +72,8 @@ export default class ApiFactory extends Api {
       media: this.createRestfulApi(Media),
       translation: this.createRestfulApi(Translation),
       taxonomy: this.createRestfulApi(Taxonomy),
-      message: this.createRestfulApi(Message)
+      message: this.createRestfulApi(Message),
+      feedback: this.createRestfulApi(Feedback)
     };
   }
 

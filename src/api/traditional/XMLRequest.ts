@@ -1,5 +1,5 @@
 import debug from 'debug';
-import {X2jOptions, XMLBuilder, XmlBuilderOptions, XMLParser} from 'fast-xml-parser';
+import {MatcherView, X2jOptions, XMLBuilder, XmlBuilderOptions, XMLParser} from 'fast-xml-parser';
 import {checkEBayTraditionalResponse, EBayNoCallError} from '../../errors/index.js';
 import {IEBayApiRequest} from '../../request.js';
 import {ApiRequestConfig, Headers} from '../../types/index.js';
@@ -28,8 +28,15 @@ export const defaultXML2JSONParseOptions = {
     leadingZeros: false
   },
   removeNSPrefix: true,
-  isArray: (name: string, jpath: string) => {
-    return /Array$/.test(jpath.slice(0, -name.length - 1));
+  processEntities: {
+    enabled: true,
+    maxEntitySize: 10000,
+    maxTotalExpansions: 10000,
+    maxExpandedLength: 100000,
+    maxEntityCount: 100
+  },
+  isArray: (name: string, jpath: string | MatcherView) => {
+    return typeof jpath === 'string' && /Array$/.test(jpath.slice(0, -name.length - 1));
   }
 };
 
@@ -125,13 +132,6 @@ export default class XMLRequest {
     } : {};
   }
 
-  private getParseOptions() : X2jOptions {
-    return {
-      ...defaultXML2JSONParseOptions,
-      ...this.config.parseOptions
-    };
-  }
-
   private getHeaders() {
     return {
       ...defaultHeaders,
@@ -146,9 +146,8 @@ export default class XMLRequest {
    * @return     {JSON}         resolves to a JSON representation of the HTML
    */
   public toJSON(xml: string) {
-    const parseOptions = this.getParseOptions();
-    log('parseOption', parseOptions);
-    return new XMLParser(parseOptions).parse(xml);
+    log('parseOption', this.config.parseOptions);
+    return new XMLParser(this.config.parseOptions).parse(xml);
   }
 
   /**
