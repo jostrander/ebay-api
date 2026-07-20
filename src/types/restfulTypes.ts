@@ -461,14 +461,12 @@ export type BuyBrowseItemByLegacyIdParams = buyBrowseOperations['getItemByLegacy
 
 export type BuyMarketingGetMerchandisedProductsParams = buyMarketingOperations['getMerchandisedProducts']['parameters']['query'];
 
+// Buy Order API migrated to v2, which only exposes the guest checkout flow.
+// The member checkout session, proxy-guest session, payment-info, initiate-payment
+// and place-order operations (and their request types) were removed by eBay in v2.
 export type CreateGuestCheckoutSessionRequest = buyOrder['schemas']['CreateGuestCheckoutSessionRequestV2']
-export type CheckoutSessionRequestWithoutPayment = buyOrder['schemas']['CreateGuestCheckoutSessionRequestV2'] // Mapped to v2 equivalent
 export type CouponRequest = buyOrder['schemas']['CouponRequest']
-export type CreateSignInCheckoutSessionRequest = buyOrder['schemas']['CreateGuestCheckoutSessionRequestV2'] // Mapped to v2 equivalent
-export type GuestPlaceOrderRequest = buyOrder['schemas']['CreateGuestCheckoutSessionRequestV2'] // Mapped to v2 equivalent
-export type InitiatePaymentRequest = buyOrder['schemas']['CreateGuestCheckoutSessionRequestV2'] // Mapped to v2 equivalent
 export type ShippingAddressImpl = buyOrder['schemas']['ShippingAddressImpl']
-export type UpdatePaymentInformation = buyOrder['schemas']['CreateGuestCheckoutSessionRequestV2'] // Mapped to v2 equivalent
 export type UpdateQuantity = buyOrder['schemas']['UpdateQuantity']
 export type UpdateShippingOption = buyOrder['schemas']['UpdateShippingOption']
 
