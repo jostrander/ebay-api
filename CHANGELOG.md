@@ -1,4 +1,16 @@
 # eBay API Changelog
+## [9.6.0](https://github.com/hendt/ebay-api/compare/v9.5.2...v9.6.0) (2026-07-21)
+
+
+### Features
+
+* feedback API v1 ([c0b8adb](https://github.com/hendt/ebay-api/commit/c0b8adbbaae439c702787f65b33711b36a1dfbaf))
+
+
+### Bug Fixes
+
+* **deps:** resolve npm audit vulnerabilities ([f412511](https://github.com/hendt/ebay-api/commit/f4125111ebe251fcd1b3bc8ce3bc915a9c670b6a))
+
 ### [9.5.2](https://github.com/hendt/ebay-api/compare/v9.5.1...v9.5.2) (2026-05-11)
 
 
