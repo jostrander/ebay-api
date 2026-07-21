@@ -485,6 +485,14 @@ export type SalesTaxBase = sellAccountV1['schemas']['SalesTaxBase'];
 
 export type RateTableUpdate = sellAccountV2['schemas']['RateTableUpdate'];
 export type UpdatePayoutPercentageRequest = sellAccountV2['schemas']['UpdatePayoutPercentageRequest'];
+export type CreateCalculatedShippingRulesRequest = sellAccountV2['schemas']['CreateCalculatedShippingRulesRequest'];
+export type CreateFlatShippingRulesRequest = sellAccountV2['schemas']['CreateFlatShippingRulesRequest'];
+export type CreatePromotionalShippingRuleRequest = sellAccountV2['schemas']['CreatePromotionalShippingRuleRequest'];
+export type UpdateCalculatedShippingRulesRequest = sellAccountV2['schemas']['UpdateCalculatedShippingRulesRequest'];
+export type UpdateCombinedPaymentsRequest = sellAccountV2['schemas']['UpdateCombinedPaymentsRequest'];
+export type UpdateFlatShippingRulesRequest = sellAccountV2['schemas']['UpdateFlatShippingRulesRequest'];
+export type UpdatePromotionalShippingRuleRequest = sellAccountV2['schemas']['UpdatePromotionalShippingRuleRequest'];
+export type SetUserPreferencesRequest = sellAccountV2['schemas']['SetUserPreferencesRequest'];
 
 export type LineItemReference = sellFulfillment['schemas']['LineItemReference'];
 export type UpdateEvidencePaymentDisputeRequest = sellFulfillment['schemas']['UpdateEvidencePaymentDisputeRequest'];

@@ -314,4 +314,49 @@ export default class Metadata extends Restful implements OpenApi<operations> {
   public getProductCompatibilities(body?: ProductRequest) {
     return this.post('/compatibilities/get_product_compatibilities', body);
   }
+
+  /**
+   * This method returns the excluded shipping locations for the specified marketplace.
+   * @param marketplaceId The eBay marketplace for which the excluded shipping locations are retrieved.
+   */
+  public getExcludeShippingLocations(marketplaceId: string) {
+    marketplaceId = encodeURIComponent(marketplaceId);
+    return this.get(`/shipping/marketplace/${marketplaceId}/get_exclude_shipping_locations`);
+  }
+
+  /**
+   * This method returns the handling times for the specified marketplace.
+   * @param marketplaceId The eBay marketplace for which the handling times are retrieved.
+   */
+  public getHandlingTimes(marketplaceId: string) {
+    marketplaceId = encodeURIComponent(marketplaceId);
+    return this.get(`/shipping/marketplace/${marketplaceId}/get_handling_times`);
+  }
+
+  /**
+   * This method returns the shipping carriers supported for the specified marketplace.
+   * @param marketplaceId The eBay marketplace for which the shipping carriers are retrieved.
+   */
+  public getShippingCarriers(marketplaceId: string) {
+    marketplaceId = encodeURIComponent(marketplaceId);
+    return this.get(`/shipping/marketplace/${marketplaceId}/get_shipping_carriers`);
+  }
+
+  /**
+   * This method returns the shipping locations supported for the specified marketplace.
+   * @param marketplaceId The eBay marketplace for which the shipping locations are retrieved.
+   */
+  public getShippingLocations(marketplaceId: string) {
+    marketplaceId = encodeURIComponent(marketplaceId);
+    return this.get(`/shipping/marketplace/${marketplaceId}/get_shipping_locations`);
+  }
+
+  /**
+   * This method returns the shipping services supported for the specified marketplace.
+   * @param marketplaceId The eBay marketplace for which the shipping services are retrieved.
+   */
+  public getShippingServices(marketplaceId: string) {
+    marketplaceId = encodeURIComponent(marketplaceId);
+    return this.get(`/shipping/marketplace/${marketplaceId}/get_shipping_services`);
+  }
 }
