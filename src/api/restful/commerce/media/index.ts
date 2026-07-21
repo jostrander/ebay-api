@@ -5,6 +5,7 @@ import {
   CreateDocumentFromUrlRequest
 } from '../../../../types/index.js';
 import {operations} from '../../../../types/restful/specs/commerce_media_v1_beta_oas3.js';
+import {multipartHeader} from '../../../../request.js';
 import Restful, {OpenApi} from '../../index.js';
 
 /**
@@ -28,7 +29,11 @@ export default class Media extends Restful implements OpenApi<operations> {
    * @param body The image file to upload
    */
   async createImageFromFile(body?: any) {
-    return this.post('/image/create_image_from_file', body);
+    return this.post('/image/create_image_from_file', body, {
+      headers: {
+        ...multipartHeader
+      }
+    });
   }
 
   /**
@@ -108,7 +113,11 @@ export default class Media extends Restful implements OpenApi<operations> {
    */
   async uploadDocument(documentId: string, body?: any) {
     documentId = encodeURIComponent(documentId);
-    return this.post(`/document/${documentId}/upload`, body);
+    return this.post(`/document/${documentId}/upload`, body, {
+      headers: {
+        ...multipartHeader
+      }
+    });
   }
 
   /**
@@ -116,7 +125,11 @@ export default class Media extends Restful implements OpenApi<operations> {
    * @param body The post-order document file to upload.
    */
   async uploadPostOrderDocument(body?: any) {
-    return this.post('/post_order/document', body);
+    return this.post('/post_order/document', body, {
+      headers: {
+        ...multipartHeader
+      }
+    });
   }
 
   /**
@@ -125,7 +138,9 @@ export default class Media extends Restful implements OpenApi<operations> {
    */
   async downloadPostOrderDocument(documentId: string) {
     documentId = encodeURIComponent(documentId);
-    return this.get(`/post_order/document/${documentId}`);
+    return this.get(`/post_order/document/${documentId}`, {
+      responseType: 'arraybuffer'
+    });
   }
 
   /**

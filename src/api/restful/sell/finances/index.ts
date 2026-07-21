@@ -97,7 +97,7 @@ export default class Finances extends Restful implements OpenApi<operations> {
   } = {}) {
     return this.get('/transaction', {
       params: {
-        filter,
+        filter: Array.isArray(filter) ? filter.join(',') : filter,
         limit,
         offset,
         sort
