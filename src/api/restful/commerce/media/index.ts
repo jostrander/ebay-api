@@ -1,6 +1,5 @@
 import {
   CreateVideoRequest,
-  InputStream,
   CreateImageFromUrlRequest,
   CreateDocumentRequest,
   CreateDocumentFromUrlRequest
@@ -72,7 +71,7 @@ export default class Media extends Restful implements OpenApi<operations> {
    * @param videoId The unique identifier of the video to be uploaded.
    * @param body The request payload for this method is the input stream for the video source. The input source must be an .mp4 file of the type MPEG-4 Part 10 or Advanced Video Coding (MPEG-4 AVC).
    */
-  async uploadVideo(videoId: string, body?: InputStream) {
+  async uploadVideo(videoId: string, body?: any) {
     videoId = encodeURIComponent(videoId);
     return this.post(`/video/${videoId}/upload`, body);
   }
@@ -110,5 +109,31 @@ export default class Media extends Restful implements OpenApi<operations> {
   async uploadDocument(documentId: string, body?: any) {
     documentId = encodeURIComponent(documentId);
     return this.post(`/document/${documentId}/upload`, body);
+  }
+
+  /**
+   * This method uploads a post-order document.
+   * @param body The post-order document file to upload.
+   */
+  async uploadPostOrderDocument(body?: any) {
+    return this.post('/post_order/document', body);
+  }
+
+  /**
+   * This method downloads a post-order document's content given a specified document ID.
+   * @param documentId The unique identifier of the post-order document to be downloaded.
+   */
+  async downloadPostOrderDocument(documentId: string) {
+    documentId = encodeURIComponent(documentId);
+    return this.get(`/post_order/document/${documentId}`);
+  }
+
+  /**
+   * This method removes a post-order document given a specified document ID.
+   * @param documentId The unique identifier of the post-order document to be removed.
+   */
+  async removePostOrderDocument(documentId: string) {
+    documentId = encodeURIComponent(documentId);
+    return this.delete(`/post_order/document/${documentId}`);
   }
 }

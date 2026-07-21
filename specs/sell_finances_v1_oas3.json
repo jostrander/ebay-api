@@ -10,7 +10,7 @@
             "name": "eBay API License Agreement",
             "url": "https://developer.ebay.com/join/api-license-agreement"
         },
-        "version": "v1.17.3"
+        "version": "v1.19.0"
     },
     "servers": [
         {
@@ -21,15 +21,314 @@
                     "default": "/sell/finances/v1"
                 }
             }
+        },
+        {
+            "url": "https://api.ebay.com{basePath}",
+            "description": "Production",
+            "variables": {
+                "basePath": {
+                    "default": "/sell/finances/v1"
+                }
+            }
         }
     ],
     "paths": {
+        "/order_earnings": {
+            "get": {
+                "tags": [
+                    "order_earnings"
+                ],
+                "description": "This method returns detailed order-level financial data for each order associated with a seller account. The returned order-level financial data includes order earnings, gross amount, expenses, and refunds. Order earnings includes earnings after deducting expenses and refunds from the gross amount. <br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Expenses include fees, shipping labels, and donations. Refunds include gross refunds, gross claims, and gross payment disputes.</span></p>The financial data for orders will be returned as filtered based on the order's creation date. <p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Only charges and credits tied to the order are shown, and they appear in near real time for orders created within the selected order creation time window.</span></p>Pagination is supported through the <code>limit</code> and <code>offset</code> parameters. These parameters can be used to control the number of records returned in a single response and to retrieve subsequent pages of results when the result set spans multiple pages.<br/><br/>The response can be filtered by using the <code>filter</code> parameter. This parameter allows consumers to restrict the results returned by the method based on supported filtering criteria.<br/><p><span class=\"tablenote\"><b>Note:</b> Access to the <b>order_earnings</b> resource is currently limited to only US, China, or Hong&nbsp;Kong sellers who meet the following criteria and also request access: <br><br>- US sellers with the country of residence set to <code>US</code> and having a payout currency in <code>USD</code>.<br><br>- Hong Kong or China sellers having the country of residence set to <code>HK</code> or <code>CN</code> and the payout currency set to <code>USD</code> have access.<br><br>To request access, submit an <a href=\"/api-docs/static/gs_request-an-application-growth.html\" target=\"_blank\">application growth check</a> to have the required <a href=\"#h3-oauth-scope\">OAuth scope</a> added to your app. After submission, you can use the same <a href=\"/api-docs/static/gs_request-an-application-growth.html\" target=\"_blank\">growth check</a> link to track the status of the request. <br><br>eBay plans on expanding this to other markets in the future.</span></p><br/><div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all Finances API methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis\" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong> The Finances API does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span></p>",
+                "operationId": "getOrderEarnings",
+                "parameters": [
+                    {
+                        "name": "X-EBAY-C-MARKETPLACE-ID",
+                        "in": "header",
+                        "description": "This header identifies the seller's eBay marketplace.<br><br>See <a href=\"/api-docs/static/rest-request-components.html#marketpl \" target=\"_blank \">HTTP request headers</a> for the marketplace ID values.<br><br><span class=\"tablenote\"><b>Note:</b> If a marketplace ID value is not provided, the default value of <code>EBAY_US</code> is used.</span>",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "This parameter can be used to filter orders created within a specified date range. The filter uses the <code>orderCreationDate</code> field, which works similarly to the <code>transactionDate</code> filter used by the Transactions API. Currently, <code>orderCreationDate</code> is the only supported filter value. <p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>All dates must be input using UTC format (<code>YYYY-MM-DDTHH:MM:SS.SSSZ</code>) and should be adjusted accordingly for the local timezone of the user.</span></p><p><b>Default</b>: If no value is specified, results from the past year will be returned.</p> For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "This parameter configures the number of orders to return per page of the result set. Use this parameter in conjunction with the <b>offset</b> parameter to control the pagination of the output. <br><br> For example, if <b>offset</b> is set to <code>10</code> and <b>limit</b> is set to <code>10</code>, the method retrieves orders 11 thru 20 from the result set. <br><br> <span class=\"tablenote\"><strong>Note:</strong> This feature employs a zero-based list, where the first page in the results set has an offset value of <code>0</code>. </span> <br><br> <b>Maximum:</b> <code>200</code> <br> <b>Default:</b> <code>20</code>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "This parameter can be used to specify the number of records to skip before returning results. This parameter is commonly used with the <code>limit</code> parameter to retrieve the next page of results.<br><br><b>Maximum:</b> 10,000<br><b>Default:</b> 0",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "This parameter can be used to specify the sort order of the results. Currently, sorting is supported by order creation date. <br><br><b>Default:</b> Results returned in ascending order sorted by <b>orderCreationDate</b>, with earliest creation date first. For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:SortField",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderEarnings"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "x-response-codes": {
+                            "errors": {
+                                "135005": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The value of sort is invalid."
+                                },
+                                "135017": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The value of offset is invalid."
+                                },
+                                "135018": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The value of limit is invalid."
+                                },
+                                "135019": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The orderCreationDate filter is invalid due to syntax issue, or the start and end dates are not compatible with one another. Please see documentation."
+                                },
+                                "135020": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The supplied date range is invalid, as orders before year 2024 cannot be retrieved. Please update the date range and resubmit the request."
+                                },
+                                "135021": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The supplied date range is invalid, as the date range cannot exceed 12 months. Please update the date range and resubmit the request."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "x-response-codes": {
+                            "errors": {
+                                "135000": {
+                                    "domain": "API_FINANCES",
+                                    "category": "APPLICATION",
+                                    "description": "There was a problem with an eBay internal system or process. Contact eBay developer support for assistance."
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_auth": [
+                            "https://api.ebay.com/oauth/api_scope/sell.finances.earnings.read"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/order_earnings/{order_id}": {
+            "get": {
+                "tags": [
+                    "order_earnings"
+                ],
+                "description": "This method returns detailed order-level financial data including order earnings, gross amount, expenses, and refunds. Order earnings includes earnings after deducting expenses and refunds from the gross amount.<br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Expenses include fees, shipping labels, and donations. Refunds include gross refunds, gross claims, and gross payment disputes.</span></p><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Only charges and credits tied to the order are shown, and they appear in near real time for orders created within the selected order creation time window.</span></p>The response returns earnings information only for the order identified by the <code>order_id</code> path parameter.<br/><p><span class=\"tablenote\"><b>Note:</b> Access to the <b>order_earnings</b> resource is currently limited to only US, China, or Hong&nbsp;Kong sellers who meet the following criteria and also request access: <br><br>- US sellers with the country of residence set to <code>US</code> and having a payout currency in <code>USD</code>.<br><br>- Hong Kong or China sellers having the country of residence set to <code>HK</code> or <code>CN</code> and the payout currency set to <code>USD</code> have access.<br><br>To request access, submit an <a href=\"/api-docs/static/gs_request-an-application-growth.html\" target=\"_blank\">application growth check</a> to have the required <a href=\"#h3-oauth-scope\">OAuth scope</a> added to your app. After submission, you can use the same <a href=\"/api-docs/static/gs_request-an-application-growth.html\" target=\"_blank\">growth check</a> link to track the status of the request. <br><br>eBay plans on expanding this to other markets in the future.</span></p><br/><div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all Finances API methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis\" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong> The Finances API does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span></p>",
+                "operationId": "getOrderEarningsById",
+                "parameters": [
+                    {
+                        "name": "X-EBAY-C-MARKETPLACE-ID",
+                        "in": "header",
+                        "description": "This header identifies the seller's eBay marketplace.<br><br>See <a href=\"/api-docs/static/rest-request-components.html#marketpl \" target=\"_blank \">HTTP request headers</a> for the marketplace ID values.<br><br><span class=\"tablenote\"><b>Note:</b> If a marketplace ID value is not provided, the default value of <code>EBAY_US</code> is used.</span>",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order_id",
+                        "in": "path",
+                        "description": "This path parameter identifies the specific order for which earnings information is requested.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderEarning"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "x-response-codes": {
+                            "errors": {
+                                "135023": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "Invalid order ID format."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "x-response-codes": {
+                            "errors": {
+                                "135022": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The order was not found."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "x-response-codes": {
+                            "errors": {
+                                "135000": {
+                                    "domain": "API_FINANCES",
+                                    "category": "APPLICATION",
+                                    "description": "There was a problem with an eBay internal system or process. Contact eBay developer support for assistance."
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_auth": [
+                            "https://api.ebay.com/oauth/api_scope/sell.finances.earnings.read"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/order_earnings_summary": {
+            "get": {
+                "tags": [
+                    "order_earnings"
+                ],
+                "description": "This method returns a summarized view of order earnings information for one or more orders associated with a seller account. The method retrieves aggregated data for order earnings after deducting expenses and refunds from the gross amount. You can use this method for high-level financial reporting workflows.<br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Expenses include fees, shipping labels, and donations. Refunds include gross refunds, gross claims, and gross payment disputes.</span></p><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Only charges and credits tied to the order are shown, and they appear in near real time for orders created within the selected order creation time window.</span></p>The response can be filtered by using the <code>filter</code> parameter. This parameter allows consumers to restrict the summary results returned by the method based on supported filtering criteria.<br/><p><span class=\"tablenote\"><b>Note:</b> Access to the <b>order_earnings</b> resource is currently limited to only US, China, or Hong&nbsp;Kong sellers who meet the following criteria and also request access: <br><br>- US sellers with the country of residence set to <code>US</code> and having a payout currency in <code>USD</code>.<br><br>- Hong Kong or China sellers having the country of residence set to <code>HK</code> or <code>CN</code> and the payout currency set to <code>USD</code> have access.<br><br>To request access, submit an <a href=\"/api-docs/static/gs_request-an-application-growth.html\" target=\"_blank\">application growth check</a> to have the required <a href=\"#h3-oauth-scope\">OAuth scope</a> added to your app. After submission, you can use the same <a href=\"/api-docs/static/gs_request-an-application-growth.html\" target=\"_blank\">growth check</a> link to track the status of the request. <br><br>eBay plans on expanding this to other markets in the future.</span></p><br/><div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all Finances API methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis\" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong> The Finances API does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span></p>",
+                "operationId": "getOrderEarningsSummary",
+                "parameters": [
+                    {
+                        "name": "X-EBAY-C-MARKETPLACE-ID",
+                        "in": "header",
+                        "description": "This header identifies the seller's eBay marketplace.<br><br>See <a href=\"/api-docs/static/rest-request-components.html#marketpl \" target=\"_blank \">HTTP request headers</a> for the marketplace ID values.<br><br><span class=\"tablenote\"><b>Note:</b> If a marketplace ID value is not provided, the default value of <code>EBAY_US</code> is used.</span>",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "This parameter can be used to filter orders created within a specified date range. The filter uses the <code>orderCreationDate</code> field, which works similarly to the <code>transactionDate</code> filter used by the Transactions API. Currently, <code>orderCreationDate</code> is the only supported filter value.<p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>All dates must be input using UTC format (<code>YYYY-MM-DDTHH:MM:SS.SSSZ</code>) and should be adjusted accordingly for the local timezone of the user.</span></p><p><b>Default</b>: If no value is specified, results from the past year will be returned.</p> For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderEarningsSummary"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "x-response-codes": {
+                            "errors": {
+                                "135019": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The orderCreationDate filter is invalid due to syntax issue, or the start and end dates are not compatible with one another. Please see documentation."
+                                },
+                                "135020": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The supplied date range is invalid, as orders before year 2024 cannot be retrieved. Please update the date range and resubmit the request."
+                                },
+                                "135021": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The supplied date range is invalid, as the date range cannot exceed 12 months. Please update the date range and resubmit the request."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "x-response-codes": {
+                            "errors": {
+                                "135000": {
+                                    "domain": "API_FINANCES",
+                                    "category": "APPLICATION",
+                                    "description": "There was a problem with an eBay internal system or process. Contact eBay developer support for assistance."
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_auth": [
+                            "https://api.ebay.com/oauth/api_scope/sell.finances.earnings.read"
+                        ]
+                    }
+                ]
+            }
+        },
         "/payout/{payout_Id}": {
             "get": {
                 "tags": [
                     "payout"
                 ],
-                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br>This method retrieves details on a specific seller payout. The unique identifier of the payout is passed in as a path parameter at the end of the call URI. <br><br>The <b>getPayouts</b> method can be used to retrieve the unique identifier of a payout, or the user can check Seller Hub.<br><br>For split-payout cases, which are <b>only</b> available to sellers in mainland China, this method will return the <b>payoutPercentage</b> for the specified payout. This value indicates the current payout percentage allocated to a payment instrument. This method will also return the <b>convertedToCurrency</b> and <b>convertedToValue</b> response fields in CNY value. <br><br><span class=\"tablenote\"><b>Note:</b> In split-payout cases, this method will only return details on an individual payout, also known as a true(actual) payoutid. If a user inputs a <b>payoutReference</b> id as a path parameter, the call will fail and the <b>404 not found</b> status code will be returned.<br>For more information on split payouts, see <a href=\"/api-docs/split-payout/playbook.html\" target=\"_blank\">Mainland China Split Payout Playbook</a>.</span>",
+                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><span class=\"tablenote\"><b>Note:</b>  The <b>Finances API</b> does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span><br>This method retrieves details on a specific seller payout. The unique identifier of the payout is passed in as a path parameter at the end of the call URI. <br><br>The <b>getPayouts</b> method can be used to retrieve the unique identifier of a payout, or the user can check Seller Hub.<br><br>For split-payout cases, which are <b>only</b> available to sellers in mainland China, this method will return the <b>payoutPercentage</b> for the specified payout. This value indicates the current payout percentage allocated to a payment instrument. This method will also return the <b>convertedToCurrency</b> and <b>convertedToValue</b> response fields in CNY value. <br><br><span class=\"tablenote\"><b>Note:</b> In split-payout cases, this method will only return details on an individual payout, also known as a true(actual) payoutid. If a user inputs a <b>payoutReference</b> id as a path parameter, the call will fail and the <b>404 not found</b> status code will be returned.<br>For more information on split payouts, see <a href=\"/api-docs/split-payout/playbook.html\" target=\"_blank\">Mainland China Split Payout Playbook</a>.</span>",
                 "operationId": "getPayout",
                 "parameters": [
                     {
@@ -104,7 +403,7 @@
                 "tags": [
                     "payout"
                 ],
-                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br>This method is used to retrieve the details of one or more seller payouts. By using the <b>filter</b> query parameter, users can retrieve payouts processed within a specific date range, and/or they can retrieve payouts in a specific state.<br><br>There are also pagination and sort query parameters that allow users to control the payouts that are returned in the response.<br><br>If no payouts match the input criteria, an empty payload is returned.<br><br>For split-payout cases, which are <b>only</b> available to sellers in mainland China, this method will return the <b>payoutPercentage</b> for the specified payout. This value indicates the current payout percentage allocated to a payout instrument. This method will also return the <b>convertedToCurrency</b> and <b>convertedTo</b> response fields set to CNY value and the <b>payoutReference</b>, the unique identifier reference (not true payout). <br><br>By using the <b>filter</b> query parameter, users can retrieve the two true(actual) payouts associated with a <b>payoutReference</b>.<br><br><span class=\"tablenote\"><b>Note:</b> For more information on split payouts, see <a href=\"/api-docs/split-payout/playbook.html\" target=\"_blank\">Mainland China Split Payout Playbook</a>.</span> <br><br><b>Note:</b> Only payouts less than 5 years in the past can be retrieved.",
+                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><span class=\"tablenote\"><b>Note:</b>  The <b>Finances API</b> does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span><br>This method is used to retrieve the details of one or more seller payouts. By using the <b>filter</b> query parameter, users can retrieve payouts processed within a specific date range, and/or they can retrieve payouts in a specific state.<br><br>There are also pagination and sort query parameters that allow users to control the payouts that are returned in the response.<br><br>If no payouts match the input criteria, an empty payload is returned.<br><br>For split-payout cases, which are <b>only</b> available to sellers in mainland China, this method will return the <b>payoutPercentage</b> for the specified payout. This value indicates the current payout percentage allocated to a payout instrument. This method will also return the <b>convertedToCurrency</b> and <b>convertedTo</b> response fields set to CNY value and the <b>payoutReference</b>, the unique identifier reference (not true payout). <br><br>By using the <b>filter</b> query parameter, users can retrieve the two true(actual) payouts associated with a <b>payoutReference</b>.<br><br><span class=\"tablenote\"><b>Note:</b> For more information on split payouts, see <a href=\"/api-docs/split-payout/playbook.html\" target=\"_blank\">Mainland China Split Payout Playbook</a>.</span> <br><br><b>Note:</b> Only payouts less than 5 years in the past can be retrieved.",
                 "operationId": "getPayouts",
                 "parameters": [
                     {
@@ -189,7 +488,7 @@
                                 "135005": {
                                     "domain": "API_FINANCES",
                                     "category": "REQUEST",
-                                    "description": "The value of sorting is invalid."
+                                    "description": "The value of sort is invalid."
                                 },
                                 "135013": {
                                     "domain": "API_FINANCES",
@@ -231,7 +530,7 @@
                 "tags": [
                     "payout"
                 ],
-                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br>This method is used to retrieve cumulative values for payouts in a particular state, or all states. The metadata in the response includes total payouts, the total number of monetary transactions (sales, refunds, credits) associated with those payouts, and the total dollar value of all payouts.<br><br>If the <b>filter</b> query parameter is used to filter by payout status, only one payout status value may be used. If the <b>filter</b> query parameter is not used to filter by a specific payout status, cumulative values for payouts in all states are returned.<br><br>The user can also use the <b>filter</b> query parameter to specify a date range, and then only payouts that were processed within that date range are considered. <br><br><b>Note:</b> getPayoutSummary will only return data on payouts that occurred less than five years in the past.",
+                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><span class=\"tablenote\"><b>Note:</b>  The <b>Finances API</b> does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span><br>This method is used to retrieve cumulative values for payouts in a particular state, or all states. The metadata in the response includes total payouts, the total number of monetary transactions (sales, refunds, credits) associated with those payouts, and the total dollar value of all payouts.<br><br>If the <b>filter</b> query parameter is used to filter by payout status, only one payout status value may be used. If the <b>filter</b> query parameter is not used to filter by a specific payout status, cumulative values for payouts in all states are returned.<br><br>The user can also use the <b>filter</b> query parameter to specify a date range, and then only payouts that were processed within that date range are considered. <br><br><b>Note:</b> getPayoutSummary will only return data on payouts that occurred less than five years in the past.",
                 "operationId": "getPayoutSummary",
                 "parameters": [
                     {
@@ -318,7 +617,7 @@
                 "tags": [
                     "seller_funds_summary"
                 ],
-                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br>This method retrieves all pending funds that have not yet been distibuted through a seller payout.<br><br>There are no input parameters for this method. The response payload includes available funds, funds being processed, funds on hold, and also an aggregate count of all three of these categories.<br><br>If there are no funds that are pending, on hold, or being processed for the seller's account, no response payload is returned, and an http status code of <code>204 - No Content</code> is returned instead.",
+                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><span class=\"tablenote\"><b>Note:</b>  The <b>Finances API</b> does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span><br>This method retrieves all pending funds that have not yet been distributed through a seller payout.<br><br>There are no input parameters for this method. The response payload includes available funds, funds being processed, funds on hold, and also an aggregate count of all three of these categories.<br><br>If there are no funds that are pending, on hold, or being processed for the seller's account, no response payload is returned, and an http status code of <code>204 - No Content</code> is returned instead.",
                 "operationId": "getSellerFundsSummary",
                 "parameters": [
                     {
@@ -372,7 +671,7 @@
                 "tags": [
                     "transaction"
                 ],
-                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br>The <b>getTransactions</b> method allows a seller to retrieve information about one or more of their monetary transactions.<br><br><span class=\"tablenote\"><b>Note:</b> For a complete list of transaction types, refer to <a href=\"/api-docs/sell/finances/types/pay:TransactionTypeEnum \" target=\"_blank \">TransactionTypeEnum</a>.</span><br>Numerous input filters are available which can be used individually or combined to refine the data that are returned. For example:<ul><li><code>SALE</code> transactions for August 15, 2022;</li><li><code>RETURN</code> transactions for the month of January, 2021;</li><li>Transactions currently in a <code>transactionStatus</code> equal to <code>FUNDS_ON_HOLD</code>.</li></ul>Refer to the <a href=\"#uri.filter \">filter</a> field for additional information about each filter and its use.<br><br>Pagination and sort query parameters are also provided that allow users to further control how monetary transactions are displayed in the response.<br><br>If no monetary transactions match the input criteria, an http status code of <em>204 No Content</em> is returned with no response payload. <br><br><b>Note:</b> Only monetary transactions that have occurred within the last five years can be retrieved.",
+                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><span class=\"tablenote\"><b>Note:</b>  The <b>Finances API</b> does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span><br>The <b>getTransactions</b> method allows a seller to retrieve information about one or more of their monetary transactions.<br><br><span class=\"tablenote\"><b>Note:</b> For a complete list of transaction types, refer to <a href=\"/api-docs/sell/finances/types/pay:TransactionTypeEnum \" target=\"_blank \">TransactionTypeEnum</a>.</span><br>Numerous input filters are available which can be used individually or combined to refine the data that are returned. For example:<ul><li><code>SALE</code> transactions for August 15, 2022;</li><li><code>RETURN</code> transactions for the month of January, 2021;</li><li>Transactions currently in a <code>transactionStatus</code> equal to <code>FUNDS_ON_HOLD</code>.</li></ul>Refer to the <a href=\"#uri.filter \">filter</a> field for additional information about each filter and its use.<br><br>Pagination and sort query parameters are also provided that allow users to further control how monetary transactions are displayed in the response.<br><br>If no monetary transactions match the input criteria, an http status code of <em>204 No Content</em> is returned with no response payload. <br><br><b>Note:</b> Only monetary transactions that have occurred within the last five years can be retrieved.",
                 "operationId": "getTransactions",
                 "parameters": [
                     {
@@ -387,7 +686,7 @@
                     {
                         "name": "filter",
                         "in": "query",
-                        "description": "Numerous filters are available for the <strong>getTransactions</strong> method, and these filters are discussed below. One or more of these filter types can be used. If none of these filters are used, all monetary transactions occurring within the last five years are returned:<ul><li><b>transactionDate</b>: search for monetary transactions that occurred within a specific range of dates.<br><br><span class=\"tablenote\"><strong>Note:</strong> All dates must be input using UTC format (<code>YYYY-MM-DDTHH:MM:SS.SSSZ</code>) and should be adjusted accordingly for the local timezone of the user.</span><br>Below is the proper syntax to use if filtering by a date range: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=transactionDate:[2024-10-23T00:00:01.000Z..2024-11-09T00:00:01.000Z]</code><br><br>Only payouts from the last five years can be retrieved, so make sure the starting date is less than five years in the past from the present time. Also, the maximum date range that can be specified through this date filter is 36 months, so make sure your specified date range is no more than 36 months.</li>  <li><b>transactionType</b>: search for a specific type of monetary transaction. For supported <b>transactionType</b> values, see <a href=\"/api-docs/sell/finances/types/pay:TransactionTypeEnum\" target=\"_blank \">TransactionTypeEnum</a>.<br><br>Below is the proper syntax to use if filtering by a monetary transaction type: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=transactionType:{SALE}</code></li><li><b>transactionStatus</b>: this filter type is only applicable for sales orders, and allows the user to filter seller payouts in a particular state. For supported <b>transactionStatus</b> values, see <a href=\"/api-docs/sell/finances/types/pay:TransactionStatusEnum\" target=\"_blank \">TransactionStatusEnum</a>.<br><br>Below is the proper syntax to use if filtering by transaction status: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=transactionStatus:{PAYOUT}</code></li><li><b>buyerUsername</b>: the eBay user ID of the buyer involved in the monetary transaction. Only monetary transactions involving this buyer are returned. Below is the proper syntax to use if filtering by a specific eBay buyer: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=buyerUsername:{buyer1234}</code> </li><li><b>payoutId</b>: the unique identifier of a seller payout. This value is auto-generated by eBay once the seller payout is set to be processed. Only monetary transactions involving this Payout ID are returned. Below is the proper syntax to use if filtering by a specific Payout ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=payoutId:{5********8}</code>  </li><li><b>transactionId</b>: use this field  <b>transactionId</b> and also <b>transactionType</b> to filter for a unique identifier of a monetary transaction, or an error will occur. For a sales order, the <b>orderId</b> filter should be used instead. Only the monetary transaction defined by the identifier is returned.<br><br><span class=\"tablenote\"><strong>Note:</strong> This filter cannot be used alone; the <b>transactionType</b> must also be specified when filtering by transaction ID.</span><br>Below is the proper syntax to use if filtering by a specific transaction ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=transactionId:{0*-0***0-3***3}&filter=transactionType:{SALE}</code> </li><li><b>orderId</b>: the unique identifier of a sales order. Only monetary transaction(s) associated with this <b>orderId</b> value are returned.<br><br>For any other monetary transaction, the <b>transactionId</b> filter should be used instead.<br><br>Below is the proper syntax to use if filtering by a specific order ID:<br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=orderId:{0*-0***0-3***3}</code> </li><li><b>payoutReference</b>: returns the monetary transactions associated with the <b>payoutReference</b>. By using this ID as a filter parameter, the user will be able to track all monetary transactions associated with both sibling payouts, including sales and refunds, if any. This filter is <b>only</b> supported for sellers in Mainland China. Below is the proper syntax to use if filtering by <b>payoutReference</b>: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=payoutReference:{5*******3}</code></li></ul> For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField",
+                        "description": "Numerous filters are available for the <strong>getTransactions</strong> method, and these filters are discussed below. One or more of these filter types can be used. If none of these filters are used, all monetary transactions occurring within the last five years are returned:<ul><li><b>transactionDate</b>: search for monetary transactions that occurred within a specific range of dates.<br><br><span class=\"tablenote\"><strong>Note:</strong> All dates must be input using UTC format (<code>YYYY-MM-DDTHH:MM:SS.SSSZ</code>) and should be adjusted accordingly for the local timezone of the user.</span><br>Below is the proper syntax to use if filtering by a date range: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=transactionDate:[2024-10-23T00:00:01.000Z..2024-11-09T00:00:01.000Z]</code><br><br>Only payouts from the last five years can be retrieved, so make sure the starting date is less than five years in the past from the present time. Also, the maximum date range that can be specified through this date filter is 36 months, so make sure your specified date range is no more than 36 months.</li>  <li><b>transactionType</b>: search for a specific type of monetary transaction. For supported <b>transactionType</b> values, see <a href=\"/api-docs/sell/finances/types/pay:TransactionTypeEnum\" target=\"_blank \">TransactionTypeEnum</a>.<br><br>Below is the proper syntax to use if filtering by a monetary transaction type: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=transactionType:{SALE}</code></li><li><b>transactionStatus</b>: this filter type is only applicable for sales orders, and allows the user to filter seller payouts in a particular state. For supported <b>transactionStatus</b> values, see <a href=\"/api-docs/sell/finances/types/pay:TransactionStatusEnum\" target=\"_blank \">TransactionStatusEnum</a>.<br><br>Below is the proper syntax to use if filtering by transaction status: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=transactionStatus:{PAYOUT}</code></li><li><b>buyerUsername</b>: the eBay username or user ID of the buyer involved in the monetary transaction. Only monetary transactions involving this buyer are returned. Below is the proper syntax to use if filtering by a specific eBay buyer: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=buyerUsername:{buyer1234}</code> </li><li><b>payoutId</b>: the unique identifier of a seller payout. This value is auto-generated by eBay once the seller payout is set to be processed. Only monetary transactions involving this Payout ID are returned. Below is the proper syntax to use if filtering by a specific Payout ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=payoutId:{5********8}</code>  </li><li><b>transactionId</b>: use this field  <b>transactionId</b> and also <b>transactionType</b> to filter for a unique identifier of a monetary transaction, or an error will occur. For a sales order, the <b>orderId</b> filter should be used instead. Only the monetary transaction defined by the identifier is returned.<br><br><span class=\"tablenote\"><strong>Note:</strong> This filter cannot be used alone; the <b>transactionType</b> must also be specified when filtering by transaction ID.</span><br>Below is the proper syntax to use if filtering by a specific transaction ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=transactionId:{0*-0***0-3***3}&filter=transactionType:{SALE}</code> </li><li><b>orderId</b>: the unique identifier of a sales order. Only monetary transaction(s) associated with this <b>orderId</b> value are returned.<br><br>For any other monetary transaction, the <b>transactionId</b> filter should be used instead.<br><br>Below is the proper syntax to use if filtering by a specific order ID:<br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=orderId:{0*-0***0-3***3}</code> </li><li><b>payoutReference</b>: returns the monetary transactions associated with the <b>payoutReference</b>. By using this ID as a filter parameter, the user will be able to track all monetary transactions associated with both sibling payouts, including sales and refunds, if any. This filter is <b>only</b> supported for sellers in Mainland China. Below is the proper syntax to use if filtering by <b>payoutReference</b>: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction?filter=payoutReference:{5*******3}</code></li></ul> For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -447,7 +746,7 @@
                                 "135005": {
                                     "domain": "API_FINANCES",
                                     "category": "REQUEST",
-                                    "description": "The value of sorting is invalid."
+                                    "description": "The value of sort is invalid."
                                 },
                                 "135006": {
                                     "domain": "API_FINANCES",
@@ -509,7 +808,7 @@
                 "tags": [
                     "transaction"
                 ],
-                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br>The <b>getTransactionSummary</b> method retrieves cumulative information for monetary transactions. If applicable, the number of payments with a <code>transactionStatus</code> equal to <code>FUNDS_ON_HOLD</code> and the total monetary amount of these on-hold payments are also returned.<br><br><span class=\"tablenote\"><b>Note:</b> For a complete list of transaction types, refer to <a href=\"/api-docs/sell/finances/types/pay:TransactionTypeEnum \" target=\"_blank \">TransactionTypeEnum</a>.</span><br>Refer to the <a href=\"#uri.filter \">filter</a> field for additional information about each filter and its use.<br><br><span class=\"tablenote\"><b>Note:</b> Unless a <code>transactionType</code> filter is used to retrieve a specific type of transaction (e.g., <code>SALE</code>, <code>REFUND</code>, etc.,) the <a href=\"#response.creditCount\">creditCount</a> and <a href=\"#response.creditAmount\">creditAmount</a> response fields both include <i>order sales</i> and <i>seller credits</i> information. That is, the <b>count</b> and <b>value</b> fields do not distinguish between these two types monetary transactions.</span> <br><br><b>Note:</b> getTransactionSummary will only return data on transactions that occurred less than five years in the past.",
+                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><span class=\"tablenote\"><b>Note:</b>  The <b>Finances API</b> does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span><br>The <b>getTransactionSummary</b> method retrieves cumulative information for monetary transactions. If applicable, the number of payments with a <code>transactionStatus</code> equal to <code>FUNDS_ON_HOLD</code> and the total monetary amount of these on-hold payments are also returned.<br><br><span class=\"tablenote\"><b>Note:</b> For a complete list of transaction types, refer to <a href=\"/api-docs/sell/finances/types/pay:TransactionTypeEnum \" target=\"_blank \">TransactionTypeEnum</a>.</span><br>Refer to the <a href=\"#uri.filter \">filter</a> field for additional information about each filter and its use.<br><br><span class=\"tablenote\"><b>Note:</b> Unless a <code>transactionType</code> filter is used to retrieve a specific type of transaction (e.g., <code>SALE</code>, <code>REFUND</code>, etc.,) the <a href=\"#response.creditCount\">creditCount</a> and <a href=\"#response.creditAmount\">creditAmount</a> response fields both include <i>order sales</i> and <i>seller credits</i> information. That is, the <b>count</b> and <b>value</b> fields do not distinguish between these two types monetary transactions.</span> <br><br><b>Note:</b> getTransactionSummary will only return data on transactions that occurred less than five years in the past.",
                 "operationId": "getTransactionSummary",
                 "parameters": [
                     {
@@ -524,7 +823,7 @@
                     {
                         "name": "filter",
                         "in": "query",
-                        "description": "Numerous filters are available for the <strong>getTransactionSummary</strong> method, and these filters are discussed below. One or more of these filter types can be used. The <b>transactionStatus</b> filter must be used. All other filters are optional. <ul><li><b>transactionStatus</b>: the data returned in the response pertains to the sales, payouts, and transfer status set. For supported <b>transactionStatus</b> values, see <a href=\"/api-docs/sell/finances/types/pay:TransactionStatusEnum\" target=\"_blank \">TransactionStatusEnum</a>. <br><br>Below is the proper syntax to use when setting up the <b>transactionStatus</b> filter: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=transactionStatus:&#123;PAYOUT&#125;</code></li><li><b>transactionDate</b>: only consider monetary transactions that occurred within a specific range of dates.<br><br><span class=\"tablenote\"><strong>Note:</strong> All dates must be input using UTC format (<code>YYYY-MM-DDTHH:MM:SS.SSSZ</code>) and should be adjusted accordingly for the local timezone of the user.</span><br><br>Below is the proper syntax to use if filtering by a date range: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=transactionDate:&#91;2024-10-23T00:00:01.000Z..2024-11-09T00:00:01.000Z&#93;</code><br><br><b>Note:</b>Only monetary transactions from the last five years can be retrieved, so make sure the starting date is less than five years in the past from the present time. Also, the maximum date range that can be specified through this date filter is 36 months, so make sure your specified date range is no more than 36 months.</li>  <li><b>transactionType</b>: only consider a specific type of monetary transaction. For supported <b>transactionType</b> values, see <a href=\"/api-docs/sell/finances/types/pay:TransactionTypeEnum\" target=\"_blank \">TransactionTypeEnum</a>.<br><br>Below is the proper syntax to use if filtering by a monetary transaction type: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=transactionType:{SALE}</code></li><li><b>buyerUsername</b>: only consider monetary transactions involving a specific buyer (specified with the buyer's eBay user ID). Below is the proper syntax to use if filtering by a specific eBay buyer: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=buyerUsername:&#123;buyer1234&#125;</code> </li><li><b>payoutId</b>: only consider monetary transactions related to a specific seller payout (identified with a Payout ID). This value is auto-generated by eBay once the seller payout is set to be processed. Below is the proper syntax to use if filtering by a specific Payout ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=payoutId:&#123;5********8&#125;</code>  </li><li><b>transactionId</b>: the unique identifier of a monetary transaction. For a sales order, the <b>orderId</b> filter should be used instead. Only the monetary transaction(s) associated with this <b>transactionId</b> value are returned.<br><br><span class=\"tablenote\"><strong>Note:</strong> This filter cannot be used alone; the <b>transactionType</b> must also be specified when filtering by transaction ID.</span><br><br>Below is the proper syntax to use if filtering by a specific transaction ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=transactionId:{0*-0***0-3***3}&filter=transactionType:{SALE}</code> </li><li><b>orderId</b>: the unique identifier of a sales order. For any other monetary transaction, the <b>transactionId</b> filter should be used instead. Only the monetary transaction(s) associated with this <b>orderId</b> value are returned. Below is the proper syntax to use if filtering by a specific order ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=orderId:{0*-0***0-3***3}</code> </li></ul> For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField",
+                        "description": "Numerous filters are available for the <strong>getTransactionSummary</strong> method, and these filters are discussed below. One or more of these filter types can be used. The <b>transactionStatus</b> filter must be used. All other filters are optional. <ul><li><b>transactionStatus</b>: the data returned in the response pertains to the sales, payouts, and transfer status set. For supported <b>transactionStatus</b> values, see <a href=\"/api-docs/sell/finances/types/pay:TransactionStatusEnum\" target=\"_blank \">TransactionStatusEnum</a>. <br><br>Below is the proper syntax to use when setting up the <b>transactionStatus</b> filter: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=transactionStatus:&#123;PAYOUT&#125;</code></li><li><b>transactionDate</b>: only consider monetary transactions that occurred within a specific range of dates.<br><br><span class=\"tablenote\"><strong>Note:</strong> All dates must be input using UTC format (<code>YYYY-MM-DDTHH:MM:SS.SSSZ</code>) and should be adjusted accordingly for the local timezone of the user.</span><br><br>Below is the proper syntax to use if filtering by a date range: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=transactionDate:&#91;2024-10-23T00:00:01.000Z..2024-11-09T00:00:01.000Z&#93;</code><br><br><b>Note:</b>Only monetary transactions from the last five years can be retrieved, so make sure the starting date is less than five years in the past from the present time. Also, the maximum date range that can be specified through this date filter is 36 months, so make sure your specified date range is no more than 36 months.</li>  <li><b>transactionType</b>: only consider a specific type of monetary transaction. For supported <b>transactionType</b> values, see <a href=\"/api-docs/sell/finances/types/pay:TransactionTypeEnum\" target=\"_blank \">TransactionTypeEnum</a>.<br><br>Below is the proper syntax to use if filtering by a monetary transaction type: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=transactionType:{SALE}</code></li><li><b>buyerUsername</b>: only consider monetary transactions involving a specific buyer (specified with the buyer's eBay username or user ID). Below is the proper syntax to use if filtering by a specific eBay buyer: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=buyerUsername:&#123;buyer1234&#125;</code> </li><li><b>payoutId</b>: only consider monetary transactions related to a specific seller payout (identified with a Payout ID). This value is auto-generated by eBay once the seller payout is set to be processed. Below is the proper syntax to use if filtering by a specific Payout ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=payoutId:&#123;5********8&#125;</code>  </li><li><b>transactionId</b>: the unique identifier of a monetary transaction. For a sales order, the <b>orderId</b> filter should be used instead. Only the monetary transaction(s) associated with this <b>transactionId</b> value are returned.<br><br><span class=\"tablenote\"><strong>Note:</strong> This filter cannot be used alone; the <b>transactionType</b> must also be specified when filtering by transaction ID.</span><br><br>Below is the proper syntax to use if filtering by a specific transaction ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=transactionId:{0*-0***0-3***3}&filter=transactionType:{SALE}</code> </li><li><b>orderId</b>: the unique identifier of a sales order. For any other monetary transaction, the <b>transactionId</b> filter should be used instead. Only the monetary transaction(s) associated with this <b>orderId</b> value are returned. Below is the proper syntax to use if filtering by a specific order ID: <br><br><code>https://apiz.ebay.com/sell/finances/v1/transaction_summary?filter=orderId:{0*-0***0-3***3}</code> </li></ul> For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -611,7 +910,7 @@
                 "tags": [
                     "transfer"
                 ],
-                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br>This method retrieves detailed information regarding a <code>TRANSFER</code> transaction type. A <code>TRANSFER</code> is a  monetary transaction type that involves a seller transferring money to eBay for reimbursement of one or more charges. For example, when a seller reimburses eBay for a buyer refund.<br><br>If an ID is passed into the URI that is an identifier for another transaction type, this call will return an http status code of <code>404 Not found</code>.",
+                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><span class=\"tablenote\"><b>Note:</b>  The <b>Finances API</b> does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span><br>This method retrieves detailed information regarding a <code>TRANSFER</code> transaction type. A <code>TRANSFER</code> is a  monetary transaction type that involves a seller transferring money to eBay for reimbursement of one or more charges. For example, when a seller reimburses eBay for a buyer refund.<br><br>If an ID is passed into the URI that is an identifier for another transaction type, this call will return an http status code of <code>404 Not found</code>.",
                 "operationId": "getTransfer",
                 "parameters": [
                     {
@@ -660,7 +959,7 @@
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal Server Error.",
                         "x-response-codes": {
                             "errors": {
                                 "135000": {
@@ -680,6 +979,166 @@
                     }
                 ]
             }
+        },
+        "/billing_activity": {
+            "get": {
+                "tags": [
+                    "billing_activity"
+                ],
+                "description": "<div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> Due to EU &amp; UK Payments regulatory requirements, an additional security verification via Digital Signatures is required for certain API calls that are made on behalf of EU/UK sellers, including all <b>Finances API</b> methods. Please refer to <a href=\"/develop/guides/digital-signatures-for-apis \" target=\"_blank\">Digital Signatures for APIs</a> to learn more on the impacted APIs and the process to create signatures to be included in the HTTP payload.</p></div><br><span class=\"tablenote\"><b>Note:</b>  The <b>Finances API</b> does not support <a href=\"https://www.ebay.com/sellercenter/ebay-for-business/multi-user-account-access\" target=\"_blank\">Team Access</a>. Financial information, such as payouts or transactions, is only returned for the user that makes the call. You cannot use any of the methods in this API to return financial information for another user.</span><br>This method retrieves filtered billing activities of the seller. Returned results are filtered through query parameters such as date range, activity ID, listing ID, or order ID. Sorting and pagination features help organize and navigate returned activities efficiently.",
+                "operationId": "getBillingActivities",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "This header indicates the natural language and locale preferred by the user for the response.<br><br>For more information, see the <b>Accept-Language</b> header in <a href=\"/api-docs/static/rest-request-components.html#headers\" target=\"_blank \">HTTP request headers</a> and <a href=\"/api-docs/static/rest-request-components.html#marketpl\"  target=\"_blank\">Marketplace ID values</a>. If not provided, defaults to <code>en-US</code>.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "This required field specifies which results to return in the response. Only one of the following four filter values must be used. A user can either retrieve all billing activity within a date range, or they can retrieve billing activity related to a specific eBay order, eBay listing, or they can retrieve information on a specific billing activity.<br /><ul><li><b>activityId</b>: If this filter is used, only information on a specific billing activity is returned. The <a href=\"#response.billingActivities.billingTransactionId\">billingTransactionId</a> returned in the response can be used as the <b>activityId</b>.</li><li><b>listingId</b>: If this filter is used, only billing activity associated with the specified listing is returned.</li><li><b>orderId</b>: If this filter is used, only billing activity associated with the specified order is returned.</li><li><b>transactionDate</b>: If a date range filter is used, only billing activity that occurred within the specified date range is returned. The starting date cannot be set back further than 120 days in the past. Use UTC date values in the following order: <code>[<em>start</em>..<em>end</em>]</code></li></ul><br /><b>Examples</b><br /><br />IDs:<br /> <code>filter=activityID:{12**56}</code><br /><br />Date range:<br />  <code>filter=transactionDate:[2025-10-01T00:00:00Z..2025-10-31T23:59:59Z]</code> For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Sets the maximum number of records to return per page of data.<br><p>Use this parameter in conjunction with the <b>offset</b> parameter to control the pagination of the output. For example, with offset set to <code>20</code> and limit set to <code>10</code>, the call retrieves entries 21 through 30 from the result set.</p><p>Although this field is optional, if omitted the default value of <code>100</code> is used.</p><br> <b>Minimum:</b> <code>1</code><br><b>Maximum:</b> <code>200</code><br><b>Default:</b> <code>100</code>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "Specifies the number of records to skip in the result set. This is used with the <code>limit</code> field to control the pagination of the output. For example:<br><ul><li>If <b>offset</b> is <code>0</code> and <b>limit</b> is <code>10</code>, the method will retrieve records 1-10 from the list of records returned</li><li>If <b>offset</b> is <code>10</code> and <b>limit</b> is <code>10</code>, the method will retrieve records 11-20 from the list of records returned.</li></ul><p>If this parameter is not set, its value defaults to <code>0</code> which returns the first page of records.</p><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>This feature employs a zero-based list, where the first activity in the list has an offset of 0.</span></p><p><b>Default:</b> <code>0</code> (zero, returns the first page)</p>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "By default, transactions that match the input criteria are sorted in descending order according to the transaction date (most recent transactions returned first).<br><br>To view transactions in ascending order instead (oldest transactions first), include the <b>sort</b> query parameter and set its value to <code>sort=transactionDate</code>. For example (ascending order):<br><br><code>filter=transactionDate:[2025-11-01T00:00:01.000Z..2025-11-12T00:00:01.000Z]&sort=transactionDate</code><br><br>Transactions can only be sorted according to transaction date. If omitted, defaults to descending order (most recent transactions returned first). For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:SortField",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BillingActivityResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "x-response-codes": {
+                            "errors": {
+                                "135005": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The sort value is invalid. See documentation for supported values."
+                                },
+                                "135015": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "At least one filter parameter must be used. See documentation for supported filter types."
+                                },
+                                "135016": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "Invalid filter format. See documentation for correct format for each filter type."
+                                },
+                                "135017": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "Invalid filter type. See documentation for supported filter types."
+                                },
+                                "135018": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "Only one filter type can be used at a time."
+                                },
+                                "135019": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "Invalid date format. Date must be in ISO-8601 format (e.g., 2024-10-23T00:00:01.000Z)."
+                                },
+                                "135020": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "There is a syntax error in your date_range filter. Please see documentation for proper syntax."
+                                },
+                                "135021": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "The starting date range cannot be set back further than 120 days in the past."
+                                },
+                                "135022": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "Invalid limit value. Limit must be between 1 and 200."
+                                },
+                                "135023": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "Invalid offset value. If provided, Offset must be 0 or greater."
+                                },
+                                "135025": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "Invalid date range: the end date occurs before the start date."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "x-response-codes": {
+                            "errors": {
+                                "135000": {
+                                    "domain": "API_FINANCES",
+                                    "category": "REQUEST",
+                                    "description": "There was a problem with an eBay internal system or process. Contact eBay developer support for assistance."
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_auth": [
+                            "https://api.ebay.com/oauth/api_scope/sell.finances"
+                        ]
+                    }
+                ]
+            },
+            "servers": [
+                {
+                    "url": "https://api.ebay.com{basePath}",
+                    "description": "Production",
+                    "variables": {
+                        "basePath": {
+                            "default": "/sell/finances/v1"
+                        }
+                    }
+                }
+            ]
         }
     },
     "components": {
@@ -709,7 +1168,7 @@
                     },
                     "exchangeRate": {
                         "type": "string",
-                        "description": "The exchange rate used for the monetary conversion. This field shows the exchange rate used to convert the dollar value in the <b>value</b> field from the dollar value in the <b>convertedFromValue</b> field.<br><br> For sellers in mainland China, this field shows shows the exchange rate to convert the dollar value in the <b>value</b> field to the CNY value in the <b>convertedToValue</b> field.<br><br>This field is only returned when eBay does a currency version, and a currency conversion is generally needed if the buyer is viewing, or has purchased an item on an international site. <br><br>This field is only returned if/when currency conversion was applied by eBay."
+                        "description": "The exchange rate used for the monetary conversion. This field shows the exchange rate used to convert the dollar value in the <b>value</b> field from the dollar value in the <b>convertedFromValue</b> field.<br><br> For sellers in mainland China, this field shows the exchange rate to convert the dollar value in the <b>value</b> field to the CNY value in the <b>convertedToValue</b> field.<br><br>This field is only returned when eBay does a currency version, and a currency conversion is generally needed if the buyer is viewing, or has purchased an item on an international site. <br><br>This field is only returned if/when currency conversion was applied by eBay."
                     },
                     "value": {
                         "type": "string",
@@ -732,15 +1191,115 @@
                 },
                 "description": "This type is used by the <b>balanceAdjustment</b> container, which shows the seller payout balance that will be applied toward the charges outlined in the <b>charges</b> array."
             },
+            "BillingActivityLineItem": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "description": "This container shows the amount of the fee or credit. The value and currency are always returned. If the buyer is in one country and purchases from an eBay marketplace that uses a different currency, the response also includes the converted-from and converted-to fields, along with the exchange rate.",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "billingTransactionDate": {
+                        "type": "string",
+                        "description": "This timestamp indicates the date/time when eBay processed the transaction."
+                    },
+                    "billingTransactionId": {
+                        "type": "string",
+                        "description": "This field provides a unique identifier of the billing transaction. If a seller wants to view details on a specific billing transaction, they can use the <b>actvityId</b> filter and pass in a specific <b>billingTransactionId</b> value."
+                    },
+                    "bookingEntry": {
+                        "type": "string",
+                        "description": "The value returned in this field will indicate if the billing transaction is a debit against the seller's account, or a credit. A debit is much more prevalent than a credit, but sometimes a listing fee will get reversed and they will get a credit for this fee. Possible values:<br><ul><li><code>DEBIT</code></li><li><code>CREDIT</code></li></ul>"
+                    },
+                    "feeType": {
+                        "type": "string",
+                        "description": "This field describes the type of fee associated with the transaction. An example value is  <code>FinalValueFeeFixedFeePerOrder</code>."
+                    },
+                    "feeTypeDescription": {
+                        "type": "string",
+                        "description": "This field contains the human-readable description of the fee type associated with the transaction. For example, <code>Final Value Fee</code>."
+                    },
+                    "listingId": {
+                        "type": "string",
+                        "description": "The unique identifier of the eBay listing associated with the billing transaction. This field is returned if the fee is associated with a listing."
+                    },
+                    "orderId": {
+                        "type": "string",
+                        "description": "The unique identifier of the eBay order associated with the billing transaction. This field is returned if the fee is associated with an order."
+                    },
+                    "promotionalOffers": {
+                        "type": "array",
+                        "description": "A list of seller promotional offers applicable for the billing transaction.",
+                        "items": {
+                            "$ref": "#/components/schemas/DiscountDetail"
+                        }
+                    }
+                },
+                "description": "BillingActivityLineItem"
+            },
+            "BillingActivityResponse": {
+                "type": "object",
+                "properties": {
+                    "billingActivities": {
+                        "type": "array",
+                        "description": "A list of billing activity entries that meet the filter criteria. Billing activity will include fees, credits, and promotional offers applied to the seller's account.",
+                        "items": {
+                            "$ref": "#/components/schemas/BillingActivityLineItem"
+                        }
+                    },
+                    "count": {
+                        "type": "integer",
+                        "description": "An integer representing the number of billing activity items returned in this response page.",
+                        "format": "int32"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "The value of the <b>limit</b> parameter. This is the maximum number of line items, as filtered, of billing transactions to return per page from the result set.",
+                        "format": "int32"
+                    },
+                    "next": {
+                        "type": "string",
+                        "description": "The URI for the next page of results starting with the resource name. This URI is returned if there is an additional page of results in the result set."
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "description": "The value of the <b>offset</b> parameter. This field indicates how many results were skipped in the response. If an <b>offset</b> parameter was not included in the request, this value will default to <code>0</code>, returning the first page of results.",
+                        "format": "int32"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "description": "The URI for the previous page of results starting with the resource name. This URI is returned if there is a previous page of results in the result set."
+                    },
+                    "total": {
+                        "type": "integer",
+                        "description": "The total number of billing transactions available that match the filter criteria. <p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>When the <b>total</b> value exceeds the <b>limit</b> value, there are multiple pages of results.</span></p>",
+                        "format": "int32"
+                    }
+                },
+                "description": "BillingActivityResponse"
+            },
             "Buyer": {
                 "type": "object",
                 "properties": {
                     "username": {
                         "type": "string",
-                        "description": "The eBay user ID of the order's buyer."
+                        "description": "The eBay user ID of the order's buyer.<br><br><span class=\"tablenote\"><b>Note:</b> Effective September 26, 2025, select developers will no longer receive username data for U.S. users through this field. Instead, an immutable user ID will be returned in its place. For more information, please refer to <a href=\"/api-docs/static/data-handling-update.html\">Data Handling Compliance</a>. </span>"
                     }
                 },
                 "description": "This type is used to express details about the buyer associated with an order. At this time, the only field in this type is the eBay user ID of the buyer, but more fields may get added at a later date."
+            },
+            "BuyerWithId": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string",
+                        "description": "The public user id of the buyer"
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "The username of the buyer. <br><br><span class=\"tablenote\"><b>Note:</b> Effective September 26, 2025, select developers will no longer receive username data for U.S. users through this field. Instead, an immutable user ID will be returned in its place. For more information, please refer to <a href=\"/api-docs/static/data-handling-update.html\">Data Handling Compliance</a>. </span>"
+                    }
+                },
+                "description": "This type defines identifying information about the buyer associated with an order."
             },
             "Charge": {
                 "type": "object",
@@ -779,6 +1338,42 @@
                     }
                 },
                 "description": "This type is used by the <b>charge</b> container, which is an array of one or more charges related to the transfer."
+            },
+            "DiscountDetail": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "description": "This container shows the amount of the promotion. The value and currency are always returned. If the buyer is in one country and purchases from an eBay marketplace that uses a different currency, the response also includes the converted-from and converted-to fields, and the exchange rate.",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "offerType": {
+                        "type": "string",
+                        "description": "The type of promotional discount applied through the activity's promotional offer <b>amount</b>. Examples include offer types such as <code>ETRS</code> (eBay Top Rated Seller) and <code>PROMOTION</code>."
+                    }
+                },
+                "description": "This container shows the amount of the promotional offer."
+            },
+            "EarningsSummary": {
+                "type": "object",
+                "properties": {
+                    "expenses": {
+                        "description": "This container provides the total expenses associated with an order, including:<br><ul><li>Fees and fee credits (transaction fees, other fees, and ad fees)</li><li>Shipping labels</li><li>Donations</li></ul>It is used by both the <b>getOrderEarnings</b> and <b>getOrderEarningsById</b> methods. <p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Expenses are always in the seller's payout currency. Conversion-related fields (such as <b>exchangeRate</b> or converted from/to fields) in this container do not apply to the <a href=\"/api-docs/sell/finances/resources/methods#s0-1-31-4-7-5-6-2[0]-h2-order_earnings\">order_earnings</a> resource.</span></p>",
+                        "$ref": "#/components/schemas/Expense"
+                    },
+                    "grossAmount": {
+                        "description": "This container shows the gross amount before any eBay deductions. This amount includes the item subtotal, buyer-paid shipping and handling, and seller-collected tax paid by the buyer. <br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>This amount does not include any taxes or fees that eBay collects from the buyer.</span></p><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Gross amount is always in the seller's payout currency. Conversion-related fields (such as <b>exchangeRate</b> or converted from/to fields) in this container do not apply to the <a href=\"/api-docs/sell/finances/resources/methods#s0-1-31-4-7-5-6-2[0]-h2-order_earnings\">order_earnings</a> resource.</span></p>",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "orderEarnings": {
+                        "description": "This container shows your earnings after deducting expenses and any refunds from your gross amount.<p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Order earnings are always in the seller's payout currency. Conversion-related fields (such as <b>exchangeRate</b> or converted from/to fields) in this container do not apply to the <a href=\"/api-docs/sell/finances/resources/methods#s0-1-31-4-7-5-6-2[0]-h2-order_earnings\">order_earnings</a> resource.</span></p>",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "refunds": {
+                        "description": "This container includes refunds for returns, cases, cancellations, requests, and disputes. It does not include fee credits.<br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Refunds are always in the seller's payout currency. Conversion-related fields (such as <b>exchangeRate</b> or converted from/to fields) in this container do not apply to the <a href=\"/api-docs/sell/finances/resources/methods#s0-1-31-4-7-5-6-2[0]-h2-order_earnings\">order_earnings</a> resource.</span></p>",
+                        "$ref": "#/components/schemas/Amount"
+                    }
+                },
+                "description": "This type defines a summarized view of earnings information derived from one order. It defines fields that provides a summarized view of earnings information derived from one order including aggregated financial values for gross amount, expenses, earnings, and refunds. "
             },
             "Error": {
                 "type": "object",
@@ -845,41 +1440,73 @@
                     }
                 }
             },
+            "Expense": {
+                "type": "object",
+                "properties": {
+                    "currency": {
+                        "type": "string",
+                        "description": "This field shows the three-letter currency code that represents the currency used for all of the order expenses For implementation help, refer to <a href='https://developer.ebay.com/api-docs/sell/finances/types/ba:CurrencyCodeEnum'>eBay API documentation</a>"
+                    },
+                    "donations": {
+                        "type": "array",
+                        "description": "This array shows the amount(s) of one or more donations that are submitted to eBay charity organizations for one or more orders. <br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Donations are always tied to specific items. When an item is listed with a charity contribution (for example, 10%), the donation is calculated per item at the time of sale. Order earnings factor in only the items within the order that are eligible for donation.</span></p>",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderEarningFee"
+                        }
+                    },
+                    "marketplaceFees": {
+                        "type": "array",
+                        "description": "This array shows the type and amount(s) of marketplace fees that were charged against one or more orders.",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderEarningFee"
+                        }
+                    },
+                    "shippingLabels": {
+                        "description": "This container shows the total amount paid by the seller for eBay shipping labels for one or more orders.<br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Charges and credits for shipping labels purchased with non-eBay payment methods (for example, PayPal) are excluded from the order earnings calculation.</span></p>",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "This field shows the total expenses including charges and credits associated for one or more orders based on the order creation time period chosen."
+                    }
+                },
+                "description": "This type defines provides the total expenses associated with an order. Expenses represent cost components that reduce the seller's gross earnings and may include deductions such as marketplace fees, eBay shipping labels, and donations, applied during order processing."
+            },
             "Fee": {
                 "type": "object",
                 "properties": {
                     "amount": {
-                        "description": "The amount of the fee.",
+                        "description": "The monetary amount charged for the fee.",
                         "$ref": "#/components/schemas/Amount"
                     },
                     "feeJurisdiction": {
-                        "description": "Indicates the specific jurisdiction for the fee that has been deducted from the seller payout.",
+                        "description": "This type defines the jurisdiction associated with a fee. It identifies the geographic or regulatory context under which a specific fee is applied to an order.",
                         "$ref": "#/components/schemas/FeeJurisdiction"
                     },
                     "feeMemo": {
                         "type": "string",
-                        "description": "A description of the fee that was deducted from the seller payout."
+                        "description": "A descriptive message that provides additional context about the fee applied to the order."
                     },
                     "feeType": {
                         "type": "string",
                         "description": "The enumeration value returned here indicates the type of fee that was deducted from the seller payout. For implementation help, refer to <a href='https://developer.ebay.com/api-docs/sell/finances/types/api:FeeTypeEnum'>eBay API documentation</a>"
                     }
                 },
-                "description": "This type is used to display fees that are automatically deducted from seller payouts."
+                "description": "This type is used for provide information about a fee that is charged against an order."
             },
             "FeeJurisdiction": {
                 "type": "object",
                 "properties": {
                     "regionName": {
                         "type": "string",
-                        "description": "String value that indicates the name of the region to which a region-specific fee applies.<br><br>The set of valid <b>regionName</b> values that may be returned is determined by the <b>regionType</b> value.<br><br><span class=\"tablenote\"><strong>Note:</strong> Currently, supported <b>regionName</b> values that may be returned are standard two-character country or state codes.<br><br>Typical examples include:<ul><li><b>MX</b> [Mexico]</li><li><b>IN</b> [India]</li><li><b>US</b> [United States]</li><li>CA [California]</li><li>VT [Vermont]</li><li>ME [Maine]</li></ul></span>"
+                        "description": "The name of the region to which the fee applies.<br/><br/>The set of valid <b>regionName</b> values returned is determined by the corresponding <b>regionType</b> value.<br/><br/><span class=\"tablenote\"><strong>Note:</strong> Currently supported <b>regionName</b> values are standard two-character country or state codes.<br/><br/>Typical examples include:<ul><li><b>MX</b> (Mexico)</li><li><b>IN</b> (India)</li><li><b>US</b> (United States)</li><li><b>CA</b> (California)</li><li><b>VT</b> (Vermont)</li><li><b>ME</b> (Maine)</li></ul></span>"
                     },
                     "regionType": {
                         "type": "string",
-                        "description": "The enumeration value returned here indicates the type of region that is collecting the corresponding fee. For implementation help, refer to <a href='https://developer.ebay.com/api-docs/sell/finances/types/pay:RegionTypeEnum'>eBay API documentation</a>"
+                        "description": "This enumeration value indicates the type of region that the fee jurisdiction represents, such as a country or a state. For implementation help, refer to <a href='https://developer.ebay.com/api-docs/sell/finances/types/pay:RegionTypeEnum'>eBay API documentation</a>"
                     }
                 },
-                "description": "This container returns jurisdiction information about region-specific fees that are charged to sellers."
+                "description": "This type defines the jurisdiction information associated with a fee, identifying the geographic or regulatory region under which the fee is applied."
             },
             "FundingSource": {
                 "type": "object",
@@ -897,7 +1524,118 @@
                         "description": "The string value returned here indicates the funding source. Possible values include the following:<ul><li><code>AVAILABLE_FUNDS</code>: transfer is funded with seller payout funds</li><li><code>CREDIT_CARD</code>: transfer is funded with seller's credit card</li><li><code>BANK</code>: transfer is funded with a direct debit to seller's bank account on file with eBay</li><li><code>PAY_UPON_INVOICE</code>: eBay will bill the seller for the transfer on the monthly invoice</li></ul>"
                     }
                 },
-                "description": "This type provided details on the funding source for the transfer."
+                "description": "This type defines the source of funds used to finance a transfer, such as available seller funds, a credit card, or a bank account."
+            },
+            "OrderEarning": {
+                "type": "object",
+                "properties": {
+                    "buyer": {
+                        "description": "Information about the buyer associated with the order. Includes buyer name and public user id.",
+                        "$ref": "#/components/schemas/BuyerWithId"
+                    },
+                    "orderCreationDate": {
+                        "type": "string",
+                        "description": "The date the order was created and payment was successful."
+                    },
+                    "orderEarningsSummary": {
+                        "description": "This container defines a summarized view of earnings information derived from one order. It provides aggregated financial values for order earnings, gross amount, expenses, and refunds. Order earnings includes earnings after deducting expenses and refunds from the gross amount.",
+                        "$ref": "#/components/schemas/EarningsSummary"
+                    },
+                    "orderId": {
+                        "type": "string",
+                        "description": "The unique identifier of the order."
+                    },
+                    "orderLastModifiedDate": {
+                        "type": "string",
+                        "description": "The date when the order was last modified."
+                    },
+                    "orderSummary": {
+                        "description": "The container for order cost details, including line item subtotal, shipping and handling, seller-collected taxes, and any seller applied discounts. Always provided in the listing currency.",
+                        "$ref": "#/components/schemas/OrderSummary"
+                    }
+                },
+                "description": "This type defines the earnings details for a single order. It includes information associated with the order, such as an informatiuon about the buyer, an order summary, and an order earnings summary."
+            },
+            "OrderEarningFee": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "description": "The monetary amount of the expense.",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "feeType": {
+                        "type": "string",
+                        "description": "The classification of the fee applied to the order. For implementation help, refer to <a href='https://developer.ebay.com/api-docs/sell/finances/types/api:FeeTypeEnum'>eBay API documentation</a>"
+                    }
+                },
+                "description": "This type is used to show the fee type and amount of the marketplace fee or donation."
+            },
+            "OrderEarnings": {
+                "type": "object",
+                "properties": {
+                    "href": {
+                        "type": "string",
+                        "description": "The URI for the current page of results."
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "The maximum number of order earnings records returned in a single page of results.",
+                        "format": "int32"
+                    },
+                    "next": {
+                        "type": "string",
+                        "description": "The URI for the next page of results. This field is only returned if there is a next page of results to retrieve."
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "description": "The number of order earnings records skipped before returning the current page of results.",
+                        "format": "int32"
+                    },
+                    "orders": {
+                        "type": "array",
+                        "description": "The list of order earnings records returned in the current page of results. This array will be returned as empty if no orders match the request criteria.",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderEarning"
+                        }
+                    },
+                    "prev": {
+                        "type": "string",
+                        "description": "The URI for the previous page of results. This field is only returned if there is a previous page of results to retrieve."
+                    },
+                    "total": {
+                        "type": "integer",
+                        "description": "The total number of order earnings records that match the request criteria.",
+                        "format": "int32"
+                    }
+                },
+                "description": "The base response type of the <b>getOrderEarnings</b> method, which includes pagination output fields and a collection of orders that match the request criteria."
+            },
+            "OrderEarningsSummary": {
+                "type": "object",
+                "properties": {
+                    "expenses": {
+                        "description": "The aggregate amount of expenses for all orders included in the summary.<br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Expenses are always in the seller's payout currency. Conversion-related fields (such as <b>exchangeRate</b>) in this container do not apply to the <a href=\"/api-docs/sell/finances/resources/methods#s0-1-31-4-7-5-6-2[0]-h2-order_earnings\">order_earnings</a> resource.</span></p>",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "grossAmount": {
+                        "description": "The aggregate gross amount for all orders included in the order earnings summary. This amount equals the item subtotal plus shipping and handling, and any seller-collected taxes paid by the buyer, minus any seller-offered discount.<br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Gross amount is always in the seller's payout currency. Conversion-related fields (such as <b>exchangeRate</b>) in this container do not apply to the <a href=\"/api-docs/sell/finances/resources/methods#s0-1-31-4-7-5-6-2[0]-h2-order_earnings\">order_earnings</a> resource.</span></p>",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "orderCount": {
+                        "type": "integer",
+                        "description": "The total number of orders included in the summary.",
+                        "format": "int32"
+                    },
+                    "orderEarnings": {
+                        "description": "The aggregate earnings amount for all orders included in the summary, which includes the amount of order earnings after deducting expenses and any refunds from the gross amount.<p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Order earnings are always in the seller's payout currency. Conversion-related fields (such as <b>exchangeRate</b>) in this container do not apply to the <a href=\"/api-docs/sell/finances/resources/methods#s0-1-31-4-7-5-6-2[0]-h2-order_earnings\">order_earnings</a> resource.</span></p>",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "refunds": {
+                        "description": "The aggregate amount of all refunds issued for the orders included in the summary.<br><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Refunds include gross refunds, gross claims, and gross payment disputes.</span></p><p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>Refunds are always in the seller's payout currency. Conversion-related fields (such as <b>exchangeRate</b>) in this container do not apply to the <a href=\"/api-docs/sell/finances/resources/methods#s0-1-31-4-7-5-6-2[0]-h2-order_earnings\">order_earnings</a> resource.</span></p>",
+                        "$ref": "#/components/schemas/Amount"
+                    }
+                },
+                "description": "The base response type for the <b>getOrderEarningsSummary</b> method, which includes aggregate order earnings, expenses, gross amount, and order count for orders created within the date range and included in the summary."
             },
             "OrderLineItem": {
                 "type": "object",
@@ -927,11 +1665,33 @@
                 },
                 "description": "This type is used to show the fees and donations that are deducted from a seller payout for each line item in an order."
             },
+            "OrderSummary": {
+                "type": "object",
+                "properties": {
+                    "discounts": {
+                        "description": "The total amount of item-level promotions or discounts offered by the seller for a sale (order).",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "itemSubtotal": {
+                        "description": "The sum of the listing price(s) for all items in the order, before applying any seller discounts.",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "sellerCollectedTaxes": {
+                        "description": "The total amount of <a href=\"https://www.ebay.com/help/selling/fees-credits-invoices/taxes-import-charges?id=4121\" target=\"_blank\">tax collected by the seller</a> on all sold items for the order.",
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "shippingAndHandlingCosts": {
+                        "description": "The total amount collected from the buyer to cover shipping and handling for all items in the order.",
+                        "$ref": "#/components/schemas/Amount"
+                    }
+                },
+                "description": "This type provides order cost details, including line item subtotal, shipping and handling, seller-collected taxes, and any seller applied discounts. Always provided in the listing currency."
+            },
             "Payout": {
                 "type": "object",
                 "properties": {
                     "amount": {
-                        "description": "This the total amount of the seller payout. The container shows the dollar amount of the payout and the currency used. The value of the payout is always shown, even if the payout has failed.",
+                        "description": "This is the total amount of the seller payout. The container shows the dollar amount of the payout and the currency used. The value of the payout is always shown, even if the payout has failed.",
                         "$ref": "#/components/schemas/Amount"
                     },
                     "bankReference": {
@@ -1133,14 +1893,14 @@
                 "properties": {
                     "taxType": {
                         "type": "string",
-                        "description": "The enumeration value returned here indicates the type of tax. For implementation help, refer to <a href='https://developer.ebay.com/api-docs/sell/finances/types/pay:TaxTypeEnum'>eBay API documentation</a>"
+                        "description": "The type of tax applied to the transaction. For implementation help, refer to <a href='https://developer.ebay.com/api-docs/sell/finances/types/pay:TaxTypeEnum'>eBay API documentation</a>"
                     },
                     "amount": {
-                        "description": "Amount of tax.",
+                        "description": "The monetary amount of the tax applied.",
                         "$ref": "#/components/schemas/Amount"
                     }
                 },
-                "description": "This type is used to return the tax details of a transaction."
+                "description": "This type defines tax information associated with a transaction."
             },
             "Transaction": {
                 "type": "object",

@@ -444,7 +444,6 @@ export type TranslateRequest = commerceTranslation['schemas']['TranslateRequest'
 export type CommerceCatalogSearchParams = commerceCatalogOperations['search']['parameters']['query']
 
 export type CreateVideoRequest = commerceMedia['schemas']['CreateVideoRequest'];
-export type InputStream = commerceMedia['schemas']['InputStream'];
 
 export type UpdateConversationRequest = commerceMessage['schemas']['UpdateConversationRequest'];
 export type BulkUpdateConversationRequest = commerceMessage['schemas']['BulkUpdateConversationsRequest'];
@@ -482,6 +481,7 @@ export type FulfillmentSellAccountProgram = sellAccountV1['schemas']['Program'];
 export type PaymentPolicyRequest = sellAccountV1['schemas']['PaymentPolicyRequest'];
 export type ReturnPolicyRequest = sellAccountV1['schemas']['ReturnPolicyRequest'];
 export type SalesTaxBase = sellAccountV1['schemas']['SalesTaxBase'];
+export type BulkSalesTaxInput = sellAccountV1['schemas']['BulkSalesTaxInput'];
 
 export type RateTableUpdate = sellAccountV2['schemas']['RateTableUpdate'];
 export type UpdatePayoutPercentageRequest = sellAccountV2['schemas']['UpdatePayoutPercentageRequest'];
@@ -551,7 +551,6 @@ export type UpdateKeywordRequest = sellMarketing['schemas']['UpdateKeywordReques
 export type UpdateNegativeKeywordRequest = sellMarketing['schemas']['UpdateNegativeKeywordRequest']
 export type CreateEmailCampaignRequest = sellMarketing['schemas']['CreateEmailCampaignRequest']
 export type UpdateCampaignRequest = sellMarketing['schemas']['UpdateCampaignRequest']
-export type QuickSetupRequest = sellMarketing['schemas']['QuickSetupRequest']
 
 export type FindListingRecommendationRequest = sellRecommendation['schemas']['FindListingRecommendationRequest']
 

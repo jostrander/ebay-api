@@ -10,7 +10,7 @@
             "name": "eBay API License Agreement",
             "url": "https://developer.ebay.com/join/api-license-agreement"
         },
-        "version": "v1.9.2"
+        "version": "v1.9.3"
     },
     "servers": [
         {
@@ -2669,6 +2669,83 @@
                 ]
             }
         },
+        "/bulk_create_or_replace_sales_tax": {
+            "post": {
+                "tags": [
+                    "sales_tax"
+                ],
+                "description": "This method creates or updates multiple sales-tax table entries.<br><br><i>Sales-tax tables</i> can be set up for countries that support different <i>tax jurisdictions</i>.<br><br><span class=\"tablenote\"><b>Note:</b> Sales-tax tables are only available for the US (EBAY_US) and Canada (EBAY_CA) marketplaces.</span><br>Each sales-tax table entry comprises the following parameters:<ul><li><code>countryCode</code></li><li><code>jurisdictionId</code></li><li><code>salesTaxPercentage</code></li><li><code>shippingAndHandlingTaxed</code></li></ul><br>Valid jurisdiction IDs are retrieved using <b><a href=\"/api-docs/sell/metadata/resources/country/methods/getSalesTaxJurisdictions\" target=\"_blank\">getSalesTaxJurisdictions</a></b> in the Metadata API.<br><br>For details about using this call, refer to <a href=\"/api-docs/sell/static/seller-accounts/tax-tables.html\">Establishing sales-tax tables</a>.<br><br><div class=\"msgbox_important\"><p class=\"msgbox_importantInDiv\" data-mc-autonum=\"&lt;b&gt;&lt;span style=&quot;color: #dd1e31;&quot; class=&quot;mcFormatColor&quot;&gt;Important! &lt;/span&gt;&lt;/b&gt;\"><span class=\"autonumber\"><span><b><span style=\"color: #dd1e31;\" class=\"mcFormatColor\">Important!</span></b></span></span> In the US, eBay now calculates, collects, and remits sales tax to the proper taxing authorities in all 50 states and Washington, DC. Sellers can no longer specify sales-tax rates for these jurisdictions using a tax table.<br><br>However, sellers may continue to use a sales-tax table to set rates for the following US territories:<ul><li>American Samoa (AS)</li><li>Guam (GU)</li><li>Northern Mariana Islands (MP)</li><li>Palau (PW)</li><li>US Virgin Islands (VI)</li></ul>For additional information, refer to <a href=\"https://www.ebay.com/help/selling/fees-credits-invoices/taxes-import-charges?id=4121 \" target=\"_blank\">Taxes and import charges</a>.</p></div>",
+                "operationId": "bulkCreateOrReplaceSalesTax",
+                "requestBody": {
+                    "description": "List of sales taxes to be updated",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "List of sales taxes to be updated",
+                                "$ref": "#/components/schemas/BulkSalesTaxInput"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdatedSalesTaxResponse"
+                                }
+                            }
+                        }
+                    },
+                    "207": {
+                        "description": "partial success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "x-response-codes": {
+                            "errors": {
+                                "20400": {
+                                    "domain": "API_ACCOUNT",
+                                    "category": "REQUEST",
+                                    "description": "Invalid request. {additionalInfo}"
+                                },
+                                "20401": {
+                                    "domain": "API_ACCOUNT",
+                                    "category": "REQUEST",
+                                    "description": "Missing field {fieldName}. {additionalInfo}"
+                                },
+                                "20403": {
+                                    "domain": "API_ACCOUNT",
+                                    "category": "REQUEST",
+                                    "description": "Invalid {fieldName}. {additionalInfo}"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "x-response-codes": {
+                            "errors": {
+                                "20500": {
+                                    "domain": "API_ACCOUNT",
+                                    "category": "APPLICATION",
+                                    "description": "System error."
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_auth": [
+                            "https://api.ebay.com/oauth/api_scope/sell.account"
+                        ]
+                    }
+                ]
+            }
+        },
         "/sales_tax/{countryCode}/{jurisdictionId}": {
             "get": {
                 "tags": [
@@ -2772,7 +2849,7 @@
                     {
                         "name": "countryCode",
                         "in": "path",
-                        "description": "This path parameter specifies the two-letter <a href=\"https://www.iso.org/iso-3166-country-codes.html \" title=\"https://www.iso.org \" target=\"_blank\">ISO 3166</a> code for the country for which you want to create a sales tax table entry.<br><br><span class=\"tablenote\"><b>Note:</b> Sales-tax tables are available only for the US and Canada marketplaces. Therefore, the only supported values are:<ul><li><code>US</code></li><li><code>CA</code></li></ul>",
+                        "description": "This path parameter specifies the two-letter <a href=\"https://www.iso.org/iso-3166-country-codes.html \" title=\"https://www.iso.org \" target=\"_blank\">ISO 3166</a> code for the country for which you want to create a sales tax table entry.<br><br><span class=\"tablenote\"><b>Note:</b> Sales-tax tables are available only for the US and Canada marketplaces. Therefore, the only supported values are:<ul><li><code>US</code></li><li><code>CA</code></li></ul></span>",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -3263,6 +3340,18 @@
                     }
                 },
                 "description": "A complex type that describes the value of a monetary amount as represented by a global currency. When passing in an amount in a request payload, both <b>currency</b> and <b>value</b> fields are required, and both fields are also always returned for an amount in a response field."
+            },
+            "BulkSalesTaxInput": {
+                "type": "object",
+                "properties": {
+                    "salesTaxInputList": {
+                        "type": "array",
+                        "description": "The array of sales-tax table entries to be created or updated.",
+                        "items": {
+                            "$ref": "#/components/schemas/SalesTaxInput"
+                        }
+                    }
+                }
             },
             "CategoryType": {
                 "type": "object",
@@ -4235,6 +4324,27 @@
                 },
                 "description": "This type is used by the base request of the <b>createOrReplaceSalesTax</b>. "
             },
+            "SalesTaxInput": {
+                "type": "object",
+                "properties": {
+                    "countryCode": {
+                        "type": "string",
+                        "description": "This parameter specifies the two-letter <a href=\"https://www.iso.org/iso-3166-country-codes.html \" title=\"https://www.iso.org \" target=\"_blank\">ISO 3166</a> code of the country for which a sales-tax table entry is to be created or updated.<br><br><span class=\"tablenote\"><b>Note:</b> Sales-tax tables are available only for the US and Canada marketplaces. Therefore, the only supported values are:<ul><li><code>US</code></li><li><code>CA</code></li></ul></span>"
+                    },
+                    "salesTaxJurisdictionId": {
+                        "type": "string",
+                        "description": "This parameter specifies the ID of the tax jurisdiction for which a sales-tax table entry is to be created or updated.<br><br>Valid jurisdiction IDs can be retrieved using the <a href=\"/api-docs/sell/metadata/resources/country/methods/getSalesTaxJurisdictions\" target=\"_blank \">getSalesTaxJurisdiction</a> method of the Metadata API.<br><br><span class=\"tablenote\"><b>Note:</b> When <code>countryCode</code> is set to <code>US</code>, the only supported values for <code>jurisdictionId</code> are:<ul><li><code>AS</code> (American Samoa)</li><li><code>GU</code> (Guam)</li><li><code>MP</code> (Northern Mariana Islands)</li><li><code>PW</code> (Palau)</li><li><code>VI</code> (US Virgin Islands)</li></ul></span>"
+                    },
+                    "salesTaxPercentage": {
+                        "type": "string",
+                        "description": "This parameter specifies the sales tax rate for the specified <b>salesTaxJurisdictionId</b>. When applicable to an order, this sales tax rate will be applied to the sales price. The <b>shippingAndHandlingTaxed</b> value indicates whether or not sales tax is also applied to shipping and handling charges<br><br>Although it is a string, a percentage value is set here, such as <code>7.75</code>."
+                    },
+                    "shippingAndHandlingTaxed": {
+                        "type": "boolean",
+                        "description": "This parameter is set to <code>true</code> if the seller wishes to apply sales tax to shipping and handling charges and not just the total sales price of an order. Otherwise, this parameter's value should be set to <code>false</code>."
+                    }
+                }
+            },
             "SalesTaxes": {
                 "type": "object",
                 "properties": {
@@ -4302,7 +4412,7 @@
                         "description": "If this field is returned as <code>true</code>, the seller's registration is completed. If this field is returned as <code>false</code>, the registration process is not complete."
                     },
                     "sellingLimit": {
-                        "description": "This container lists the monthly cap for the quantity of items sold and total sales amount allowed for the seller's account. This container may not be returned if a seller does not have a monthly cap for total quantity sold and total sales amount.",
+                        "description": "This container lists the monthly cap for the quantity of items sold and total sales amount allowed for the seller's account. This container may not be returned if a seller does not have a monthly cap for total quantity sold and total sales amount. <p><span class=\"tablenote\"><span style=\"color:#004680\"><strong>Note: </strong>The selling limit value returned in <b>getPrivileges</b> may vary slightly from the value displayed in Seller Hub. The value in Seller Hub is an abbreviated figure, where rounding is applied.</span></p>",
                         "$ref": "#/components/schemas/SellingLimit"
                     }
                 },
@@ -4669,6 +4779,38 @@
                     }
                 },
                 "description": "A type used to specify a period of time using a specified time-measurement unit. Payment, return, and fulfillment business policies all use this type to specify time windows.<br><br>Whenever a container that uses this type is used in a request, both of these fields are required. Similarly, whenever a container that uses this type is returned in a response, both of these fields are always returned."
+            },
+            "UpdatedSalesTaxEntry": {
+                "type": "object",
+                "properties": {
+                    "countryCode": {
+                        "type": "string",
+                        "description": "The two-letter <a href=\"https://www.iso.org/iso-3166-country-codes.html \" title=\"https://www.iso.org \" target=\"_blank\">ISO 3166</a> code of the country associated with the sales-tax table entry."
+                    },
+                    "jurisdictionId": {
+                        "type": "string",
+                        "description": "The ID of the tax jurisdiction associated with the sales-tax table entry."
+                    },
+                    "statusCode": {
+                        "type": "integer",
+                        "description": "The HTTP status code for the call.<br><br><span class=\"tablenote\"><b>Note:</b> The system returns one HTTP status code regardless of the number of sales-tax table entries provided. Therefore, the same HTTP <code>statusCode</code> will be listed for all sales-tax table entries returned in the payload.</span>",
+                        "format": "int32"
+                    }
+                },
+                "description": "This container stores the array of sales-tax table entries that have been created or updated."
+            },
+            "UpdatedSalesTaxResponse": {
+                "type": "object",
+                "properties": {
+                    "updatedSalesTaxEntries": {
+                        "type": "array",
+                        "description": "The array of new and updated sales-tax table entries.",
+                        "items": {
+                            "$ref": "#/components/schemas/UpdatedSalesTaxEntry"
+                        }
+                    }
+                },
+                "description": "This type is used to return the list of new and updated sales-tax table entries."
             }
         },
         "securitySchemes": {

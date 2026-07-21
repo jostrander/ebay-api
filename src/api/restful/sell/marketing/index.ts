@@ -20,7 +20,6 @@ import {
   CreateReportTask,
   ItemPriceMarkdown,
   ItemPromotion,
-  QuickSetupRequest,
   TargetedBidRequest,
   TargetedKeywordRequest,
   UpdateAdGroupRequest,
@@ -159,14 +158,6 @@ export default class Marketing extends Restful implements OpenApi<operations> {
   public launchCampaign(campaignId: string) {
     campaignId = encodeURIComponent(campaignId);
     return this.post(`/ad_campaign/${campaignId}/launch`);
-  }
-
-  /**
-   * This method allows the seller to expedite the creation of a Promoted Listings Advanced (PLA) campaign.
-   * @param body This type defines the fields to create a quick setup Promoted Listings Advanced (PLA) campaign.
-   */
-  public setupQuickCampaign(body: QuickSetupRequest) {
-    return this.post('/ad_campaign/setup_quick_campaign', body);
   }
 
   /**

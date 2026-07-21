@@ -3,177 +3,205 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/merchandised_product": {
-    /** @description This method returns an array of products based on the category and metric specified. This includes details of the product, such as the eBay product ID (EPID), title, and user reviews and ratings for the product. You can use the <code>epid</code> returned by this method in the Browse API <b>search</b> method to retrieve items for this product. <h3><b>Restrictions </b></h3> <ul><li>To test <b> getMerchandisedProducts</b> in Sandbox, you must use category ID 9355 and the response will be mock data.  </li>   <li>For a list of supported sites and other restrictions, see <a href="/api-docs/buy/marketing/overview.html#API">API Restrictions</a>.</li>  </ul> */
-    get: operations["getMerchandisedProducts"];
-  };
-}
-
-export type webhooks = Record<string, never>;
-
-export interface components {
-  schemas: {
-    /** @description This type defines the monetary value of an amount and the currency used. */
-    Amount: {
-      /** @description The three-letter <a href="https://www.iso.org/iso-4217-currency-codes.html" target="_blank">ISO 4217</a> code representing the currency of the amount in the <b> value</b> field. For implementation help, refer to <a href='https://developer.ebay.com/api-docs/buy/marketing/types/bas:CurrencyCodeEnum'>eBay API documentation</a> */
-      currency?: string;
-      /** @description The monetary amount, in the currency specified by the <b> currency</b> field. */
-      value?: string;
-    };
-    /** @description The type that defines the fields for the best selling product information. */
-    BestSellingProductResponse: {
-      /** @description An array of containers for the products. */
-      merchandisedProducts?: (components["schemas"]["MerchandisedProduct"])[];
-      /** @description The container with all the warnings for the input request. */
-      warnings?: (components["schemas"]["Error"])[];
-    };
-    /** @description The type that defines the fields that can be returned in an error. */
-    Error: {
-      /** @description This string value indicates the error category. There are three categories of errors: request errors, application errors, and system errors. */
-      category?: string;
-      /** @description The name of the primary system where the error occurred. This is relevant for application errors. */
-      domain?: string;
-      /**
-       * Format: int32 
-       * @description A unique code that identifies the particular error or warning that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms.
-       */
-      errorId?: number;
-      /** @description An array of reference IDs that identify the specific request elements most closely associated to the error or warning, if any. */
-      inputRefIds?: (string)[];
-      /** @description A detailed description of the condition that caused the error or warning, and information on what to do to correct the problem. */
-      longMessage?: string;
-      /** @description A description of the condition that caused the error or warning. */
-      message?: string;
-      /** @description An array of reference IDs that identify the specific response elements most closely associated to the error or warning, if any. */
-      outputRefIds?: (string)[];
-      /** @description An array of warning and error messages that return one or more variables contextual information about the error or warning. This is often the field or value that triggered the error or warning. */
-      parameters?: (components["schemas"]["ErrorParameter"])[];
-      /** @description The name of the subdomain in which the error or warning occurred. */
-      subdomain?: string;
-    };
-    /** @description An array of name/value pairs that provide details regarding the error. */
-    ErrorParameter: {
-      /** @description This is the name of input field that caused an issue with the call request. */
-      name?: string;
-      /** @description This is the actual value that was passed in for the element specified in the <b> name</b>  field. */
-      value?: string;
-    };
-    /** @description Type the defines the details of an image, such as size and URL. Currently only <b> imageUrl</b> is getting populated. The <b> height</b> and <b> width</b> were added for future use. */
-    Image: {
-      /**
-       * Format: int32 
-       * @description <b> Reserved for future use. </b>
-       */
-      height?: number;
-      /** @description The URL of the image. */
-      imageUrl?: string;
-      /**
-       * Format: int32 
-       * @description <b> Reserved for future use. </b>
-       */
-      width?: number;
-    };
-    /** @description The type that defines the fields for details about the product, such as condition and estimated start price. */
-    MarketPriceDetail: {
-      /** @description The name for the condition of the product. For example: NEW */
-      conditionGroup?: string;
-      /** @description An array of condition identifiers for the product. */
-      conditionIds?: (string)[];
-      /** @description The lowest priced active item for this product on eBay. */
-      estimatedStartPrice?: components["schemas"]["Amount"];
-    };
-    /** @description The type that defines the fields for product information, including price, condition, ratings, etc. */
-    MerchandisedProduct: {
-      /** @description The average rating for the product based on eBay user ratings. */
-      averageRating?: string;
-      /** @description The eBay product identifier of a product from the eBay product catalog. You can use this value in the Browse API <b>search</b> method to retrieve items for this product. */
-      epid?: string;
-      /** @description The container for the product image. */
-      image?: components["schemas"]["Image"];
-      /** @description An array of containers for the product market price details, such as condition and market price. */
-      marketPriceDetails?: (components["schemas"]["MarketPriceDetail"])[];
-      /** @description An array of containers for ratings of the product aspects, such as "Is it a good value". */
-      ratingAspects?: (components["schemas"]["RatingAspect"])[];
-      /**
-       * Format: int32 
-       * @description The total number of eBay users that rated the product.
-       */
-      ratingCount?: number;
-      /**
-       * Format: int32 
-       * @description The total number of eBay users that wrote a review for the product.
-       */
-      reviewCount?: number;
-      /** @description The title of the product. */
-      title?: string;
-    };
-    /** @description The type that defines the fields for the product aspect ratings. */
-    RatingAspect: {
-      /**
-       * Format: int32 
-       * @description The number of eBay users that rated the product on this aspect.
-       */
-      count?: number;
-      /** @description The name of the rating aspect. Camping tent examples: Is it lightweight? or Is it easy to set up? */
-      description?: string;
-      /** @description The answer or value of the rating aspect. Camping tent examples: Lightweight or Easy to set up */
-      name?: string;
-      /** @description The container for the details of the aspect rating. The details show the aspect rating value, usually TRUE or FALSE and the user count and percentage. */
-      ratingAspectDistributions?: (components["schemas"]["RatingAspectDistribution"])[];
-    };
-    /** @description The type that defines the field for the aspect rating details, such as the aspect rating value, usually TRUE or FALSE and the user count and percentage. */
-    RatingAspectDistribution: {
-      /**
-       * Format: int32 
-       * @description The number of eBay users that choose this rating aspect value.
-       */
-      count?: number;
-      /** @description The percentage of the aspect rating value. <br /><br /> <b> ratingAspectDistributions.percentage</b> =  <b> ratingAspectDistributions.count</b> /  <b>ratingAspects.count</b> */
-      percentage?: string;
-      /** @description The rating aspect. For example: TRUE or FALSE */
-      value?: string;
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
-}
-
-export type external = Record<string, never>;
-
-export interface operations {
-
-  /** @description This method returns an array of products based on the category and metric specified. This includes details of the product, such as the eBay product ID (EPID), title, and user reviews and ratings for the product. You can use the <code>epid</code> returned by this method in the Browse API <b>search</b> method to retrieve items for this product. <h3><b>Restrictions </b></h3> <ul><li>To test <b> getMerchandisedProducts</b> in Sandbox, you must use category ID 9355 and the response will be mock data.  </li>   <li>For a list of supported sites and other restrictions, see <a href="/api-docs/buy/marketing/overview.html#API">API Restrictions</a>.</li>  </ul> */
-  getMerchandisedProducts: {
-    parameters: {
-      query: {
-        /** @description This value specifies the aspect name/value pairs used to further refine product results. <br /><br /> For example: <br />&nbsp;&nbsp;&nbsp;<code>/buy/marketing/v1_beta/merchandised_product?category_id=31388&metric_name=BEST_SELLING&aspect_filter=Brand:Canon</code>  <br /><br />You can use the Browse API <a href="/api-docs/buy/browse/resources/item_summary/methods/search" target="_blank">search</a> method with the <code>fieldgroups=ASPECT_REFINEMENTS</code> field to return the aspects of a product. For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/buy/marketing/types/gct:MarketingAspectFilter */
-        aspect_filter?: string;
-        /** @description This query parameter limits the products returned to a specific eBay category.  <br /> <br />The list of eBay category IDs is not published and category IDs are not all the same across all the eBay maketplace. You can use the following techniques to find a category by site: <ul> <li>Use the <a href="https://pages.ebay.com/sellerinformation/news/categorychanges.html" target="_blank">Category Changes page</a>.</li> <li>Use the Taxonomy API. For details see <a href="/api-docs/buy/buy-categories.html">Get Categories for Buy APIs</a>. </li>  <li>Use the Browse API and submit the following method to get the <b> dominantCategoryId</b> for an item. <br /><code>/buy/browse/v1/item_summary/search?q=<em>keyword</em>&fieldgroups=ASPECT_REFINEMENTS  </code></li></ul> <br><b> Maximum: </b> 1 <br /><br><b> Required: </b> 1 */
-        category_id: string;
-        /** @description This value specifies the maximum number of products to return in a result set. <br /> <br /><span class="tablenote"> <b>Note:</b> Maximum value means the method will return up <em>to</em> that many products per set, but it can be less than this value. If the number of products found is less than this value, the method will return all of the products matching the criteria.</span> <br /><b> Default:</b> 8<br /><br><b> Maximum: </b>100 */
-        limit?: string;
-        /** @description This value filters the result set by the specified metric. Only products in this metric are returned.<br><br><span class="tablenote"><b>Note:</b> Currently, the only metric supported is <code> BEST_SELLING</code>.</span><br /><b> Default: </b>BEST_SELLING <br /><br> <b> Maximum: </b> 1 <br /><br> <b> Required: </b> 1 */
-        metric_name: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["BestSellingProductResponse"];
+    "/merchandised_product": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-      };
-      /** @description Bad Request */
-      400: never;
-      /** @description Conflict */
-      409: never;
-      /** @description Internal Server Error */
-      500: never;
+        /** @description This method returns an array of products based on the category and metric specified. This includes details of the product, such as the eBay product ID (EPID), title, and user reviews and ratings for the product. You can use the <code>epid</code> returned by this method in the Browse API <b>search</b> method to retrieve items for this product. <h3><b>Restrictions </b></h3> <ul><li>To test <b> getMerchandisedProducts</b> in Sandbox, you must use category ID 9355 and the response will be mock data.  </li>   <li>For a list of supported sites and other restrictions, see <a href="/api-docs/buy/marketing/overview.html#API">API Restrictions</a>.</li>  </ul> */
+        get: operations["getMerchandisedProducts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-  };
+}
+export type webhooks = Record<string, never>;
+export interface components {
+    schemas: {
+        /** @description This type defines the monetary value of an amount and the currency used. */
+        Amount: {
+            /** @description The three-letter <a href="https://www.iso.org/iso-4217-currency-codes.html" target="_blank">ISO 4217</a> code representing the currency of the amount in the <b> value</b> field. For implementation help, refer to <a href='https://developer.ebay.com/api-docs/buy/marketing/types/bas:CurrencyCodeEnum'>eBay API documentation</a> */
+            currency?: string;
+            /** @description The monetary amount, in the currency specified by the <b> currency</b> field. */
+            value?: string;
+        };
+        /** @description The type that defines the fields for the best selling product information. */
+        BestSellingProductResponse: {
+            /** @description An array of containers for the products. */
+            merchandisedProducts?: components["schemas"]["MerchandisedProduct"][];
+            /** @description The container with all the warnings for the input request. */
+            warnings?: components["schemas"]["Error"][];
+        };
+        /** @description The type that defines the fields that can be returned in an error. */
+        Error: {
+            /** @description This string value indicates the error category. There are three categories of errors: request errors, application errors, and system errors. */
+            category?: string;
+            /** @description The name of the primary system where the error occurred. This is relevant for application errors. */
+            domain?: string;
+            /**
+             * Format: int32
+             * @description A unique code that identifies the particular error or warning that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms.
+             */
+            errorId?: number;
+            /** @description An array of reference IDs that identify the specific request elements most closely associated to the error or warning, if any. */
+            inputRefIds?: string[];
+            /** @description A detailed description of the condition that caused the error or warning, and information on what to do to correct the problem. */
+            longMessage?: string;
+            /** @description A description of the condition that caused the error or warning. */
+            message?: string;
+            /** @description An array of reference IDs that identify the specific response elements most closely associated to the error or warning, if any. */
+            outputRefIds?: string[];
+            /** @description An array of warning and error messages that return one or more variables contextual information about the error or warning. This is often the field or value that triggered the error or warning. */
+            parameters?: components["schemas"]["ErrorParameter"][];
+            /** @description The name of the subdomain in which the error or warning occurred. */
+            subdomain?: string;
+        };
+        /** @description An array of name/value pairs that provide details regarding the error. */
+        ErrorParameter: {
+            /** @description This is the name of input field that caused an issue with the call request. */
+            name?: string;
+            /** @description This is the actual value that was passed in for the element specified in the <b> name</b>  field. */
+            value?: string;
+        };
+        /** @description Type the defines the details of an image, such as size and URL. Currently only <b> imageUrl</b> is getting populated. The <b> height</b> and <b> width</b> were added for future use. */
+        Image: {
+            /**
+             * Format: int32
+             * @description <b> Reserved for future use. </b>
+             */
+            height?: number;
+            /** @description The URL of the image. */
+            imageUrl?: string;
+            /**
+             * Format: int32
+             * @description <b> Reserved for future use. </b>
+             */
+            width?: number;
+        };
+        /** @description The type that defines the fields for details about the product, such as condition and estimated start price. */
+        MarketPriceDetail: {
+            /** @description The name for the condition of the product. For example: NEW */
+            conditionGroup?: string;
+            /** @description An array of condition identifiers for the product. */
+            conditionIds?: string[];
+            /** @description The lowest priced active item for this product on eBay. */
+            estimatedStartPrice?: components["schemas"]["Amount"];
+        };
+        /** @description The type that defines the fields for product information, including price, condition, ratings, etc. */
+        MerchandisedProduct: {
+            /** @description The average rating for the product based on eBay user ratings. */
+            averageRating?: string;
+            /** @description The eBay product identifier of a product from the eBay product catalog. You can use this value in the Browse API <b>search</b> method to retrieve items for this product. */
+            epid?: string;
+            /** @description The container for the product image. */
+            image?: components["schemas"]["Image"];
+            /** @description An array of containers for the product market price details, such as condition and market price. */
+            marketPriceDetails?: components["schemas"]["MarketPriceDetail"][];
+            /** @description An array of containers for ratings of the product aspects, such as "Is it a good value". */
+            ratingAspects?: components["schemas"]["RatingAspect"][];
+            /**
+             * Format: int32
+             * @description The total number of eBay users that rated the product.
+             */
+            ratingCount?: number;
+            /**
+             * Format: int32
+             * @description The total number of eBay users that wrote a review for the product.
+             */
+            reviewCount?: number;
+            /** @description The title of the product. */
+            title?: string;
+        };
+        /** @description The type that defines the fields for the product aspect ratings. */
+        RatingAspect: {
+            /**
+             * Format: int32
+             * @description The number of eBay users that rated the product on this aspect.
+             */
+            count?: number;
+            /** @description The name of the rating aspect. Camping tent examples: Is it lightweight? or Is it easy to set up? */
+            description?: string;
+            /** @description The answer or value of the rating aspect. Camping tent examples: Lightweight or Easy to set up */
+            name?: string;
+            /** @description The container for the details of the aspect rating. The details show the aspect rating value, usually TRUE or FALSE and the user count and percentage. */
+            ratingAspectDistributions?: components["schemas"]["RatingAspectDistribution"][];
+        };
+        /** @description The type that defines the field for the aspect rating details, such as the aspect rating value, usually TRUE or FALSE and the user count and percentage. */
+        RatingAspectDistribution: {
+            /**
+             * Format: int32
+             * @description The number of eBay users that choose this rating aspect value.
+             */
+            count?: number;
+            /** @description The percentage of the aspect rating value. <br /><br /> <b> ratingAspectDistributions.percentage</b> =  <b> ratingAspectDistributions.count</b> /  <b>ratingAspects.count</b> */
+            percentage?: string;
+            /** @description The rating aspect. For example: TRUE or FALSE */
+            value?: string;
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
+}
+export type $defs = Record<string, never>;
+export interface operations {
+    getMerchandisedProducts: {
+        parameters: {
+            query: {
+                /** @description This value specifies the aspect name/value pairs used to further refine product results. <br /><br /> For example: <br />&nbsp;&nbsp;&nbsp;<code>/buy/marketing/v1_beta/merchandised_product?category_id=31388&metric_name=BEST_SELLING&aspect_filter=Brand:Canon</code>  <br /><br />You can use the Browse API <a href="/api-docs/buy/browse/resources/item_summary/methods/search" target="_blank">search</a> method with the <code>fieldgroups=ASPECT_REFINEMENTS</code> field to return the aspects of a product. For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/buy/marketing/types/gct:MarketingAspectFilter */
+                aspect_filter?: string;
+                /** @description This query parameter limits the products returned to a specific eBay category.  <br /> <br />The list of eBay category IDs is not published and category IDs are not all the same across all the eBay maketplace. You can use the following techniques to find a category by site: <ul> <li>Use the <a href="https://pages.ebay.com/sellerinformation/news/categorychanges.html" target="_blank">Category Changes page</a>.</li> <li>Use the Taxonomy API. For details see <a href="/api-docs/buy/buy-categories.html">Get Categories for Buy APIs</a>. </li>  <li>Use the Browse API and submit the following method to get the <b> dominantCategoryId</b> for an item. <br /><code>/buy/browse/v1/item_summary/search?q=<em>keyword</em>&fieldgroups=ASPECT_REFINEMENTS  </code></li></ul> <br><b> Maximum: </b> 1 <br /><br><b> Required: </b> 1 */
+                category_id: string;
+                /** @description This value specifies the maximum number of products to return in a result set. <br /> <br /><span class="tablenote"> <b>Note:</b> Maximum value means the method will return up <em>to</em> that many products per set, but it can be less than this value. If the number of products found is less than this value, the method will return all of the products matching the criteria.</span> <br /><b> Default:</b> 8<br /><br><b> Maximum: </b>100 */
+                limit?: string;
+                /** @description This value filters the result set by the specified metric. Only products in this metric are returned.<br><br><span class="tablenote"><b>Note:</b> Currently, the only metric supported is <code> BEST_SELLING</code>.</span><br /><b> Default: </b>BEST_SELLING <br /><br> <b> Maximum: </b> 1 <br /><br> <b> Required: </b> 1 */
+                metric_name: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BestSellingProductResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
 }

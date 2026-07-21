@@ -10,7 +10,7 @@
             "name": "eBay API License Agreement",
             "url": "https://developer.ebay.com/join/api-license-agreement"
         },
-        "version": "v1.20.2"
+        "version": "v1.20.4"
     },
     "servers": [
         {
@@ -273,12 +273,29 @@
                                     "domain": "API_BROWSE",
                                     "category": "REQUEST",
                                     "description": "Either 'deliveryCountry' or 'deliveryPostalCode' is invalid, hence 'guaranteedDeliveryInDays' filter was ignored."
+                                },
+                                "12519": {
+                                    "domain": "API_BROWSE",
+                                    "category": "REQUEST",
+                                    "description": "The '{fieldName}' value '{filterValue}' is not supported with 'deliveryCountry' '{deliveryCountry}' on marketplace '{marketplaceId}'. The region filter will be ignored and results will follow the site's default location behavior."
+                                },
+                                "12520": {
+                                    "domain": "API_BROWSE",
+                                    "category": "REQUEST",
+                                    "description": "The 'conditionIds' filter value is invalid or not supported. For the supported values, refer to the API call documentation."
                                 }
                             }
                         }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "12001": {
@@ -426,6 +443,13 @@
                     },
                     "409": {
                         "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "12013": {
@@ -458,6 +482,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "12000": {
@@ -699,6 +730,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "12004": {
@@ -801,6 +839,13 @@
                     },
                     "409": {
                         "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "12013": {
@@ -833,6 +878,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "12000": {
@@ -858,13 +910,13 @@
                 "tags": [
                     "item"
                 ],
-                "description": "This method retrieves the details of a specific item, such as description, price, category, all item aspects, condition, return policies, seller feedback and score, shipping options, shipping costs, estimated delivery, and other information the buyer needs to make a purchasing decision.<br><br>The Buy APIs are designed to let you create an eBay shopping experience in your app or website. This means you will need to know when something, such as the availability, quantity, etc., has changed in any eBay item you are offering. This is easily achieved by setting the <b>fieldgroups</b> URI parameter to one of the following values:<ul><li><code>COMPACT</code><br>Reduces the response to only those fields necessary in order to determine if any item detail has changed. This field group <b>must</b> be used alone.</li><li><code>PRODUCT</code><br>Adds fields to the default response that return information about the product/item. This field group may also be used in conjunction with <code>ADDITIONAL_SELLER_DETAILS</code>.</li><li><code>ADDITIONAL_SELLER_DETAILS</code><br>Adds an additional field to the response that returns the seller's user ID. This field group may also be used in conjunction with <code>PRODUCT</code>.</li></ul>For additional information, refer to <a href=\"/api-docs/buy/browse/resources/item/methods/getItem#uri.fieldgroups\">fieldgroups</a>.<h3>Restrictions</h3>For a list of supported sites and other restrictions, refer to <a href=\"/api-docs/buy/browse/overview.html#API\">API Restrictions</a>.<br><br><span class=\"tablenote\"><b>eBay Partner Network:</b> In order to be commissioned for your sales, you must use the URL returned in the <code>itemAffiliateWebUrl</code> field to forward your buyer to the ebay.com site.</span>",
+                "description": "This method retrieves the details of a specific item, such as description, price, category, all item aspects, condition, return policies, seller feedback and score, shipping options, shipping costs, estimated delivery, and other information the buyer needs to make a purchasing decision.<br><br>The Buy APIs are designed to let you create an eBay shopping experience in your app or website. This means you will need to know when something, such as the availability, quantity, etc., has changed in any eBay item you are offering. This is easily achieved by setting the <b>fieldgroups</b> URI parameter to one of the following values:<ul><li><code>COMPACT</code><br>Reduces the response to only those fields necessary in order to determine if any item detail has changed. This field group <b>must</b> be used alone.</li><li><code>PRODUCT</code><br>Adds fields to the default response that return information about the product/item. This field group may also be used in conjunction with <code>ADDITIONAL_SELLER_DETAILS</code>.</li><li><code>ADDITIONAL_SELLER_DETAILS</code><br>Adds an additional field to the response that returns the seller's user ID. This field group may also be used in conjunction with <code>PRODUCT</code>.</li><li><code>CHARITY_DETAILS</code><br>Adds additional fields to the response that return charity information associated with the item, if applicable.</li></ul>For additional information, refer to <a href=\"/api-docs/buy/browse/resources/item/methods/getItem#uri.fieldgroups\">fieldgroups</a>.<h3>Restrictions</h3>For a list of supported sites and other restrictions, refer to <a href=\"/api-docs/buy/browse/overview.html#API\">API Restrictions</a>.<br><br><span class=\"tablenote\"><b>eBay Partner Network:</b> In order to be commissioned for your sales, you must use the URL returned in the <code>itemAffiliateWebUrl</code> field to forward your buyer to the ebay.com site.</span>",
                 "operationId": "getItem",
                 "parameters": [
                     {
                         "name": "fieldgroups",
                         "in": "query",
-                        "description": "This parameter controls what is returned in the response. If this field is not set, the method returns all the details of the item.<br><br><span class=\"tablenote\"><b>Note:</b> Multiple <b>fieldgroups</b> can be set and applied simultaneously. However, <b>COMPACT</b> <b>must</b> be used alone. Otherwise, an error will occur.</span><br><b>Valid Values:</b><ul><li><b>PRODUCT</b><br>This field group adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItem#response.product\">product</a> container to the response.</li><li><b>COMPACT</b></br>This field group returns only the following fields which let you quickly check if the availability or price of the item has changed, if the item has been revised by the seller, or if an item's top-rated plus status has changed for items you have stored.<ul><li><b>itemId</b></li><li><b>bidCount</b></li><li><b>currentBidPrice</b></li><li><b>eligibleForInlineCheckout</b></li><li><b>estimatedAvailabilities</b></li><li><b>gtin</b></li><li><b>immediatePay</b></li><li><b>itemAffiliateWebURL</b></li><li><b>itemCreationDate</b></li><li><b>itemWebUrl</b></li><li><b>legacyItemId</b></li><li><b>minimumPriceToBid</b></li><li><b>price</b></li><li><b>priorityListing</b></li><li><b>reservePriceMet</b></li><li><b>sellerItemRevision</b></li><li><b>shippingOptions</b></li><li><b>taxes</b></li><li><b>topRatedBuyingExperience</b></li><li><b>uniqueBidderCount</b></li></ul>For Example:<br>To determine if a stored item's information is current, perform the following:<ol><li>Pass in the item ID and set <code>fieldgroups</code> to <code>COMPACT</code>.<pre>item/v1|4**********8|0?fieldgroups=COMPACT</pre></li><li>Do one of the following:<ul><li>If <b>sellerItemRevision</b> is returned and a revision number for this item <i>has not</i> been stored, record the number and pass in the item ID in the <b>getItem</b> method to retrieve the most recent information.</li><li>If the revision number is different from the value you have stored, update the value and pass in the item ID in the <b>getItem</b> method to retrieve the most recent information.</li><li>If <code>sellerItemRevision</code> is <i>not</i> returned or has not changed, where needed, update the item information with the information returned in the response.</li></ul></li></ol></li><li><b>ADDITIONAL_SELLER_DETAILS</b><br>This adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItem#response.seller.userId\">userId</a> field to the response.</li></ul>",
+                        "description": "This parameter controls what is returned in the response. If this field is not set, the method returns all the details of the item.<br><br><span class=\"tablenote\"><b>Note:</b> Multiple <b>fieldgroups</b> can be set and applied simultaneously. However, <b>COMPACT</b> <b>must</b> be used alone. Otherwise, an error will occur.</span><br><b>Valid Values:</b><ul><li><b>PRODUCT</b><br>This field group adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItem#response.product\">product</a> container to the response.</li><li><b>COMPACT</b></br>This field group returns only the following fields which let you quickly check if the availability or price of the item has changed, if the item has been revised by the seller, or if an item's top-rated plus status has changed for items you have stored.<ul><li><b>itemId</b></li><li><b>bidCount</b></li><li><b>currentBidPrice</b></li><li><b>eligibleForInlineCheckout</b></li><li><b>estimatedAvailabilities</b></li><li><b>gtin</b></li><li><b>immediatePay</b></li><li><b>itemAffiliateWebURL</b></li><li><b>itemCreationDate</b></li><li><b>itemWebUrl</b></li><li><b>legacyItemId</b></li><li><b>minimumPriceToBid</b></li><li><b>price</b></li><li><b>priorityListing</b></li><li><b>reservePriceMet</b></li><li><b>sellerItemRevision</b></li><li><b>shippingOptions</b></li><li><b>taxes</b></li><li><b>topRatedBuyingExperience</b></li><li><b>uniqueBidderCount</b></li></ul>For Example:<br>To determine if a stored item's information is current, perform the following:<ol><li>Pass in the item ID and set <code>fieldgroups</code> to <code>COMPACT</code>.<pre>item/v1|4**********8|0?fieldgroups=COMPACT</pre></li><li>Do one of the following:<ul><li>If <b>sellerItemRevision</b> is returned and a revision number for this item <i>has not</i> been stored, record the number and pass in the item ID in the <b>getItem</b> method to retrieve the most recent information.</li><li>If the revision number is different from the value you have stored, update the value and pass in the item ID in the <b>getItem</b> method to retrieve the most recent information.</li><li>If <code>sellerItemRevision</code> is <i>not</i> returned or has not changed, where needed, update the item information with the information returned in the response.</li></ul></li></ol></li><li><b>ADDITIONAL_SELLER_DETAILS</b><br>This adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItem#response.seller.userId\">userId</a> field to the response.</li><li><b>CHARITY_DETAILS</b><br>This adds the the <a href=\"/api-docs/buy/browse/resources/item/methods/getItem#response.charityTerms\">charityTerms</a> container to the response, if applicable.</li></ul>",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -953,6 +1005,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11001": {
@@ -1029,13 +1088,34 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "Conflict"
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11000": {
@@ -1061,13 +1141,13 @@
                 "tags": [
                     "item"
                 ],
-                "description": "This method is a bridge between the eBay legacy APIs, such as <b>Shopping</b> and <b>Finding</b>, and the eBay Buy APIs. There are differences between how legacy APIs and RESTful APIs return the identifier of an \"item\" and what the item ID represents. This method lets you use the legacy item ids retrieve the details of a specific item, such as description, price, and other information the buyer needs to make a purchasing decision. It also returns the RESTful <b>item_id</b>, which you can use with all the Buy API  methods.<br><br>For additional information about how to use legacy ids with the Buy APIs, refer to <a href=\"/api-docs/buy/static/api-browse.html#Legacy\" target=\"_blank\">Item ID legacy API compatibility overview</a> in the Buying Integration guide.</br><br>This method returns the item details and requires you to pass in either the <b>item_id</b> of a non-variation item or the <b>item_id</b> values for both the parent and child of an item group.<br><br><span class=\"tablenote\"><b>Note:</b> An item group is an item that has various aspect differences, such as color, size, storage capacity, etc.</span></br>When an item group is created, one of the item variations, such as the red shirt size L, is chosen as the \"parent\". All other items in the group are the children, such as the blue shirt size L, red shirt size M, etc.<br><br>The <b>fieldgroups</b> URI parameter lets you control what is returned in the response:<ul><li>Setting <b>fieldgroups</b> to <code>PRODUCT</code> adds additional fields to the default response that return information about the product of the item.</li><li>Setting the <b>fieldgroups</b> to <code>ADDITIONAL_SELLER_DETAILS</code> adds an additional field to the response that returns the seller's user ID.</li></ul>These <b>fieldgroups</b> can be used independently or at the same time. For additional information, refer to <a href=\"/api-docs/buy/browse/resources/item/methods/getItemByLegacyId#uri.fieldgroups\">fieldgroups</a>.<h3>Restrictions</h3>For a list of supported sites and other restrictions, refer to <a href=\"/api-docs/buy/browse/overview.html#API\">API Restrictions</a>.<br><br><span class=\"tablenote\"><b>eBay Partner Network:</b> In order to be commissioned for your sales, you must use the URL returned in the <code>itemAffiliateWebUrl</code> field to forward your buyer to the ebay.com site.</span>",
+                "description": "This method is a bridge between the eBay legacy APIs, such as <b>Shopping</b> and <b>Finding</b>, and the eBay Buy APIs. There are differences between how legacy APIs and RESTful APIs return the identifier of an \"item\" and what the item ID represents. This method lets you use the legacy item ids retrieve the details of a specific item, such as description, price, and other information the buyer needs to make a purchasing decision. It also returns the RESTful <b>item_id</b>, which you can use with all the Buy API  methods.<br><br>For additional information about how to use legacy ids with the Buy APIs, refer to <a href=\"/api-docs/buy/static/api-browse.html#Legacy\" target=\"_blank\">Item ID legacy API compatibility overview</a> in the Buying Integration guide.</br><br>This method returns the item details and requires you to pass in either the <b>item_id</b> of a non-variation item or the <b>item_id</b> values for both the parent and child of an item group.<br><br><span class=\"tablenote\"><b>Note:</b> An item group is an item that has various aspect differences, such as color, size, storage capacity, etc.</span></br>When an item group is created, one of the item variations, such as the red shirt size L, is chosen as the \"parent\". All other items in the group are the children, such as the blue shirt size L, red shirt size M, etc.<br><br>The <b>fieldgroups</b> URI parameter lets you control what is returned in the response:<ul><li>Setting <b>fieldgroups</b> to <code>PRODUCT</code> adds additional fields to the default response that return information about the product of the item.</li><li>Setting the <b>fieldgroups</b> to <code>ADDITIONAL_SELLER_DETAILS</code> adds an additional field to the response that returns the seller's user ID.</li><li>Setting the <b>fieldgroups</b> to <code>CHARITY_DETAILS</code> adds additional fields to the response that return charity information associated with the item, if applicable.</li></ul>These <b>fieldgroups</b> can be used independently or at the same time. For additional information, refer to <a href=\"/api-docs/buy/browse/resources/item/methods/getItemByLegacyId#uri.fieldgroups\">fieldgroups</a>.<h3>Restrictions</h3>For a list of supported sites and other restrictions, refer to <a href=\"/api-docs/buy/browse/overview.html#API\">API Restrictions</a>.<br><br><span class=\"tablenote\"><b>eBay Partner Network:</b> In order to be commissioned for your sales, you must use the URL returned in the <code>itemAffiliateWebUrl</code> field to forward your buyer to the ebay.com site.</span>",
                 "operationId": "getItemByLegacyId",
                 "parameters": [
                     {
                         "name": "fieldgroups",
                         "in": "query",
-                        "description": "This field controls what is returned in the response. If this field is not set, the method returns all details about the item. Multiple <code>fieldgroups</code> can be set.<br><br><b>Valid Values:</b><ul><li> <b>PRODUCT</b><br>This field group adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItemByLegacyId#response.product\">product</a> container to the response. </li><li><b>ADDITIONAL_SELLER_DETAILS</b><br>This field group adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItemByLegacyId#response.seller.userId\">userId</a> field to the response.</li></ul>",
+                        "description": "This field controls what is returned in the response. If this field is not set, the method returns all details about the item. Multiple <code>fieldgroups</code> can be set.<br><br><b>Valid Values:</b><ul><li> <b>PRODUCT</b><br>This field group adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItemByLegacyId#response.product\">product</a> container to the response. </li><li><b>ADDITIONAL_SELLER_DETAILS</b><br>This field group adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItemByLegacyId#response.seller.userId\">userId</a> field to the response.</li><li><b>CHARITY_DETAILS</b><br>This field group adds the the <a href=\"/api-docs/buy/browse/resources/item/methods/getItemByLegacyId#response.charityTerms\">charityTerms</a> container to the response, if applicable.</li></ul>",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -1174,6 +1254,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11003": {
@@ -1220,13 +1307,34 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "Conflict"
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11000": {
@@ -1347,6 +1455,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11001": {
@@ -1418,13 +1533,34 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "Conflict"
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11000": {
@@ -1450,13 +1586,13 @@
                 "tags": [
                     "item"
                 ],
-                "description": "This method retrieves details about individual items in an item group. An item group is an item that has various aspect differences, such as color, size, storage capacity, etc.<br><br>You pass in the <b>item_group_id</b> as a URI parameter.<br><br>This method returns two main containers:<ul><li><b>items</b><br>This container has an array of containers with the details about each item in the group.</li><li><b>commonDescriptions</b><br>This container has an array of containers for a description and the <code>item_ids</code> for all items that have this exact description. Because items within an item group often have the same description, this decreases the size of the response.</li></ul>Setting the <b>fieldgroup</b> to <code>ADDITIONAL_SELLER_DETAILS</code> adds an additional field to the response that returns the seller's user ID. For more information, refer to <a href=\"/api-docs/buy/browse/resources/item/methods/getItemsByItemGroup#uri.fieldgroups\">fieldgroups</a>.<h3>Restrictions</h3>For a list of supported sites and other restrictions, refer to <a href=\"/api-docs/buy/browse/overview.html#API\">API Restrictions</a>.<br><br><span class=\"tablenote\"><b>eBay Partner Network: </b> In order to be commissioned for your sales, you must use the URL returned in the <code>itemAffiliateWebUrl</code> field to forward your buyer to the ebay.com site.</span>",
+                "description": "This method retrieves details about individual items in an item group. An item group is an item that has various aspect differences, such as color, size, storage capacity, etc.<br><br>You pass in the <b>item_group_id</b> as a URI parameter.<br><br>This method returns two main containers:<ul><li><b>items</b><br>This container has an array of containers with the details about each item in the group.</li><li><b>commonDescriptions</b><br>This container has an array of containers for a description and the <code>item_ids</code> for all items that have this exact description. Because items within an item group often have the same description, this decreases the size of the response.</li></ul>Setting the <b>fieldgroup</b> to <code>ADDITIONAL_SELLER_DETAILS</code> adds an additional field to the response that returns the seller's user ID. Setting the <b>fieldgroup</b> to <code>CHARITY_DETAILS</code> adds additional fields to the response that returns charity information associated with the item, if applicable. For more information, refer to <a href=\"/api-docs/buy/browse/resources/item/methods/getItemsByItemGroup#uri.fieldgroups\">fieldgroups</a>.<h3>Restrictions</h3>For a list of supported sites and other restrictions, refer to <a href=\"/api-docs/buy/browse/overview.html#API\">API Restrictions</a>.<br><br><span class=\"tablenote\"><b>eBay Partner Network: </b> In order to be commissioned for your sales, you must use the URL returned in the <code>itemAffiliateWebUrl</code> field to forward your buyer to the ebay.com site.</span>",
                 "operationId": "getItemsByItemGroup",
                 "parameters": [
                     {
                         "name": "fieldgroups",
                         "in": "query",
-                        "description": "This field controls what is returned in the response. If this field is not set, the method returns all details about the item.<br><br><b>Valid Values:</b><br><br><b>ADDITIONAL_SELLER_DETAILS</b> - This field group adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItemsByItemGroup#response.items.seller.userId\">userId</a> field to the response.",
+                        "description": "This field controls what is returned in the response. If this field is not set, the method returns all details about the item.<br><br><b>Valid Values:</b><br><br><b>ADDITIONAL_SELLER_DETAILS</b> - This field group adds the <a href=\"/api-docs/buy/browse/resources/item/methods/getItemsByItemGroup#response.items.seller.userId\">userId</a> field to the response.<br><br><b>CHARITY_DETAILS</b> - This field group adds the the <a href=\"/api-docs/buy/browse/resources/item/methods/getItemsByItemGroup#response.items.charityTerms\">charityTerms</a> container to the response, if applicable.</li></ul>",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -1540,6 +1676,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11002": {
@@ -1576,13 +1719,34 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "Conflict"
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11000": {
@@ -1680,6 +1844,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11001": {
@@ -1716,13 +1887,34 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "Conflict"
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "11000": {
@@ -2292,6 +2484,10 @@
                         "type": "string",
                         "description": "(Primary Item Aspect) Text describing the color of the item.  All the item aspects, including this aspect, are returned in the <b> localizedAspects</b> container."
                     },
+                    "charityTerms": {
+                        "description": "This container returns any applicable charity information associated with the specified item.<br><br>This container is only returned if the <b>fieldgroups</b> query parameter is set to <code>CHARITY_DETAILS</code>.",
+                        "$ref": "#/components/schemas/ItemCharityTerms"
+                    },
                     "condition": {
                         "type": "string",
                         "description": "A short text description for the condition of the item, such as New or Used. For a list of condition names, see <a href=\"/api-docs/sell/static/metadata/condition-id-values.html \" target=\"_blank\">Item Condition IDs and Names</a>.  <br><br>Code so that your app gracefully handles any future changes to this list."
@@ -2452,7 +2648,7 @@
                     },
                     "qualifiedPrograms": {
                         "type": "array",
-                        "description": "An array of the qualified programs available for the item, such as EBAY_PLUS, AUTHENTICITY_GUARANTEE, and AUTHENTICITY_VERIFICATION.<br><br>eBay Plus is a premium account option for buyers, which provides benefits such as fast free domestic shipping and free returns on selected items. Top-Rated eBay sellers must opt in to eBay Plus to be able to offer the program on qualifying listings. Sellers must commit to next-day delivery of those items.<br><br><span class=\"tablenote\"><b>Note: </b> eBay Plus is available only to buyers in Germany, Austria, and Australia marketplaces.</span><br><br>The eBay <a href=\"https://pages.ebay.com/authenticity-guarantee/ \" target=\"_blank\">Authenticity Guarantee</a> program enables third-party authenticators to perform authentication verification inspections on items such as watches and sneakers.",
+                        "description": "An array of the qualified programs available for the item, such as EBAY_PLUS, AUTHENTICITY_GUARANTEE, and AUTHENTICITY_VERIFICATION.<br><br>eBay Plus is a premium account option for buyers, which provides benefits such as fast free domestic shipping and free returns on selected items. Top-Rated eBay sellers must opt in to eBay Plus to be able to offer the program on qualifying listings. Sellers must commit to next-day delivery of those items.<br><br><span class=\"tablenote\"><b>Note: </b> eBay Plus is only available as a listing feature on the eBay Australia marketplace.</span><br><br>The eBay <a href=\"https://pages.ebay.com/authenticity-guarantee/ \" target=\"_blank\">Authenticity Guarantee</a> program enables third-party authenticators to perform authentication verification inspections on items such as watches and sneakers.",
                         "items": {
                             "type": "string"
                         }
@@ -2856,6 +3052,10 @@
                         "type": "string",
                         "description": "Text that shows the category hierarchy of the item. For example: Computers/Tablets &amp; Networking, Laptops &amp; Netbooks, PC Laptops &amp; Netbooks"
                     },
+                    "charityTerms": {
+                        "description": "This container returns any applicable charity information associated with the specified item.<br><br>This container is only returned if the <b>fieldgroups</b> query parameter is set to <code>CHARITY_DETAILS</code>.",
+                        "$ref": "#/components/schemas/ItemCharityTerms"
+                    },
                     "color": {
                         "type": "string",
                         "description": "(Primary Item Aspect) Text describing the color of the item.  All the item aspects, including this aspect, are returned in the <b> localizedAspects</b> container."
@@ -3047,7 +3247,7 @@
                     },
                     "qualifiedPrograms": {
                         "type": "array",
-                        "description": "An array of the qualified programs available for the item, or for the item group when returned for the <b>getItemsByItemGroup</b> method, such as EBAY_PLUS, AUTHENTICITY_GUARANTEE, and AUTHENTICITY_VERIFICATION.<br><br><span class=\"tablenote\"><b>Note: </b>The <code>AUTHENTICITY_GUARANTEE</code> value being returned by the <b>getItemsByItemGroup</b> method indicates that at least one item in the item group supports this program, but doesn't guarantee that the program is available to all items in the item group. To verify if the Authenticity Program is indeed available for the item that you are interested in, grab the <b>items.itemId</b> value for that item and use the <b>getItem</b> method. This method will return specific details on that particular item, including whether or not the Authenticity Guarantee Program is available for the item. Look for the <b>qualifiedPrograms</b> array and <b>authenticityGuarantee</b> container in the <b>getItem</b> response for this information.</span><br><br>eBay Plus is a premium account option for buyers, which provides benefits such as fast free domestic shipping and free returns on selected items. Top-Rated eBay sellers must opt in to eBay Plus to be able to offer the program on qualifying listings. Sellers must commit to next-day delivery of those items.<br><br><span class=\"tablenote\"><b>Note: </b> eBay Plus is available only to buyers in Germany, Austria, and Australia marketplaces.</span><br><br>The eBay <a href=\"https://pages.ebay.com/authenticity-guarantee/ \" target=\"_blank\">Authenticity Guarantee</a> program enables third-party authenticators to perform authentication verification inspections on items such as watches and sneakers.",
+                        "description": "An array of the qualified programs available for the item, or for the item group when returned for the <b>getItemsByItemGroup</b> method, such as EBAY_PLUS, AUTHENTICITY_GUARANTEE, and AUTHENTICITY_VERIFICATION.<br><br><span class=\"tablenote\"><b>Note: </b>The <code>AUTHENTICITY_GUARANTEE</code> value being returned by the <b>getItemsByItemGroup</b> method indicates that at least one item in the item group supports this program, but doesn't guarantee that the program is available to all items in the item group. To verify if the Authenticity Program is indeed available for the item that you are interested in, grab the <b>items.itemId</b> value for that item and use the <b>getItem</b> method. This method will return specific details on that particular item, including whether or not the Authenticity Guarantee Program is available for the item. Look for the <b>qualifiedPrograms</b> array and <b>authenticityGuarantee</b> container in the <b>getItem</b> response for this information.</span><br><br>eBay Plus is a premium account option for buyers, which provides benefits such as fast free domestic shipping and free returns on selected items. Top-Rated eBay sellers must opt in to eBay Plus to be able to offer the program on qualifying listings. Sellers must commit to next-day delivery of those items.<br><br><span class=\"tablenote\"><b>Note: </b> eBay Plus is only available as a listing feature on the eBay Australia marketplace.</span><br><br>The eBay <a href=\"https://pages.ebay.com/authenticity-guarantee/ \" target=\"_blank\">Authenticity Guarantee</a> program enables third-party authenticators to perform authentication verification inspections on items such as watches and sneakers.",
                         "items": {
                             "type": "string"
                         }
@@ -3168,6 +3368,32 @@
                     }
                 },
                 "description": "The details of an item that can be purchased."
+            },
+            "ItemCharityTerms": {
+                "type": "object",
+                "properties": {
+                    "charityOrgId": {
+                        "type": "string",
+                        "description": "The eBay-assigned unique identifier of the charitable organization that will receive a percentage of the sales proceeds from the item."
+                    },
+                    "donationPercentage": {
+                        "type": "number",
+                        "description": "The percentage of the purchase price of the item that the charitable organization (identified in the <b>charityOrgId</b> field) will receive for each sale."
+                    },
+                    "LogoImage": {
+                        "description": "The details of the charity's logo image, such as the size and URL.<br><br><span class=\"tablenote\"> <b> Note: </b> Currently, only the <b>imageUrl</b> is populated.</span>",
+                        "$ref": "#/components/schemas/Image"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the charity organization."
+                    },
+                    "website": {
+                        "type": "string",
+                        "description": "The URL to the charity's eBay page."
+                    }
+                },
+                "description": "This type defines the fields for any applicable charity information associated with an item."
             },
             "ItemGroup": {
                 "type": "object",
@@ -3457,7 +3683,7 @@
                     },
                     "qualifiedPrograms": {
                         "type": "array",
-                        "description": "An array of the qualified programs available for the item, such as <code>EBAY_PLUS</code>, <code>AUTHENTICITY_GUARANTEE</code>, and <code>AUTHENTICITY_VERIFICATION</code>.<br><br>eBay Plus is a premium account option for buyers, which provides benefits such as fast, free domestic shipping and free returns on selected items. Top-Rated eBay sellers must opt in to eBay Plus to be able to offer the program on qualifying listings. Sellers must commit to next-day delivery of those items.<br><br><span class=\"tablenote\"><b>Note: </b> eBay Plus is available only to buyers in the Germany, Austria, and Australia marketplaces.</span><br><br>The eBay <a href=\"https://pages.ebay.com/authenticity-guarantee/ \" target=\"_blank\">Authenticity Guarantee</a> program enables third-party authenticators to perform authentication verification inspections on items such as watches and sneakers.",
+                        "description": "An array of the qualified programs available for the item, such as <code>EBAY_PLUS</code>, <code>AUTHENTICITY_GUARANTEE</code>, and <code>AUTHENTICITY_VERIFICATION</code>.<br><br>eBay Plus is a premium account option for buyers, which provides benefits such as fast, free domestic shipping and free returns on selected items. Top-Rated eBay sellers must opt in to eBay Plus to be able to offer the program on qualifying listings. Sellers must commit to next-day delivery of those items.<br><br><span class=\"tablenote\"><b>Note: </b> eBay Plus is only available as a listing feature on the eBay Australia marketplace.</span><br><br>The eBay <a href=\"https://pages.ebay.com/authenticity-guarantee/ \" target=\"_blank\">Authenticity Guarantee</a> program enables third-party authenticators to perform authentication verification inspections on items such as watches and sneakers.",
                         "items": {
                             "type": "string"
                         }
@@ -4009,7 +4235,7 @@
                     },
                     "username": {
                         "type": "string",
-                        "description": "The user name created by the seller for use on eBay."
+                        "description": "The user name created by the seller for use on eBay.<br><br><span class=\"tablenote\"><b>Note:</b> Effective September 26, 2025, select developers will no longer receive username data for U.S. users through this field. Instead, an immutable user ID will be returned in its place. For more information, please refer to <a href=\"/api-docs/static/data-handling-update.html\">Data Handling Compliance</a>. </span>"
                     }
                 },
                 "description": "The type that defines the fields for basic information about the seller of the item returned by the <code>item_summary</code> resource."
@@ -4046,7 +4272,7 @@
                     },
                     "sellerAccountType": {
                         "type": "string",
-                        "description": "This indicates if the seller is a business or an individual. This is determined when the seller registers with eBay. If they register for a business account, this value will be BUSINESS. If they register for a private account, this value will be INDIVIDUAL. This designation is required by the tax laws in the following countries:  <br><br> This field is returned only on the following sites. <br><br>EBAY_AT, EBAY_BE, EBAY_CH, EBAY_DE, EBAY_ES, EBAY_FR, EBAY_GB, EBAY_IE, EBAY_IT, EBAY_PL <br><br><b> Valid Values:</b> BUSINESS or INDIVIDUAL <br><br>Code so that your app gracefully handles any future changes to this list. "
+                        "description": "This indicates if the seller is a business or an individual. This is determined when the seller registers with eBay. If they register for a business account, this value will be <code>BUSINESS</code>. If they register for a private account, this value will be <code>INDIVIDUAL</code>. This designation is required by the tax laws in the following countries:  <br><br> This field is applicable only on the following marketplaces: <br><ul><li>EBAY_AT</li><li>EBAY_BE</li><li>EBAY_CH</li><li>EBAY_DE</li><li>EBAY_ES</li><li>EBAY_FR</li><li>EBAY_GB</li><li>EBAY_IE</li><li>EBAY_IT</li><li>EBAY_PL</li></ul><span class=\"tablenote\"><b>Note:</b> This field will be returned empty on unsupported marketplaces.</span><br><b> Valid Values:</b> <code>BUSINESS</code> or <code>INDIVIDUAL</code>"
                     },
                     "sellerLegalInfo": {
                         "description": "The container with the seller's contact info and fields that are required by law.",
@@ -4058,7 +4284,7 @@
                     },
                     "username": {
                         "type": "string",
-                        "description": "The user name created by the seller for use on eBay."
+                        "description": "The user name created by the seller for use on eBay.<br><br><span class=\"tablenote\"><b>Note:</b> Effective September 26, 2025, select developers will no longer receive username data for U.S. users through this field. Instead, an immutable user ID will be returned in its place. For more information, please refer to <a href=\"/api-docs/static/data-handling-update.html\">Data Handling Compliance</a>. </span>"
                     }
                 },
                 "description": "The type that defines the fields for basic and detailed information about the seller of the item returned by the <b> item</b> resource."
@@ -4252,11 +4478,11 @@
                     },
                     "maxEstimatedDeliveryDate": {
                         "type": "string",
-                        "description": "The end date of the delivery window (latest projected delivery date). This value is returned in UTC format (yyyy-MM-ddThh:mm:ss.sssZ), which you can convert into the local time of the buyer.<br><br><span class=\"tablenote\"> <b>Note: </b> For the best accuracy, always include the <code>contextualLocation</code> values in the <a href=\"/api-docs/buy/static/api-browse.html#Headers\" target=\"_blank\"><code>X-EBAY-C-ENDUSERCTX</code></a> request header.</span>"
+                        "description": "The end date of the delivery window (latest projected delivery date). This value is returned in UTC format (yyyy-MM-ddThh:mm:ss.sssZ), which you can convert into the local time of the buyer.<br><br><span class=\"tablenote\"> <b>Note: </b> For the best accuracy, always include the <code>contextualLocation</code> values in the <a href=\"/api-docs/buy/static/api-browse.html#Headers\" target=\"_blank\"><code>X-EBAY-C-ENDUSERCTX</code></a> request header.</span><br><span class=\"tablenote\"> <b>Note: </b> Estimated delivery dates are not returned for CBT items.</span>"
                     },
                     "minEstimatedDeliveryDate": {
                         "type": "string",
-                        "description": "The start date of the delivery window (earliest projected delivery date). This value is returned in UTC format (yyyy-MM-ddThh:mm:ss.sssZ), which you can convert into the local time of the buyer.<br><br><span class=\"tablenote\"><b>Note:</b> For the best accuracy, always include the <code>contextualLocation</code> values in the <a href=\"/api-docs/buy/static/api-browse.html#Headers\" target=\"_blank\"><code>X-EBAY-C-ENDUSERCTX</code></a> request header.</span>"
+                        "description": "The start date of the delivery window (earliest projected delivery date). This value is returned in UTC format (yyyy-MM-ddThh:mm:ss.sssZ), which you can convert into the local time of the buyer.<br><br><span class=\"tablenote\"><b>Note:</b> For the best accuracy, always include the <code>contextualLocation</code> values in the <a href=\"/api-docs/buy/static/api-browse.html#Headers\" target=\"_blank\"><code>X-EBAY-C-ENDUSERCTX</code></a> request header.</span><br><span class=\"tablenote\"> <b>Note: </b> Estimated delivery dates are not returned for CBT items.</span>"
                     },
                     "shippingCost": {
                         "description": "This is the estimated price to ship the item.<br><br>The price includes the value-added tax (VAT) for applicable jurisdictions when requested from supported marketplaces. In this case, users must do one or more of the following to see VAT-inclusive pricing:<ul><li>Pass the <a href=\"/api-docs/static/rest-request-components.html#HTTP\" target=\"_blank\"><code>X-EBAY-C-MARKETPLACE-ID</code></a> request header specifying the supported marketplace (such as <code>EBAY_GB</code>)</li><li>Pass the <code>contextualLocation</code> values for the supported marketplace in the <a href=\"/api-docs/buy/static/api-browse.html#Headers\"><code>X-EBAY-C-ENDUSERCTX</code></a> request header</li><li>Specify the supported marketplace using the <a href=\"/api-docs/buy/static/ref-buy-browse-filters.html#deliveryCountry\" target=\"_blank\"><code>deliveryCountry</code></a> <b>filter</b> URI parameter (such as <code>filter=deliveryCountry:GB</code>)</li></ul><span class=\"tablenote\"><b>Note:</b>For more information on VAT, refer to <a href=\"https://www.ebay.co.uk/help/listings/default/vat-obligations-eu?id=4650 \" target=\"_blank\">Your VAT Obligations in the UK &amp; EU</a>.</span>",

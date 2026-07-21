@@ -10,7 +10,7 @@
             "name": "eBay API License Agreement",
             "url": "https://developer.ebay.com/join/api-license-agreement"
         },
-        "version": "1.18.4"
+        "version": "1.18.5"
     },
     "servers": [
         {
@@ -85,6 +85,11 @@
                                     "category": "REQUEST",
                                     "description": "This P&A listing requires a minimum 30-day return period and seller-paid return shipping. eBay automatically updated the listing's return policy settings to meet these requirements. Sellers using business policies should update their return business policy for future P&A listings. To learn more, visit https://www.ebay.com/sellercenter/news/2025-june/parts-accessories-return-policy."
                                 },
+                                "25126": {
+                                    "domain": "API_INVENTORY",
+                                    "category": "REQUEST",
+                                    "description": "The Certification, Certification Number, Circulated/Uncirculated and Grade aspects will be deprecated in the near future. Please use the new condition grading conditions and descriptors."
+                                },
                                 "25401": {
                                     "domain": "API_INVENTORY",
                                     "category": "APPLICATION",
@@ -109,10 +114,24 @@
                         }
                     },
                     "207": {
-                        "description": "Multi-Status"
+                        "description": "Multi-Status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -330,6 +349,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -397,10 +423,24 @@
                         }
                     },
                     "207": {
-                        "description": "Multi-Status"
+                        "description": "Multi-Status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25702": {
@@ -438,6 +478,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -501,10 +548,24 @@
                         }
                     },
                     "207": {
-                        "description": "Multi-Status"
+                        "description": "Multi-Status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -527,6 +588,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -578,6 +646,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25702": {
@@ -599,10 +674,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -700,6 +789,11 @@
                                     "category": "REQUEST",
                                     "description": "This P&A listing requires a minimum 30-day return period and seller-paid return shipping. eBay automatically updated the listing's return policy settings to meet these requirements. Sellers using business policies should update their return business policy for future P&A listings. To learn more, visit https://www.ebay.com/sellercenter/news/2025-june/parts-accessories-return-policy."
                                 },
+                                "25126": {
+                                    "domain": "API_INVENTORY",
+                                    "category": "REQUEST",
+                                    "description": "The Certification, Certification Number, Circulated/Uncirculated and Grade aspects will be deprecated in the near future. Please use the new condition grading conditions and descriptors."
+                                },
                                 "25401": {
                                     "domain": "API_INVENTORY",
                                     "category": "APPLICATION",
@@ -752,6 +846,11 @@
                                     "category": "REQUEST",
                                     "description": "This P&A listing requires a minimum 30-day return period and seller-paid return shipping. eBay automatically updated the listing's return policy settings to meet these requirements. Sellers using business policies should update their return business policy for future P&A listings. To learn more, visit https://www.ebay.com/sellercenter/news/2025-june/parts-accessories-return-policy."
                                 },
+                                "25126": {
+                                    "domain": "API_INVENTORY",
+                                    "category": "REQUEST",
+                                    "description": "The Certification, Certification Number, Circulated/Uncirculated and Grade aspects will be deprecated in the near future. Please use the new condition grading conditions and descriptors."
+                                },
                                 "25401": {
                                     "domain": "API_INVENTORY",
                                     "category": "APPLICATION",
@@ -776,10 +875,24 @@
                         }
                     },
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -1272,6 +1385,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -1315,10 +1435,24 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25702": {
@@ -1340,10 +1474,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -1404,6 +1552,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25706": {
@@ -1425,10 +1580,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -1481,6 +1650,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25702": {
@@ -1502,10 +1678,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -1649,10 +1839,24 @@
                         }
                     },
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -1800,6 +2004,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -1843,10 +2054,24 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25702": {
@@ -1868,10 +2093,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -1923,6 +2162,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25705": {
@@ -1944,10 +2190,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -2045,6 +2305,11 @@
                                     "category": "REQUEST",
                                     "description": "This P&A listing requires a minimum 30-day return period and seller-paid return shipping. eBay automatically updated the listing's return policy settings to meet these requirements. Sellers using business policies should update their return business policy for future P&A listings. To learn more, visit https://www.ebay.com/sellercenter/news/2025-june/parts-accessories-return-policy."
                                 },
+                                "25126": {
+                                    "domain": "API_INVENTORY",
+                                    "category": "REQUEST",
+                                    "description": "The Certification, Certification Number, Circulated/Uncirculated and Grade aspects will be deprecated in the near future. Please use the new condition grading conditions and descriptors."
+                                },
                                 "25401": {
                                     "domain": "API_INVENTORY",
                                     "category": "APPLICATION",
@@ -2087,6 +2352,11 @@
                                     "category": "REQUEST",
                                     "description": "This P&A listing requires a minimum 30-day return period and seller-paid return shipping. eBay automatically updated the listing's return policy settings to meet these requirements. Sellers using business policies should update their return business policy for future P&A listings. To learn more, visit https://www.ebay.com/sellercenter/news/2025-june/parts-accessories-return-policy."
                                 },
+                                "25126": {
+                                    "domain": "API_INVENTORY",
+                                    "category": "REQUEST",
+                                    "description": "The Certification, Certification Number, Circulated/Uncirculated and Grade aspects will be deprecated in the near future. Please use the new condition grading conditions and descriptors."
+                                },
                                 "25401": {
                                     "domain": "API_INVENTORY",
                                     "category": "APPLICATION",
@@ -2101,10 +2371,24 @@
                         }
                     },
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -2347,6 +2631,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -2390,10 +2681,24 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25705": {
@@ -2415,10 +2720,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -2481,10 +2800,24 @@
                         }
                     },
                     "207": {
-                        "description": "Multi-Status"
+                        "description": "Multi-Status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25718": {
@@ -2497,6 +2830,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -2557,6 +2897,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -2578,10 +2925,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -2649,10 +3010,24 @@
                 },
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -2695,6 +3070,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -2742,10 +3124,24 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -2767,10 +3163,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -2842,10 +3252,24 @@
                         }
                     },
                     "207": {
-                        "description": "Multi-Status"
+                        "description": "Multi-Status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25702": {
@@ -2923,6 +3347,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -3010,6 +3441,11 @@
                                     "category": "REQUEST",
                                     "description": "This P&A listing requires a minimum 30-day return period and seller-paid return shipping. eBay automatically updated the listing's return policy settings to meet these requirements. Sellers using business policies should update their return business policy for future P&A listings. To learn more, visit https://www.ebay.com/sellercenter/news/2025-june/parts-accessories-return-policy."
                                 },
+                                "25126": {
+                                    "domain": "API_INVENTORY",
+                                    "category": "REQUEST",
+                                    "description": "The Certification, Certification Number, Circulated/Uncirculated and Grade aspects will be deprecated in the near future. Please use the new condition grading conditions and descriptors."
+                                },
                                 "25401": {
                                     "domain": "API_INVENTORY",
                                     "category": "APPLICATION",
@@ -3029,10 +3465,24 @@
                         }
                     },
                     "207": {
-                        "description": "Multi-Status"
+                        "description": "Multi-Status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -3485,6 +3935,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -3577,6 +4034,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25706": {
@@ -3593,10 +4057,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -3676,6 +4154,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25702": {
@@ -3738,6 +4223,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -3789,6 +4281,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25709": {
@@ -3805,10 +4304,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -3921,6 +4434,11 @@
                                     "category": "REQUEST",
                                     "description": "This P&A listing requires a minimum 30-day return period and seller-paid return shipping. eBay automatically updated the listing's return policy settings to meet these requirements. Sellers using business policies should update their return business policy for future P&A listings. To learn more, visit https://www.ebay.com/sellercenter/news/2025-june/parts-accessories-return-policy."
                                 },
+                                "25126": {
+                                    "domain": "API_INVENTORY",
+                                    "category": "REQUEST",
+                                    "description": "The Certification, Certification Number, Circulated/Uncirculated and Grade aspects will be deprecated in the near future. Please use the new condition grading conditions and descriptors."
+                                },
                                 "25401": {
                                     "domain": "API_INVENTORY",
                                     "category": "APPLICATION",
@@ -3940,10 +4458,24 @@
                         }
                     },
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -4340,10 +4872,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -4387,10 +4933,24 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25713": {
@@ -4402,10 +4962,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -4469,6 +5043,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25709": {
@@ -4485,10 +5066,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -4565,6 +5160,11 @@
                                     "category": "REQUEST",
                                     "description": "This P&A listing requires a minimum 30-day return period and seller-paid return shipping. eBay automatically updated the listing's return policy settings to meet these requirements. Sellers using business policies should update their return business policy for future P&A listings. To learn more, visit https://www.ebay.com/sellercenter/news/2025-june/parts-accessories-return-policy."
                                 },
+                                "25126": {
+                                    "domain": "API_INVENTORY",
+                                    "category": "REQUEST",
+                                    "description": "The Certification, Certification Number, Circulated/Uncirculated and Grade aspects will be deprecated in the near future. Please use the new condition grading conditions and descriptors."
+                                },
                                 "25401": {
                                     "domain": "API_INVENTORY",
                                     "category": "REQUEST",
@@ -4585,6 +5185,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -5016,10 +5623,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -5112,6 +5733,11 @@
                                     "category": "REQUEST",
                                     "description": "This P&A listing requires a minimum 30-day return period and seller-paid return shipping. eBay automatically updated the listing's return policy settings to meet these requirements. Sellers using business policies should update their return business policy for future P&A listings. To learn more, visit https://www.ebay.com/sellercenter/news/2025-june/parts-accessories-return-policy."
                                 },
+                                "25126": {
+                                    "domain": "API_INVENTORY",
+                                    "category": "REQUEST",
+                                    "description": "The Certification, Certification Number, Circulated/Uncirculated and Grade aspects will be deprecated in the near future. Please use the new condition grading conditions and descriptors."
+                                },
                                 "25401": {
                                     "domain": "API_INVENTORY",
                                     "category": "APPLICATION",
@@ -5132,6 +5758,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -5559,6 +6192,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -5624,6 +6264,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25002": {
@@ -5640,10 +6287,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -5696,10 +6357,24 @@
                 },
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25725": {
@@ -5712,6 +6387,13 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -5763,6 +6445,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25804": {
@@ -5779,10 +6468,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -5843,10 +6546,24 @@
                 },
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25800": {
@@ -5878,10 +6595,24 @@
                         }
                     },
                     "409": {
-                        "description": "Location Already Exists"
+                        "description": "Location Already Exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -5920,10 +6651,24 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25802": {
@@ -5950,10 +6695,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -6005,6 +6764,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25802": {
@@ -6026,10 +6792,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -6081,6 +6861,13 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25802": {
@@ -6102,10 +6889,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -6165,10 +6966,24 @@
                         }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -6231,10 +7046,24 @@
                 },
                 "responses": {
                     "204": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25800": {
@@ -6271,10 +7100,24 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
                         "x-response-codes": {
                             "errors": {
                                 "25001": {
@@ -6646,15 +7489,15 @@
                 "properties": {
                     "additionalInfo": {
                         "type": "string",
-                        "description": "This string provides additional information about a condition descriptor. Open text is passed in this field.<br><br>In the case of trading cards, this field houses the optional <b>Certification Number</b> condition descriptor for graded cards. <br><br><b>Max Length:</b> 30 characters"
+                        "description": "This string provides additional information about a condition descriptor. Open text is passed in this field.<br><br>In the case of trading cards and coins, this field houses the optional <b>Certification Number</b> condition descriptor for graded items.<br><br><b>Max Length:</b> 30 characters"
                     },
                     "name": {
                         "type": "string",
-                        "description": "This string provides the name of a condition descriptor. A numeric ID is passed in this field. This numeric ID maps to the name of a condition descriptor. Condition descriptor name-value pairs provide more information about an item's condition in a structured way. <br><br>To retrieve all condition descriptor name numeric IDs for a category, refer to the <b>conditionDescriptorId</b> field returned in the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies \" target=\"_blank\">getItemConditionPolicies</a> method of Metadata API. <br><br>In the case of trading cards, this field is used to provide condition descriptors for a card. For graded cards, the condition descriptors for <b>Grader</b> and <b>Grade</b> are required, while the condition descriptor for <b>Certification Number</b> is optional. For ungraded cards, only the <b>Card Condition</b> condition descriptor is required."
+                        "description": "This string provides the name of a condition descriptor. A numeric ID is passed in this field. This numeric ID maps to the name of a condition descriptor. Condition descriptor name-value pairs provide more information about an item's condition in a structured way. <br><br>To retrieve all condition descriptor name numeric IDs for a category, refer to the <b>conditionDescriptorId</b> field returned in the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies \" target=\"_blank\">getItemConditionPolicies</a> method of Metadata API. <br><br>In the case of trading cards, this field is used to provide condition descriptors for a card. For graded cards, the condition descriptors for <b>Grader</b> and <b>Grade</b> are required, while the condition descriptor for <b>Certification Number</b> is optional. For ungraded cards, only the <b>Card Condition</b> condition descriptor is required.<br><br>In the case of coins, this field is used to provide condition descriptors for a coin. For graded coins, the condition descriptors for <b>Grader</b>, <b>Number Grade</b>, and <b>Letter Grade</b> are required, while the condition descriptor for <b>Certification Number</b> is optional. For ungraded coins, only the <b>Coin Condition</b> condition descriptor is required."
                     },
                     "values": {
                         "type": "array",
-                        "description": "This array provides the value(s) associated with a condition descriptor. One or more numeric IDs is passed in this field. Commas are used as delimiters between successive name/value pairs. These numeric IDs map to the values associated with a condition descriptor name. Condition descriptor name-value pairs provide more information about an item's condition in a structured way. <br><br>To retrieve all condition descriptor value numeric IDs for a category, refer to the <b>ConditionDescriptorValueId</b> array returned in the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies \" target=\"_blank\">getItemConditionPolicies</a> method of Metadata API. <br><br>In the case of trading cards, this field houses the information on the <b>Grader</b> and <b>Grade</b> descriptors of graded cards and the <b>Card Condition</b> descriptor for ungraded cards.",
+                        "description": "This array provides the value(s) associated with a condition descriptor. One or more numeric IDs is passed in this field. Commas are used as delimiters between successive name/value pairs. These numeric IDs map to the values associated with a condition descriptor name. Condition descriptor name-value pairs provide more information about an item's condition in a structured way. <br><br>To retrieve all condition descriptor value numeric IDs for a category, refer to the <b>ConditionDescriptorValueId</b> array returned in the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies \" target=\"_blank\">getItemConditionPolicies</a> method of Metadata API. <br><br>In the case of trading cards, this field houses the information on the <b>Grader</b> and <b>Grade</b> descriptors of graded cards and the <b>Card Condition</b> descriptor for ungraded cards.<br><br>In the case of coins, this field houses the information on the <b>Grader</b> and <b>Number Grade</b>, and <b>Letter Grade</b> descriptors of graded coins and the <b>Coin Condition</b> descriptor for ungraded coins.",
                         "items": {
                             "type": "string"
                         }
@@ -6824,7 +7667,7 @@
                 "properties": {
                     "availableQuantity": {
                         "type": "integer",
-                        "description": "This integer value sets the quantity of the inventory item that will be available through the offer. Quantity must be set to <code>1</code> or more in order for the inventory item to be purchasable. This value should not be more than the quantity that is specified for the inventory item record. For auction listings, this value must be <code>1</code>. <br><br>If this field exists for the current unpublished or published offer, it should be provided again in the <strong>updateOffer</strong> call, even if the value is not changing. If this particular field is omitted in an <strong>updateOffer</strong> call, the general available quantity set for the inventory item record may be used instead, and this may not be accurate if the inventory item is being sold across multiple marketplaces.",
+                        "description": "This integer value sets the quantity of the inventory item that will be available through the offer. Quantity must be set to <code>1</code> or more in order for the inventory item to be purchasable. This value should not be more than the quantity that is specified for the inventory item record. For auction listings, this field should not be provided. <br><br>If this field exists for the current unpublished or published offer, it should be provided again in the <strong>updateOffer</strong> call, even if the value is not changing. If this particular field is omitted in an <strong>updateOffer</strong> call, the general available quantity set for the inventory item record may be used instead, and this may not be accurate if the inventory item is being sold across multiple marketplaces.",
                         "format": "int32"
                     },
                     "categoryId": {
@@ -6908,7 +7751,7 @@
                 "properties": {
                     "availableQuantity": {
                         "type": "integer",
-                        "description": "This integer value sets the quantity of the inventory item (specified by the <strong>sku</strong> value) that will be available for purchase by buyers shopping on the eBay site specified in the <strong>marketplaceId</strong> field. Quantity must be set to <code>1</code> or more in order for the inventory item to be purchasable, but this field is not necessarily required, even for published offers, if the general quantity of the inventory item has already been set in the inventory item record.<br><br>For auction listings, this value must be <code>1</code>.<br><br><span class=\"tablenote\"> <strong>Note:</strong> The <b>availableQuantity</b> field if set here overrides the <b>quantity</b> field set in the inventory item. See the note in <a href =\"/api-docs/sell/static/inventory/publishing-offers.html#offer\" target=\"blank\">Offer fields</a> for details.</span>",
+                        "description": "This integer value sets the quantity of the inventory item (specified by the <strong>sku</strong> value) that will be available for purchase by buyers shopping on the eBay site specified in the <strong>marketplaceId</strong> field. Quantity must be set to <code>1</code> or more in order for the inventory item to be purchasable, but this field is not necessarily required, even for published offers, if the general quantity of the inventory item has already been set in the inventory item record.<br><br>For auction listings, this field should not be provided.<br><br><span class=\"tablenote\"> <strong>Note:</strong> The <b>availableQuantity</b> field if set here overrides the <b>quantity</b> field set in the inventory item. See the note in <a href =\"/api-docs/sell/static/inventory/publishing-offers.html#offer\" target=\"blank\">Offer fields</a> for details.</span>",
                         "format": "int32"
                     },
                     "categoryId": {
@@ -7306,7 +8149,7 @@
                     },
                     "conditionDescriptors": {
                         "type": "array",
-                        "description": "This container is used by the seller to provide additional information about the condition of an item in a structured format. Condition descriptors are name-value attributes that can be either closed set or open text inputs.<br><br>For trading card listings in <b>Non-Sport Trading Card Singles</b> (183050), <b>CCG Individual Cards</b> (183454), and <b>Sports Trading Card Singles</b> (261328) categories, sellers must use either <code>LIKE_NEW</code> (2750) or <code>USED_VERY_GOOD</code> (4000) item condition to specify the card as <b>Graded</b> or <b>Ungraded</b>, respectively. Use of either of these conditions requires the seller to use this array to provide one or more applicable Condition Descriptor name-value pairs.<br><br>To retrieve all condition descriptor numeric IDs for a category, use the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies\" target=\"_blank\">getItemConditionPolicies</a> method of the Metadata API.",
+                        "description": "This container is used by the seller to provide additional information about the condition of an item in a structured format. Condition descriptors are name-value attributes that can be either closed set or open text inputs.<br><br>For trading card and coin listings in applicable categories, sellers must use either <code>LIKE_NEW</code> (2750) or <code>USED_VERY_GOOD</code> (4000) item condition to specify the item as <b>Graded</b> or <b>Ungraded</b>, respectively. Use of either of these conditions requires the seller to use this array to provide one or more applicable Condition Descriptor name-value pairs.<br><br>To retrieve all condition descriptor numeric IDs for a category, use the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies\" target=\"_blank\">getItemConditionPolicies</a> method of the Metadata API.",
                         "items": {
                             "$ref": "#/components/schemas/ConditionDescriptor"
                         }
@@ -7437,7 +8280,7 @@
                     },
                     "conditionDescriptors": {
                         "type": "array",
-                        "description": "This container is used by the seller to provide additional information about the condition of an item in a structured format. Condition descriptors are name-value attributes that can be either closed set or open text inputs.<br><br>For trading card listings in <b>Non-Sport Trading Card Singles</b> (183050), <b>CCG Individual Cards</b> (183454), and <b>Sports Trading Card Singles</b> (261328) categories, sellers must use either <code>LIKE_NEW</code> (2750) or <code>USED_VERY_GOOD</code> (4000) item condition to specify the card as <b>Graded</b> or <b>Ungraded</b>, respectively. Use of either of these conditions requires the seller to use this array to provide one or more applicable Condition Descriptor name-value pairs.<br><br>To retrieve all condition descriptor numeric IDs for a category, use the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies\" target=\"_blank\">getItemConditionPolicies</a> method of the Metadata API.",
+                        "description": "This container is used by the seller to provide additional information about the condition of an item in a structured format. Condition descriptors are name-value attributes that can be either closed set or open text inputs.<br><br>For trading card and coin listings in applicable categories, sellers must use either <code>LIKE_NEW</code> (2750) or <code>USED_VERY_GOOD</code> (4000) item condition to specify the item as <b>Graded</b> or <b>Ungraded</b>, respectively. Use of either of these conditions requires the seller to use this array to provide one or more applicable Condition Descriptor name-value pairs.<br><br>To retrieve all condition descriptor numeric IDs for a category, use the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies\" target=\"_blank\">getItemConditionPolicies</a> method of the Metadata API.",
                         "items": {
                             "$ref": "#/components/schemas/ConditionDescriptor"
                         }
@@ -7478,7 +8321,7 @@
                     },
                     "conditionDescriptors": {
                         "type": "array",
-                        "description": "This container is used by the seller to provide additional information about the condition of an item in a structured format. Descriptors are name-value attributes that can be either closed set or open text.<br><br>For trading card listings in <b>Non-Sport Trading Card Singles</b> (183050), <b>CCG Individual Cards</b> (183454), and <b>Sports Trading Card Singles</b> (261328) categories, sellers must use either <code>LIKE_NEW</code> (2750) or <code>USED_VERY_GOOD</code> (4000) item condition to specify the card as <b>Graded</b> or <b>Ungraded</b>, respectively. Use of either of these conditions requires the seller to use this array to provide one or more applicable Condition Descriptor name-value pairs.<br><br>For more information on the numeric IDs and their text equivalents, use the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies\" target=\"_blank\">getItemConditionPolicies</a> method of the Metadata API.",
+                        "description": "This container is used by the seller to provide additional information about the condition of an item in a structured format. Condition descriptors are name-value attributes that can be either closed set or open text inputs.<br><br>For trading card and coin listings in applicable categories, sellers must use either <code>LIKE_NEW</code> (2750) or <code>USED_VERY_GOOD</code> (4000) item condition to specify the item as <b>Graded</b> or <b>Ungraded</b>, respectively. Use of either of these conditions requires the seller to use this array to provide one or more applicable Condition Descriptor name-value pairs.<br><br>To retrieve all condition descriptor numeric IDs for a category, use the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies\" target=\"_blank\">getItemConditionPolicies</a> method of the Metadata API.",
                         "items": {
                             "$ref": "#/components/schemas/ConditionDescriptor"
                         }
@@ -7526,7 +8369,7 @@
                     },
                     "conditionDescriptors": {
                         "type": "array",
-                        "description": "This container is used by the seller to provide additional information about the condition of an item in a structured format. Descriptors are name-value attributes that can be either closed set or open text.<br><br>For trading card listings in <b>Non-Sport Trading Card Singles</b> (183050), <b>CCG Individual Cards</b> (183454), and <b>Sports Trading Card Singles</b> (261328) categories, sellers must use either <code>LIKE_NEW</code> (2750) or <code>USED_VERY_GOOD</code> (4000) item condition to specify the card as <b>Graded</b> or <b>Ungraded</b>, respectively. Use of either of these conditions requires the seller to use this array to provide one or more applicable Condition Descriptor name-value pairs.<br><br>For more information on the numeric IDs and their text equivalents, use the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies\" target=\"_blank\">getItemConditionPolicies</a> method of the Metadata API.",
+                        "description": "This container is used by the seller to provide additional information about the condition of an item in a structured format. Condition descriptors are name-value attributes that can be either closed set or open text inputs.<br><br>For trading card and coin listings in applicable categories, sellers must use either <code>LIKE_NEW</code> (2750) or <code>USED_VERY_GOOD</code> (4000) item condition to specify the item as <b>Graded</b> or <b>Ungraded</b>, respectively. Use of either of these conditions requires the seller to use this array to provide one or more applicable Condition Descriptor name-value pairs.<br><br>To retrieve all condition descriptor numeric IDs for a category, use the <a href=\"/api-docs/sell/metadata/resources/marketplace/methods/getItemConditionPolicies\" target=\"_blank\">getItemConditionPolicies</a> method of the Metadata API.",
                         "items": {
                             "$ref": "#/components/schemas/ConditionDescriptor"
                         }
