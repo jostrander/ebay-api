@@ -26,8 +26,7 @@ const urls = [
   'https://developer.ebay.com/api-docs/master/sell/account/openapi/3/sell_account_v1_oas3.json',
 //  'https://developer.ebay.com/api-docs/master/sell/account/v2/openapi/3/sell_account_v2_oas3.json', static contract omits the SetUserPreferencesRequest schema (dangling $ref); fetch manually from developer.ebay.com/docs/fetch (rawSchema=true, browser session) instead
   'https://developer.ebay.com/api-docs/master/sell/analytics/openapi/3/sell_analytics_v1_oas3.json',
-//  'https://developer.ebay.com/api-docs/master/sell/compliance/openapi/3/sell_compliance_v1_oas3.json', no longer published (302); Compliance API kept, spec maintained from the last published version
-
+//  sell/compliance: API decommissioned by eBay 2026-03-30 (docs and spec removed)
   'https://developer.ebay.com/api-docs/master/sell/feed/openapi/3/sell_feed_v1_oas3.json',
   'https://developer.ebay.com/api-docs/master/sell/finances/openapi/3/sell_finances_v1_oas3.json',
   'https://developer.ebay.com/api-docs/master/sell/fulfillment/openapi/3/sell_fulfillment_v1_oas3.json',
