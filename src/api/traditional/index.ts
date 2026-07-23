@@ -6,11 +6,10 @@ import {
   EBayIAFTokenInvalid,
   handleEBayError
 } from '../../errors/index.js';
-import {ClientAlerts, Finding, Merchandising, Shopping, Trading, TraditionalApi} from '../../types/index.js';
+import {ClientAlerts, Merchandising, Shopping, Trading, TraditionalApi} from '../../types/index.js';
 import Api from '../index.js';
 import ClientAlertsCalls from './clientAlerts/index.js';
 import {Fields} from './fields.js';
-import FindingCalls from './finding/index.js';
 import MerchandisingCalls from './merchandising/index.js';
 import ShoppingCalls from './shopping/index.js';
 import TradingCalls from './trading/index.js';
@@ -64,22 +63,6 @@ export default class Traditional extends Api {
         'X-EBAY-API-VERSION': 863,
         'X-EBAY-API-REQUEST-ENCODING': 'xml',
         ...(accessToken && {'X-EBAY-API-IAF-TOKEN': accessToken})
-      })
-    });
-  }
-
-  public createFindingApi(): Finding {
-    return this.createTraditionalXMLApi<Finding>({
-      endpoint: {
-        production: 'svcs.ebay.com',
-        sandbox: 'svcs.sandbox.ebay.com'
-      },
-      path: '/services/search/FindingService/v1',
-      xmlns: 'http://www.ebay.com/marketplace/search/v1/services',
-      calls: FindingCalls,
-      headers: (callName: string) => ({
-        'X-EBAY-SOA-SECURITY-APPNAME': this.config.appId,
-        'X-EBAY-SOA-OPERATION-NAME': callName
       })
     });
   }

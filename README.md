@@ -53,13 +53,12 @@ Sign up for an API key here: [Developer Account](https://developer.ebay.com/sign
 | **Commerce API**   | ✔ Catalog API `v1_beta.5.2`<br>✔ Charity API `v1.2.1`<br>✔ Identity API `v2.0.0`<br>✔ Notification API `v1.6.1`<br>✔ Taxonomy API `v1.1.1`<br>✔ Translation API `v1_beta.1.6`<br>✔ Media API `v1_beta.4.0`                                                                                                                                                                   |
 | **Developer API**  | ✔ Analytics API `v1_beta.0.1`<br>✔ Key Management API `v1.0.0`                                                                                                                                                                                                                                                                                                                                                              |
 | **Post Order API** | ✔ Cancellation API<br>✔ Case Management API<br>✔ Inquiry API<br>✔ Return API                                                                                                                                                                                                                                                                                                 |
-| **Sell API**       | ✔ Account API `v1.9.2`<br>✔ Analytics API `v1.3.2`<br>✔ Compliance API `v1.4.4`<br>✔ Feed API `v1.3.1`<br>✔ Finance API `v1.17.3`<br>✔ Fulfillment API `v1.20.7`<br>✔ Inventory API `v1.18.4`<br>✔ Listing API `v1_beta.2.1`<br>✔ Logistics API `v1_beta.0.0`<br>✔ Marketing API `v1.22.2`<br>✔ Metadata API `v1.11.1`<br>✔ Negotiation API `v1.1.0`<br>✔ Recommendation API `v1.1.0` |
+| **Sell API**       | ✔ Account API `v1.9.2`<br>✔ Analytics API `v1.3.2`<br>✔ Feed API `v1.3.1`<br>✔ Finance API `v1.17.3`<br>✔ Fulfillment API `v1.20.7`<br>✔ Inventory API `v1.18.4`<br>✔ Listing API `v1_beta.2.1`<br>✔ Logistics API `v1_beta.0.0`<br>✔ Marketing API `v1.22.2`<br>✔ Metadata API `v1.11.1`<br>✔ Negotiation API `v1.1.0`<br>✔ Recommendation API `v1.1.0`<br>✔ Stores API `v1.0.0` |
 
 ### Traditional API
 
 | API                   | Implemented |
 |:----------------------|:------------|
-| **Finding API**       | ✔           |
 | **Shopping API**      | ✔           |
 | **Merchandising API** | ✔           |
 | **Trading API**       | ✔           |
@@ -114,7 +113,7 @@ For more examples, check out the [examples directory](./examples).
 | **Commerce API**   | ✔ Catalog API `v1_beta.3.1`<br>✔ Charity API `v1.2.0`<br>✔ Identity API `v1.0.0`<br>✔ Notification API `v1.2.0`<br>✔ Taxonomy API `v1.0.0`<br>✔ Translation API `v1_beta.1.4`<br>✔ Media API `v1_beta.1.0`<br>✔ Message API `v1.0.0`<br>✔ Feedback API `v1_beta.1.0.0`                                                                                                                                            |
 | **Developer API**  | ✔ Analytics API                                                                                                                                                                                                                                                                                                                                                                      |
 | **Post Order API** | ✔ Cancellation API<br>✔ Case Management API<br>✔ Inquiry API<br>✔ Return API                                                                                                                                                                                                                                                                                                         |
-| **Sell API**       | ✔ Account API `v1.9.0`<br>✔ Analytics API `v1.3.0`<br>✔ Compliance API `v1.4.1`<br>✔ Feed API `v1.3.1`<br>✔ Finance API `v1.9.0`<br>✔ Fulfillment API `v1.19.10`<br>✔ Inventory API `v1.18.0`<br>✔ Listing API `v1_beta.2.1`<br>✔ Logistics API `v1_beta.0.0`<br>✔ Marketing API `v1.17.0`<br>✔ Metadata API `v1.7.1`<br>✔ Negotiation API `v1.1.0`<br>✔ Recommendation API `v1.1.0` |
+| **Sell API**       | ✔ Account API `v1.9.0`<br>✔ Analytics API `v1.3.0`<br>✔ Feed API `v1.3.1`<br>✔ Finance API `v1.9.0`<br>✔ Fulfillment API `v1.19.10`<br>✔ Inventory API `v1.18.0`<br>✔ Listing API `v1_beta.2.1`<br>✔ Logistics API `v1_beta.0.0`<br>✔ Marketing API `v1.17.0`<br>✔ Metadata API `v1.7.1`<br>✔ Negotiation API `v1.1.0`<br>✔ Recommendation API `v1.1.0`<br>✔ Stores API `v1.0.0` |
 
 ### Traditional API
 
@@ -712,45 +711,6 @@ eBay.postOrder.return.getReturn('5132021997').then(a => {
   console.log(a);
 }).catch(e => {
   console.log(e);
-});
-```
-
-### Finding - findItemsByProduct \(use XML attributes and value\)
-
-```js
-eBay.finding.findItemsByProduct({
-  productId: {
-    '@_type': 'ReferenceID',
-    '#value': '53039031'
-  }
-});
-
-// will produce:
-// <productId type="ReferenceID">53039031</productId>
-```
-
-### Finding - findItemsIneBayStores
-
-```js
-eBay.finding.findItemsIneBayStores({
-  storeName: 'HENDT'
-}, {raw: true}).then(result => {
-  // Return raw XML
-  console.log(result);
-});
-```
-
-### Finding - findItemsAdvanced \(findItemsByKeywords\)
-
-```js
-eBay.finding.findItemsAdvanced({
-  itemFilter: [{
-    name: 'Seller',
-    value: 'hendt_de'
-  }],
-  keywords: 'katze'
-}).then(result => {
-  console.log(result);
 });
 ```
 
