@@ -40,6 +40,7 @@ import {components as sellMarketing} from './restful/specs/sell_marketing_v1_oas
 import {components as sellMetadata} from './restful/specs/sell_metadata_v1_oas3.js';
 import {components as sellNegotiation} from './restful/specs/sell_negotiation_v1_oas3.js';
 import {components as sellRecommendation} from './restful/specs/sell_recommendation_v1_oas3.js';
+import {components as sellStores} from './restful/specs/sell_stores_v1_oas3.js';
 
 export type BrowseSearchParams = {
   aspect_filter?: string,
@@ -590,5 +591,11 @@ export type ProductRequest = sellMetadata['schemas']['ProductRequest']
 
 // Sell Negotiation API types
 export type CreateOffersRequest = sellNegotiation['schemas']['CreateOffersRequest']
+
+// Sell Stores API types
+export type AddStoreCategoryRequest = sellStores['schemas']['AddStoreCategoryRequestType']
+export type RenameStoreCategoryRequest = sellStores['schemas']['RenameStoreCategoryRequestType']
+export type DeleteStoreCategoryRequest = sellStores['schemas']['DeleteStoreCategoryRequestType']
+export type MoveStoreCategoryRequest = sellStores['schemas']['MoveStoreCategoryRequestType']
 
 

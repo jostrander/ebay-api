@@ -139,3 +139,7 @@ apis:
     root: specs/sell_recommendation_v1_oas3.json
     x-openapi-ts:
       output: src/types/restful/specs/sell_recommendation_v1_oas3.ts
+  sell_stores_v1:
+    root: specs/sell_stores_v1_oas3.json
+    x-openapi-ts:
+      output: src/types/restful/specs/sell_stores_v1_oas3.ts

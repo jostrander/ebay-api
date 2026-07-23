@@ -11,6 +11,7 @@ import Feed from './feed/index.js';
 import Logistics from './logistics/index.js';
 import Negotiation from './negotiation/index.js';
 import Listing from './listing/index.js';
+import Stores from './stores/index.js';
 
 export type Sell = {
   account: AccountV1,
@@ -25,7 +26,8 @@ export type Sell = {
   feed: Feed,
   logistics: Logistics,
   negotiation: Negotiation,
-  listing: Listing
+  listing: Listing,
+  stores: Stores
 };
 
 export {
@@ -41,5 +43,6 @@ export {
   Feed,
   Logistics,
   Negotiation,
-  Listing
+  Listing,
+  Stores
 };

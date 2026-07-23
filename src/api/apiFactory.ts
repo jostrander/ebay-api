@@ -1,4 +1,4 @@
-import {ClientAlerts, Finding, Merchandising, Shopping, Trading} from '../types/index.js';
+import {ClientAlerts, Merchandising, Shopping, Trading} from '../types/index.js';
 import Api from './index.js';
 import {
   Browse,
@@ -39,7 +39,8 @@ import {
   Metadata,
   Negotiation,
   Recommendation,
-  Sell
+  Sell,
+  Stores
 } from './restful/sell/index.js';
 import Traditional from './traditional/index.js';
 
@@ -106,7 +107,8 @@ export default class ApiFactory extends Api {
       feed: this.createRestfulApi(SellFeed),
       logistics: this.createRestfulApi(Logistics),
       negotiation: this.createRestfulApi(Negotiation),
-      listing: this.createRestfulApi(Listing)
+      listing: this.createRestfulApi(Listing),
+      stores: this.createRestfulApi(Stores)
     };
   }
 
@@ -124,10 +126,6 @@ export default class ApiFactory extends Api {
 
   public createShoppingApi(): Shopping {
     return this.traditional.createShoppingApi();
-  }
-
-  public createFindingApi(): Finding {
-    return this.traditional.createFindingApi();
   }
 
   public createClientAlertsApi(): ClientAlerts {

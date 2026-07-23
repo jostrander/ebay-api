@@ -11,7 +11,8 @@ import {
   Marketing,
   Metadata,
   Negotiation,
-  Recommendation
+  Recommendation,
+  Stores
 } from '../../../../src/api/restful/sell/index.js';
 import {readSpecs} from '../../jsonfile.js';
 
@@ -29,5 +30,6 @@ tests.set(Feed, readSpecs( 'sell_feed_v1_oas3.json', import.meta.url));
 tests.set(Logistics, readSpecs( 'sell_logistics_v1_oas3.json', import.meta.url));
 tests.set(Negotiation, readSpecs( 'sell_negotiation_v1_oas3.json', import.meta.url));
 tests.set(Listing, readSpecs( 'sell_listing_v1_beta_oas3.json', import.meta.url));
+tests.set(Stores, readSpecs( 'sell_stores_v1_oas3.json', import.meta.url));
 
 export default tests;
