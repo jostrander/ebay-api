@@ -23,6 +23,7 @@ It supports `client credentials grant` and `authorization code grant` \(Auth'N'A
 - [Install](#install)
 - [eBay Docs](#ebay-docs)
 - [Implementation Status](#implementation-status)
+- [Migrating from v9 to v10](#migrating-from-v9-to-v10)
 - [🔧 eBayApi Config](#-ebayapi-config)
 - [Load Config from Environment](#load-config-from-environment)
 - [🐞 Debug](#-debug)
@@ -38,7 +39,7 @@ It supports `client credentials grant` and `authorization code grant` \(Auth'N'A
 
 ## 🚀 Quick Start
 
-* `v10.0.0-RC.0` is the latest release.
+* `v10.0.0-RC.1` is the latest release.
 * See [here](https://github.com/hendt/ebay-api/blob/master/CHANGELOG.md) for the full changelog.
 
 Sign up for an API key here: [Developer Account](https://developer.ebay.com/signin?tab=register).
@@ -64,6 +65,30 @@ Sign up for an API key here: [Developer Account](https://developer.ebay.com/sign
 | **Trading API**       | ✔           |
 | **Client Alerts API** | ✔           |
 | **Feedback API**      | ✔           |
+
+## Migrating from v9 to v10
+
+v10 is a major release that removes eBay APIs and operations that **eBay has decommissioned**. The public interface (auth, config, request handling) is unchanged — you only need to make changes if your app used one of the removed APIs/operations below.
+
+### Removed APIs
+
+| Removed | Replacement / Notes |
+|:--------|:--------------------|
+| **Finding API** (`eBay.finding`) | eBay took the traditional Finding API down server-side in February 2025. Migrate item search to the **Buy Browse API** (`eBay.buy.browse`). |
+| **Sell Compliance API** (`eBay.sell.compliance`) | Decommissioned by eBay on 2026-03-30. Removed together with `getListingViolations` / `getListingViolationsSummary` and the `SuppressViolationRequest` type. |
+
+### Changed APIs
+
+- **Buy Order API migrated v1 → v2** (`eBay.buy.order`) — the Order API now only exposes the **guest checkout** flow. The member checkout session, proxy-guest checkout session, payment-info, initiate-payment and place-order operations were removed, along with the `CreateSignInCheckoutSessionRequest`, `GuestPlaceOrderRequest`, `InitiatePaymentRequest`, `UpdatePaymentInformation` and `CheckoutSessionRequestWithoutPayment` types. These endpoints no longer exist in eBay's Order v2 API.
+- **Buy Marketing API** — removed `getAlsoBoughtByProduct` and `getAlsoViewedByProduct` (and the `AddCartItemInput`, `RemoveCartItemInput`, `UpdateCartItemInput` types).
+- **Sell Marketing API** — removed `setupQuickCampaign` and the `QuickSetupRequest` type (eBay retired the `quick_setup` operation).
+- **Post-Order API** — removed 29 methods eBay decommissioned across the return, case, inquiry and cancellation APIs.
+- **Commerce Media API** — the `InputStream` type was removed upstream; `uploadVideo` now accepts `any` for its body.
+
+### New in v10
+
+- **Sell Stores API** (`eBay.sell.stores`) — manage the categories of a seller's eBay store.
+- All RESTful OpenAPI specs were refreshed to eBay's latest published versions.
 
 ## Install
 
@@ -97,33 +122,6 @@ For more examples, check out the [examples directory](./examples).
 * [eBay API Explorer](https://developer.ebay.com/my/api_test_tool)
 * [eBay API Docs](https://developer.ebay.com/docs)
 * [eBay API Status](https://entwickler.ebay.de/support/api-status/production)
-
-## Changelog
-
-* `v10.0.0-RC.1` is the latest release.
-* See [here](https://github.com/hendt/ebay-api/blob/master/CHANGELOG.md) for the full changelog.
-
-## Implementation status
-
-### RESTful API
-
-| API                | Implemented                                                                                                                                                                                                                                                                                                                                                                          |
-|:-------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Buy API**        | ✔ Browse API `v1.10.0`<br>✔  Deal API `v1.3.0`<br>✔ Feed API `v1.3.1`<br>✔ Marketing API `v1_beta.1.0`<br>✔ Offer API `v1_beta.0.0`<br>✔ Order API `v1_beta.20.0`<br>✔ Marketplace Insights API `v1_beta.2.2`                                                                                                                                                                        |
-| **Commerce API**   | ✔ Catalog API `v1_beta.3.1`<br>✔ Charity API `v1.2.0`<br>✔ Identity API `v1.0.0`<br>✔ Notification API `v1.2.0`<br>✔ Taxonomy API `v1.0.0`<br>✔ Translation API `v1_beta.1.4`<br>✔ Media API `v1_beta.1.0`<br>✔ Message API `v1.0.0`<br>✔ Feedback API `v1_beta.1.0.0`                                                                                                                                            |
-| **Developer API**  | ✔ Analytics API                                                                                                                                                                                                                                                                                                                                                                      |
-| **Post Order API** | ✔ Cancellation API<br>✔ Case Management API<br>✔ Inquiry API<br>✔ Return API                                                                                                                                                                                                                                                                                                         |
-| **Sell API**       | ✔ Account API `v1.9.0`<br>✔ Analytics API `v1.3.0`<br>✔ Feed API `v1.3.1`<br>✔ Finance API `v1.9.0`<br>✔ Fulfillment API `v1.19.10`<br>✔ Inventory API `v1.18.0`<br>✔ Listing API `v1_beta.2.1`<br>✔ Logistics API `v1_beta.0.0`<br>✔ Marketing API `v1.17.0`<br>✔ Metadata API `v1.7.1`<br>✔ Negotiation API `v1.1.0`<br>✔ Recommendation API `v1.1.0`<br>✔ Stores API `v1.0.0` |
-
-### Traditional API
-
-| API                   | Implemented |
-|:----------------------|:------------|
-| **Shopping API**      | ✔           |
-| **Merchandising API** | ✔           |
-| **Trading API**       | ✔           |
-| **Client Alerts API** | ✔           |
-| **Feedback API**      | ✔           |
 
 ## Detailed Configuration
 
