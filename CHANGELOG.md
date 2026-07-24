@@ -1,4 +1,74 @@
 # eBay API Changelog
+## [10.0.0-RC.2](https://github.com/hendt/ebay-api/compare/v9.6.0...v10.0.0-RC.2) (2026-07-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* eBay.finding has been removed. The eBay Finding API was
+decommissioned by eBay in February 2025. Migrate item search to the Buy
+Browse API (eBay.buy.browse).
+* eBay decommissioned the Sell Compliance API and all its
+methods on 2026-03-30 (developer docs and the published OpenAPI spec were
+removed). Removes the Compliance API client (getListingViolations,
+getListingViolationsSummary), its spec JSON and generated types, and all
+factory/registry wiring. eBay.sell.compliance is no longer available.
+* Removed sell marketing setupQuickCampaign and the
+QuickSetupRequest type, and the commerce media InputStream type; all were
+removed from eBay's updated specs.
+* Removes the 29 methods eBay decommissioned across the
+post-order return, case, inquiry and cancellation APIs, and prunes the
+* The Buy Order API migrated to v2, which only exposes the
+guest checkout flow. Removed the member checkout session, proxy-guest checkout
+session, payment-info, initiate-payment and place-order operations and their
+request types (CreateSignInCheckoutSessionRequest, GuestPlaceOrderRequest,
+InitiatePaymentRequest, UpdatePaymentInformation, CheckoutSessionRequestWithoutPayment).
+These endpoints no longer exist in the eBay Order v2 API.
+
+### Features
+
+* add new RESTful methods from refreshed specs ([e1c8f69](https://github.com/hendt/ebay-api/commit/e1c8f695801305ca4e88355a2d25729e6bec6246)), closes [#214](https://github.com/hendt/ebay-api/issues/214)
+* prune decommissioned post-order methods ([cb1af3f](https://github.com/hendt/ebay-api/commit/cb1af3fef2a0d4bf59851457b8d2096ee63744e3)), closes [#214](https://github.com/hendt/ebay-api/issues/214)
+* refresh RESTful specs to latest published versions ([7459bf8](https://github.com/hendt/ebay-api/commit/7459bf8a0c448c9b31dce6c23730f5f80df7c2aa))
+* remove Buy Order API v1 operations dropped in v2 ([8ace7b6](https://github.com/hendt/ebay-api/commit/8ace7b62e75fc38282109f0cc823b16c63f455c8))
+* remove decommissioned Finding API ([e7f1625](https://github.com/hendt/ebay-api/commit/e7f162546ff73b50d8ed7dbf8f1464cf8dcde445)), closes [#199](https://github.com/hendt/ebay-api/issues/199) [#216](https://github.com/hendt/ebay-api/issues/216)
+* remove decommissioned Sell Compliance API ([b4686f0](https://github.com/hendt/ebay-api/commit/b4686f081a237f20d38e33635629102903b00a80))
+* **sell:** add Stores API ([2a6deab](https://github.com/hendt/ebay-api/commit/2a6deabe6dcf481086364d80e65608c98a3ebf0a)), closes [#216](https://github.com/hendt/ebay-api/issues/216)
+
+
+### Bug Fixes
+
+* correct media binary content types and finances filter array ([45bf087](https://github.com/hendt/ebay-api/commit/45bf08791db51199e9a2cfcb89c7e25703f06f74))
+* **deps:** resolve fast-uri high-severity advisory ([c8d7708](https://github.com/hendt/ebay-api/commit/c8d7708fddecb5a811caebede101e825c37b4414))
+* make openapi fetch script work behind eBay Akamai bot manager ([ce56ce3](https://github.com/hendt/ebay-api/commit/ce56ce387495ca86136f4b326b99bed4557eb9cd))
+
+## [10.0.0-RC.1](https://github.com/hendt/ebay-api/compare/v9.4.3...v10.0.0-RC.1) (2026-02-22)
+
+
+### Bug Fixes
+
+* eslint issues ([beb7e46](https://github.com/hendt/ebay-api/commit/beb7e465d2152072edf9588c87d184071c56253b))
+
+## [10.0.0-RC.0](https://github.com/hendt/ebay-api/compare/v9.2.1...v10.0.0-RC.0) (2025-09-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Removed methods getAlsoBoughtByProduct, getAlsoViewedByProduct from buy marketing API and suppressViolation from sell compliance API. Removed corresponding
+  types AddCartItemInput, RemoveCartItemInput, UpdateCartItemInput, SuppressViolationRequest. These operations were deprecated by eBay and no longer available in updated API
+  specs.
+
+# Conflicts:
+#	specs/sell_fulfillment_v1_oas3.json
+
+### Features
+
+* upgrading several APIs to latest version ([2364543](https://github.com/hendt/ebay-api/commit/236454318c7fbd3ca0a8d3abd353801f47380c60))
+
+
+### Bug Fixes
+
+* trailing space ([de793bf](https://github.com/hendt/ebay-api/commit/de793bfcae34d02cb9ab385b3c5a61c08243f81c))
+
 ## [10.0.0-RC.1](https://github.com/hendt/ebay-api/compare/v9.4.3...v10.0.0-RC.1) (2026-02-22)
 
 
