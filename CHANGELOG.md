@@ -17,6 +17,7 @@ QuickSetupRequest type, and the commerce media InputStream type; all were
 removed from eBay's updated specs.
 * Removes the 29 methods eBay decommissioned across the
 post-order return, case, inquiry and cancellation APIs, and prunes the
+matching operations from the custom specs.
 * The Buy Order API migrated to v2, which only exposes the
 guest checkout flow. Removed the member checkout session, proxy-guest checkout
 session, payment-info, initiate-payment and place-order operations and their
@@ -40,34 +41,6 @@ These endpoints no longer exist in the eBay Order v2 API.
 * correct media binary content types and finances filter array ([45bf087](https://github.com/hendt/ebay-api/commit/45bf08791db51199e9a2cfcb89c7e25703f06f74))
 * **deps:** resolve fast-uri high-severity advisory ([c8d7708](https://github.com/hendt/ebay-api/commit/c8d7708fddecb5a811caebede101e825c37b4414))
 * make openapi fetch script work behind eBay Akamai bot manager ([ce56ce3](https://github.com/hendt/ebay-api/commit/ce56ce387495ca86136f4b326b99bed4557eb9cd))
-
-## [10.0.0-RC.1](https://github.com/hendt/ebay-api/compare/v9.4.3...v10.0.0-RC.1) (2026-02-22)
-
-
-### Bug Fixes
-
-* eslint issues ([beb7e46](https://github.com/hendt/ebay-api/commit/beb7e465d2152072edf9588c87d184071c56253b))
-
-## [10.0.0-RC.0](https://github.com/hendt/ebay-api/compare/v9.2.1...v10.0.0-RC.0) (2025-09-08)
-
-
-### ⚠ BREAKING CHANGES
-
-* Removed methods getAlsoBoughtByProduct, getAlsoViewedByProduct from buy marketing API and suppressViolation from sell compliance API. Removed corresponding
-  types AddCartItemInput, RemoveCartItemInput, UpdateCartItemInput, SuppressViolationRequest. These operations were deprecated by eBay and no longer available in updated API
-  specs.
-
-# Conflicts:
-#	specs/sell_fulfillment_v1_oas3.json
-
-### Features
-
-* upgrading several APIs to latest version ([2364543](https://github.com/hendt/ebay-api/commit/236454318c7fbd3ca0a8d3abd353801f47380c60))
-
-
-### Bug Fixes
-
-* trailing space ([de793bf](https://github.com/hendt/ebay-api/commit/de793bfcae34d02cb9ab385b3c5a61c08243f81c))
 
 ## [10.0.0-RC.1](https://github.com/hendt/ebay-api/compare/v9.4.3...v10.0.0-RC.1) (2026-02-22)
 
