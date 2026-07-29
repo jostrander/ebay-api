@@ -1,6 +1,6 @@
 import eBayApi from '../../src/eBayApi.js';
 
-import {EventType} from '../../src/api/traditional/clientAlerts';
+import {EventType} from '../../src/api/traditional/clientAlerts/index.js';
 
 const eBay = eBayApi.fromEnv();
 

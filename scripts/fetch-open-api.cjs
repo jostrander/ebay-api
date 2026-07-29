@@ -63,7 +63,7 @@ function storeCookies(setCookie) {
   }
 }
 
-function request(url) {
+function request(url, redirectsLeft = 5) {
   return new Promise((resolve, reject) => {
     const headers = {
       'User-Agent': userAgent,
@@ -78,11 +78,54 @@ function request(url) {
 
     https.get(url, { headers }, (response) => {
       storeCookies(response.headers['set-cookie']);
+
+      const statusCode = response.statusCode;
+      const location = response.headers.location;
+      if (statusCode >= 300 && statusCode < 400 && location) {
+        response.resume();
+        if (redirectsLeft === 0) {
+          reject(new Error(`too many redirects (last: ${location})`));
+          return;
+        }
+        resolve(request(new URL(location, url).toString(), redirectsLeft - 1));
+        return;
+      }
+
+      // Decode as UTF-8 up front. Concatenating raw Buffers into a string would corrupt any
+      // multi-byte character that straddles a chunk boundary, and several specs contain them.
+      response.setEncoding('utf8');
       let data = '';
       response.on('data', chunk => data += chunk);
-      response.on('end', () => resolve({ statusCode: response.statusCode, body: data }));
+      response.on('error', reject);
+      response.on('end', () => resolve({ statusCode, body: data }));
     }).on('error', reject);
   });
+}
+
+/**
+ * The operationIds a spec declares, used to warn when a refresh silently drops operations.
+ */
+function operationIds(spec) {
+  const ids = new Set();
+  for (const methods of Object.values(spec.paths || {})) {
+    for (const operation of Object.values(methods)) {
+      if (operation && operation.operationId) {
+        ids.add(operation.operationId);
+      }
+    }
+  }
+  return ids;
+}
+
+function readExistingSpec(filepath) {
+  if (!fs.existsSync(filepath)) {
+    return null;
+  }
+  try {
+    return JSON.parse(fs.readFileSync(filepath, 'utf8'));
+  } catch (error) {
+    return null;
+  }
 }
 
 // Create output directory
@@ -92,7 +135,10 @@ if (!fs.existsSync(outputDir)) {
 
 // Download a file
 async function downloadFile(url) {
-  const filename = url.split('/').pop();
+  const filename = path.basename(new URL(url).pathname);
+  if (!filename.endsWith('.json')) {
+    throw new Error(`refusing to write non-JSON filename "${filename}"`);
+  }
   const filepath = path.join(outputDir, filename);
 
   let response = await request(url);
@@ -104,8 +150,25 @@ async function downloadFile(url) {
     throw new Error(`HTTP ${response.statusCode}`);
   }
 
+  // Akamai Bot Manager answers a blocked request with HTTP 200 and an HTML challenge page.
+  // Parsing before writing keeps that from silently overwriting a good committed spec.
+  let spec;
+  try {
+    spec = JSON.parse(response.body);
+  } catch (error) {
+    throw new Error(`response was not JSON (${response.body.length} bytes, starts with "${response.body.slice(0, 40).replace(/\s+/g, ' ')}")`);
+  }
+  if (!spec.paths) {
+    throw new Error('response parsed as JSON but has no "paths" — not an OpenAPI document');
+  }
+
+  const previous = readExistingSpec(filepath);
+  const dropped = previous
+    ? [...operationIds(previous)].filter(id => !operationIds(spec).has(id))
+    : [];
+
   fs.writeFileSync(filepath, response.body);
-  return filename;
+  return {filename, dropped};
 }
 
 // Download all files
@@ -114,14 +177,18 @@ async function downloadAll() {
 
   let success = 0;
   let failed = 0;
+  const droppedOperations = [];
 
   for (const url of urls) {
     try {
-      const filename = await downloadFile(url);
+      const {filename, dropped} = await downloadFile(url);
       console.log(`✓ ${filename}`);
+      if (dropped.length) {
+        droppedOperations.push({filename, dropped});
+      }
       success++;
     } catch (error) {
-      console.log(`✗ ${url.split('/').pop()} - ${error.message}`);
+      console.log(`✗ ${path.basename(new URL(url).pathname)} - ${error.message}`);
       failed++;
     }
 
@@ -129,10 +196,21 @@ async function downloadAll() {
     await new Promise(resolve => setTimeout(resolve, 300));
   }
 
+  if (droppedOperations.length) {
+    console.log('\n⚠ Operations that disappeared in this refresh — check whether the matching API');
+    console.log('  class still implements them (npm test enforces that it must not):');
+    for (const {filename, dropped} of droppedOperations) {
+      console.log(`  ${filename}: ${dropped.join(', ')}`);
+    }
+  }
+
   console.log(`\nDone! Success: ${success}, Failed: ${failed}`);
+  return failed;
 }
 
-downloadAll().then(() => {
-  console.log('Done!');
-  process.exit(0);
+downloadAll().then(failed => {
+  process.exit(failed > 0 ? 1 : 0);
+}).catch(error => {
+  console.error(error);
+  process.exit(1);
 });
