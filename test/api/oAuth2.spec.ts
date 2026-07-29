@@ -20,6 +20,7 @@ describe('OAuth2', () => {
       get: sinon.stub(Promise.resolve({})),
       delete: sinon.stub(Promise.resolve({})),
       put: sinon.stub(Promise.resolve({})),
+      patch: sinon.stub(Promise.resolve({})),
       post: sinon.stub(Promise.resolve({})),
       postForm: sinon.stub().returns(Promise.resolve({
         data: {
