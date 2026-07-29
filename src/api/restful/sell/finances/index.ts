@@ -1,4 +1,5 @@
 import {operations} from '../../../../types/restful/specs/sell_finances_v1_oas3.js';
+import {toFilter} from '../../../../utils/params.js';
 import Restful, {OpenApi} from '../../index.js';
 
 /**
@@ -46,14 +47,14 @@ export default class Finances extends Restful implements OpenApi<operations> {
     offset,
     sort
   }: {
-    filter?: string;
+    filter?: string | string[];
     limit?: number;
     offset?: number;
     sort?: 'payoutDate' | '-payoutDate';
   } = {}) {
     return this.get('/payout', {
       params: {
-        filter,
+        filter: toFilter(filter),
         limit,
         offset,
         sort
@@ -70,9 +71,9 @@ export default class Finances extends Restful implements OpenApi<operations> {
   public getPayoutSummary({
     filter
   }: {
-    filter?: string;
+    filter?: string | string[];
   } = {}) {
-    return this.get('/payout_summary', {params: {filter}});
+    return this.get('/payout_summary', {params: {filter: toFilter(filter)}});
   }
 
   /**
@@ -97,7 +98,7 @@ export default class Finances extends Restful implements OpenApi<operations> {
   } = {}) {
     return this.get('/transaction', {
       params: {
-        filter: Array.isArray(filter) ? filter.join(',') : filter,
+        filter: toFilter(filter),
         limit,
         offset,
         sort
@@ -114,11 +115,11 @@ export default class Finances extends Restful implements OpenApi<operations> {
   public getTransactionSummary({
     filter
   }: {
-    filter?: string;
+    filter?: string | string[];
   } = {}) {
     return this.get('/transaction_summary', {
       params: {
-        filter
+        filter: toFilter(filter)
       }
     });
   }
@@ -149,14 +150,14 @@ export default class Finances extends Restful implements OpenApi<operations> {
    * @param sort Sorts the returned order earnings.
    */
   public getOrderEarnings({filter, limit, offset, sort}: {
-    filter?: string;
-    limit?: string;
-    offset?: string;
+    filter?: string | string[];
+    limit?: number;
+    offset?: number;
     sort?: string;
   } = {}) {
     return this.get('/order_earnings', {
       params: {
-        filter,
+        filter: toFilter(filter),
         limit,
         offset,
         sort
@@ -179,10 +180,12 @@ export default class Finances extends Restful implements OpenApi<operations> {
    *
    * @param filter One or more comma-separated criteria for narrowing down the order earnings included in the summary.
    */
-  public getOrderEarningsSummary(filter?: string) {
+  public getOrderEarningsSummary({filter}: {
+    filter?: string | string[];
+  } = {}) {
     return this.get('/order_earnings_summary', {
       params: {
-        filter
+        filter: toFilter(filter)
       }
     });
   }
@@ -196,14 +199,14 @@ export default class Finances extends Restful implements OpenApi<operations> {
    * @param sort Sorts the returned billing activities.
    */
   public getBillingActivities({filter, limit, offset, sort}: {
-    filter?: string;
-    limit?: string;
-    offset?: string;
+    filter?: string | string[];
+    limit?: number;
+    offset?: number;
     sort?: string;
   } = {}) {
     return this.get('/billing_activity', {
       params: {
-        filter,
+        filter: toFilter(filter),
         limit,
         offset,
         sort
