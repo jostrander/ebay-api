@@ -14,6 +14,10 @@ export const multipartHeader = {
   'Content-Type': 'multipart/form-data'
 }
 
+export const octetStreamHeader = {
+  'Content-Type': 'application/octet-stream'
+}
+
 export const defaultAxiosConfig: AxiosRequestConfig = {
   paramsSerializer: {
     indexes: null

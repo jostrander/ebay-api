@@ -5,7 +5,7 @@ import {
   CreateDocumentFromUrlRequest
 } from '../../../../types/index.js';
 import {operations} from '../../../../types/restful/specs/commerce_media_v1_beta_oas3.js';
-import {multipartHeader} from '../../../../request.js';
+import {multipartHeader, octetStreamHeader} from '../../../../request.js';
 import Restful, {OpenApi} from '../../index.js';
 
 /**
@@ -75,10 +75,16 @@ export default class Media extends Restful implements OpenApi<operations> {
    *
    * @param videoId The unique identifier of the video to be uploaded.
    * @param body The request payload for this method is the input stream for the video source. The input source must be an .mp4 file of the type MPEG-4 Part 10 or Advanced Video Coding (MPEG-4 AVC).
+   * @param headers Optional additional headers. Pass <b>Content-Length</b> and <b>Content-Range</b> here to resume an interrupted upload.
    */
-  async uploadVideo(videoId: string, body?: any) {
+  async uploadVideo(videoId: string, body?: any, headers: Record<string, string> = {}) {
     videoId = encodeURIComponent(videoId);
-    return this.post(`/video/${videoId}/upload`, body);
+    return this.post(`/video/${videoId}/upload`, body, {
+      headers: {
+        ...octetStreamHeader,
+        ...headers
+      }
+    });
   }
 
   /**
