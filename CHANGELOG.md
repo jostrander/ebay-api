@@ -1,4 +1,36 @@
 # eBay API Changelog
+## [10.0.0](https://github.com/hendt/ebay-api/compare/v10.0.0-RC.2...v10.0.0) (2026-07-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **finances:** getOrderEarningsSummary takes an options object
+({filter}) instead of a positional argument, matching its siblings, and
+the limit/offset parameters of getOrderEarnings and getBillingActivities
+are typed as number rather than string. All four methods were introduced
+in this unreleased major, so no published API changes.
+* 17 methods that eBay has decommissioned were removed,
+along with the BuyerCloseCaseRequest, BuyerCloseInquiryRequest,
+CheckEligibilityRequest, CheckInquiryEligibilityRequest,
+CloseReturnRequest, ConfirmRefundRequest, CreateInquiryRequest,
+GetEstimateRequest, MarkAsShippedRequest, MarkRefundSentRequest,
+ReturnAddressRequest, SellerProvideRefundInfoRequest,
+SetReturnCreationSessionRequest, UpdateTrackingRequest and
+VoidLabelRequest types. Inventory location management moves to
+eBay.sell.inventory.
+* a per-request Content-Type now overrides one set
+globally via apiConfig.headers. Previously the global value won.
+
+### Features
+
+* **finances:** accept an array for every filter parameter ([8aa5c3e](https://github.com/hendt/ebay-api/commit/8aa5c3e4095feab838329e9631dd157cae193915))
+* remove operations dropped from the refreshed specs ([7146bf1](https://github.com/hendt/ebay-api/commit/7146bf1eafe90d3f6133de9aa75efeda90327625))
+
+
+### Bug Fixes
+
+* stop default headers from overwriting per-request headers ([8bfa479](https://github.com/hendt/ebay-api/commit/8bfa4790681dc24313dacc86f83cdfb1cf546861))
+
 ## [10.0.0-RC.2](https://github.com/hendt/ebay-api/compare/v9.6.0...v10.0.0-RC.2) (2026-07-24)
 
 
