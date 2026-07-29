@@ -148,8 +148,12 @@ export default abstract class Restful extends Api {
     return this.doRequest({method: 'get', path, config}, apiConfig);
   }
 
+  /**
+   * A DELETE body travels in `config.data`, the way Axios expects it. Mirror it onto the request so
+   * that digital signing sees the payload and emits a "content-digest" header for it.
+   */
   public async delete(path: string, config: any = {}, apiConfig?: RestfulApiConfig) {
-    return this.doRequest({method: 'delete', path, config}, apiConfig);
+    return this.doRequest({method: 'delete', path, data: config.data, config}, apiConfig);
   }
 
   public async post(path: string, data?: any, config: any = {}, apiConfig?: RestfulApiConfig) {
@@ -158,6 +162,10 @@ export default abstract class Restful extends Api {
 
   public async put(path: string, data?: any, config: any = {}, apiConfig?: RestfulApiConfig) {
     return this.doRequest({method: 'put', path, data, config}, apiConfig);
+  }
+
+  public async patch(path: string, data?: any, config: any = {}, apiConfig?: RestfulApiConfig) {
+    return this.doRequest({method: 'patch', path, data, config}, apiConfig);
   }
 
   get additionalHeaders() {
@@ -183,20 +191,21 @@ export default abstract class Restful extends Api {
       path: apiConfig.apiVersion + apiConfig.basePath + apiRequest.path
     }, payload) : {};
 
+    // Least to most specific: library defaults are overridable by the app config, which in turn is
+    // overridable by per-request headers (e.g. the multipart/octet-stream Content-Type that upload
+    // endpoints require). Signature headers are derived from the final request and always win.
     const headers = {
       ...defaultApiHeaders,
       ...this.additionalHeaders,
       ...authHeader,
       ...apiConfig.headers,
+      ...(apiRequest.config.headers || {}),
       ...signatureHeaders
     };
 
     return {
       ...apiRequest.config,
-      headers: {
-        ...(apiRequest.config.headers || {}),
-        ...headers
-      }
+      headers
     };
   }
 

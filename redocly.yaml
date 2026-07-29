@@ -23,10 +23,10 @@ apis:
     root: specs/buy_offer_v1_beta_oas3.json
     x-openapi-ts:
       output: src/types/restful/specs/buy_offer_v1_beta_oas3.ts
-  buy_order_v1_beta:
-    root: specs/buy_order_v1_beta_oas3.json
+  buy_order_v2:
+    root: specs/buy_order_v2_oas3.json
     x-openapi-ts:
-      output: src/types/restful/specs/buy_order_v1_beta_oas3.ts
+      output: src/types/restful/specs/buy_order_v2_oas3.ts
   cancellation:
     root: specs/cancellation_oas3.json
     x-openapi-ts:
@@ -99,10 +99,6 @@ apis:
     root: specs/sell_analytics_v1_oas3.json
     x-openapi-ts:
       output: src/types/restful/specs/sell_analytics_v1_oas3.ts
-  sell_compliance_v1:
-    root: specs/sell_compliance_v1_oas3.json
-    x-openapi-ts:
-      output: src/types/restful/specs/sell_compliance_v1_oas3.ts
   sell_feed_v1:
     root: specs/sell_feed_v1_oas3.json
     x-openapi-ts:
@@ -143,3 +139,7 @@ apis:
     root: specs/sell_recommendation_v1_oas3.json
     x-openapi-ts:
       output: src/types/restful/specs/sell_recommendation_v1_oas3.ts
+  sell_stores_v1:
+    root: specs/sell_stores_v1_oas3.json
+    x-openapi-ts:
+      output: src/types/restful/specs/sell_stores_v1_oas3.ts

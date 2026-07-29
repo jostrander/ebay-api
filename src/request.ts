@@ -14,6 +14,10 @@ export const multipartHeader = {
   'Content-Type': 'multipart/form-data'
 }
 
+export const octetStreamHeader = {
+  'Content-Type': 'application/octet-stream'
+}
+
 export const defaultAxiosConfig: AxiosRequestConfig = {
   paramsSerializer: {
     indexes: null
@@ -32,6 +36,8 @@ export interface IEBayApiRequest<T = AxiosInstance, C = AxiosRequestConfig, R = 
   postForm(url: string, data?: any, config?: C): Promise<R>;
 
   put(url: string, data?: any, config?: C): Promise<R>;
+
+  patch(url: string, data?: any, config?: C): Promise<R>;
 }
 
 export class AxiosRequest implements IEBayApiRequest {
@@ -65,6 +71,11 @@ export class AxiosRequest implements IEBayApiRequest {
   public put<R = any>(url: string, payload?: any, config?: AxiosRequestConfig): Promise<R> {
     log('put: ' + url, {payload, config});
     return this.instance.put(url, payload, config);
+  }
+
+  public patch<R = any>(url: string, payload?: any, config?: AxiosRequestConfig): Promise<R> {
+    log('patch: ' + url, {payload, config});
+    return this.instance.patch(url, payload, config);
   }
 
   public postForm<R = any>(url: string, payload?: any, config?: AxiosRequestConfig): Promise<R> {

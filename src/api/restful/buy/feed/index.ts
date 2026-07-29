@@ -66,19 +66,15 @@ export default class Feed extends Restful implements OpenApi<operations> {
   }
 
   /**
-   * The Hourly Snapshot feed file is generated each hour every day for all categories.
+   * This method lets you download a TSV_GZIP (tab separated value gzip) Item Priority feed file.
    *
    * @param {BuyFeedParams} params
-   * @param {String} snapshotDate
    * @param range his header specifies the range in bytes of the chunks of the gzip file being returned.
    *          Format: bytes=startpos-endpos For example, the following retrieves the first 10 MBs of the feed file.
    */
-  public getProductFeed(params: BuyFeedParams, snapshotDate: string, range: string) {
-    return this.get('/product', {
-      params: {
-        ...params,
-        snapshot_date: snapshotDate
-      },
+  public getItemPriorityFeed(params: BuyFeedParams, range: string) {
+    return this.get('/item_priority', {
+      params,
       headers: {
         'Range': range
       }

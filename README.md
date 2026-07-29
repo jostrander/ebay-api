@@ -20,9 +20,10 @@ It supports `client credentials grant` and `authorization code grant` \(Auth'N'A
 ## Table of Contents
 
 - [🚀 Quick Start](#-quick-start)
+- [Implementation Status](#implementation-status)
+- [Migrating from v9 to v10](#migrating-from-v9-to-v10)
 - [Install](#install)
 - [eBay Docs](#ebay-docs)
-- [Implementation Status](#implementation-status)
 - [🔧 eBayApi Config](#-ebayapi-config)
 - [Load Config from Environment](#load-config-from-environment)
 - [🐞 Debug](#-debug)
@@ -38,9 +39,108 @@ It supports `client credentials grant` and `authorization code grant` \(Auth'N'A
 
 ## 🚀 Quick Start
 
+* `v10.0.0-RC.2` is the latest release.
+* See [here](https://github.com/hendt/ebay-api/blob/master/CHANGELOG.md) for the full changelog.
+
 Sign up for an API key here: [Developer Account](https://developer.ebay.com/signin?tab=register).
 
-### Installation
+## Implementation status
+
+### RESTful APIs
+
+| API                | Implemented                                                                                                                                                                                                                                                                                                                                                                  |
+|:-------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Buy API**        | ✔ Browse API `v1.20.4`<br>✔  Deal API `v1.3.0`<br>✔ Feed API `v1_beta.35.2`<br>✔ Marketing API `v1_beta.2.0`<br>✔ Offer API `v1_beta.0.1`<br>✔ Order API `v2.1.4`<br>✔ Marketplace Insights API `v1_beta.2.2`                                                                                                                                                                |
+| **Commerce API**   | ✔ Catalog API `v1_beta.5.3`<br>✔ Charity API `v1.2.1`<br>✔ Feedback API `v1.0.0`<br>✔ Identity API `v2.0.0`<br>✔ Media API `v1_beta.5.0`<br>✔ Message API `v1.0.0`<br>✔ Notification API `v1.6.7`<br>✔ Taxonomy API `v1.1.1`<br>✔ Translation API `v1_beta.1.6`                                                                                                              |
+| **Developer API**  | ✔ Analytics API `v1_beta.0.1`<br>✔ Key Management API `v1.0.0`                                                                                                                                                                                                                                                                                                                                                              |
+| **Post Order API** | ✔ Cancellation API<br>✔ Case Management API<br>✔ Inquiry API<br>✔ Return API                                                                                                                                                                                                                                                                                                 |
+| **Sell API**       | ✔ Account API `v1.9.3` / `v2.2.0`<br>✔ Analytics API `v1.3.2`<br>✔ Feed API `v1.3.1`<br>✔ Finance API `v1.19.0`<br>✔ Fulfillment API `v1.20.7`<br>✔ Inventory API `v1.18.5`<br>✔ Listing API `v1_beta.2.1`<br>✔ Logistics API `v1_beta.0.0`<br>✔ Marketing API `v1.23.2`<br>✔ Metadata API `v1.12.1`<br>✔ Negotiation API `v1.1.0`<br>✔ Recommendation API `v1.1.0`<br>✔ Stores API `v1.0.0` |
+
+### Traditional APIs
+
+| API                   | Implemented |
+|:----------------------|:------------|
+| **Shopping API**      | ✔           |
+| **Merchandising API** | ✔           |
+| **Trading API**       | ✔           |
+| **Client Alerts API** | ✔           |
+| **Feedback API**      | ✔           |
+
+## Migrating from v9 to v10
+
+v10 is a major release that removes eBay APIs and operations that **eBay has decommissioned**. The public interface (auth, config, request handling) is unchanged — you only need to make changes if your app used one of the removed APIs/operations below.
+
+### Removed APIs
+
+| Removed | Replacement / Notes |
+|:--------|:--------------------|
+| **Finding API** (`eBay.finding`) | eBay took the traditional Finding API down server-side in February 2025. Migrate item search to the **Buy Browse API** (`eBay.buy.browse`). |
+| **Sell Compliance API** (`eBay.sell.compliance`) | Decommissioned by eBay on 2026-03-30. Removed together with `getListingViolations` / `getListingViolationsSummary` and the `SuppressViolationRequest` type. |
+
+### Removed operations
+
+Every operation below was dropped from eBay's own published OpenAPI spec. Calling one in v9 already
+failed against the live API; in v10 the method no longer exists.
+
+| API | Removed | Replacement / Notes |
+|:----|:--------|:--------------------|
+| **Buy Browse** (`eBay.buy.browse`) | `addItem`, `removeItem`, `updateQuantity`, `getShoppingCart` | The experimental `/shopping_cart` resource was withdrawn. The `AddCartItemInput`, `RemoveCartItemInput` and `UpdateCartItemInput` types were removed with it. |
+| **Buy Feed** (`eBay.buy.feed`) | `getProductFeed` | The `/product` feed was withdrawn. Use `getItemFeed`, `getItemGroupFeed`, `getItemSnapshotFeed` or the new `getItemPriorityFeed`. |
+| **Buy Marketing** (`eBay.buy.marketing`) | `getAlsoBoughtByProduct`, `getAlsoViewedByProduct` | Only `getMerchandisedProducts` remains. |
+| **Buy Order** (`eBay.buy.order`) | Migrated **v1 → v2** — only the **guest checkout** flow remains. The member checkout session, proxy-guest checkout session, payment-info, initiate-payment and place-order operations are gone. | The `CreateSignInCheckoutSessionRequest`, `GuestPlaceOrderRequest`, `InitiatePaymentRequest`, `UpdatePaymentInformation` and `CheckoutSessionRequestWithoutPayment` types were removed. |
+| **Commerce Catalog** (`eBay.commerce.catalog`) | `getChangeRequest`, `getChangeRequests`, `getProductMetadata`, `getProductMetadataForCategories` | The catalog change-request and product-metadata resources were decommissioned. `getProduct` and `search` remain. |
+| **Commerce Charity** (`eBay.commerce.charity`) | `getCharityOrgByLegacyId` | Look the organization up with `getCharityOrgs` and use its current ID with `getCharityOrg`. |
+| **Sell Account v1** (`eBay.sell.account`) | `getInventoryLocation`, `getInventoryLocations`, `createInventoryLocation`, `updateInventoryLocation`, `deleteInventoryLocation`, `enableInventoryLocation`, `disableInventoryLocation` | These were duplicates pointing at `/sell/account/v1/location`, which eBay does not serve. Use the identically-named methods on **`eBay.sell.inventory`**, which target the correct `/sell/inventory/v1/location` path. |
+| **Sell Account v1** (`eBay.sell.account`) | `getSalesTaxJurisdictions` | The `sales_tax_jurisdiction` resource was withdrawn. The `/sales_tax` methods (`getSalesTax`, `getSalesTaxes`, `createOrReplaceSalesTax`, `deleteSalesTax`, `bulkCreateOrReplaceSalesTax`) are unaffected. |
+| **Sell Marketing** (`eBay.sell.marketing`) | `setupQuickCampaign`, `launchCampaign` | The `quick_setup` and `launch` operations were retired, along with the `QuickSetupRequest` type. |
+| **Sell Metadata** (`eBay.sell.metadata`) | `getProductAdoptionPolicies` | The `get_product_adoption_policies` operation was withdrawn. |
+| **Post-Order** (`eBay.postOrder.*`) | 29 methods — see the table below. | The request types that only those methods used were removed too: `BuyerCloseCaseRequest`, `BuyerCloseInquiryRequest`, `CheckEligibilityRequest`, `CheckInquiryEligibilityRequest`, `CloseReturnRequest`, `ConfirmRefundRequest`, `CreateInquiryRequest`, `GetEstimateRequest`, `MarkAsShippedRequest`, `MarkRefundSentRequest`, `ReturnAddressRequest`, `SellerProvideRefundInfoRequest`, `SetReturnCreationSessionRequest`, `UpdateTrackingRequest`, `VoidLabelRequest`. |
+
+Removed post-order methods:
+
+| Resource | Removed |
+|:---------|:--------|
+| `eBay.postOrder.cancellation` | `confirmRefundReceived` |
+| `eBay.postOrder.case` | `closeCase`, `issueCaseRefund`, `provideReturnShipmentInfo`, `providesReturnAddress` |
+| `eBay.postOrder.inquiry` | `checkInquiryEligibility`, `closeInquiry`, `confirmInquiryRefund`, `createInquiry`, `provideInquiryRefundInfo` |
+| `eBay.postOrder.return` | `cancelReturnRequest`, `checkReturnEligibility`, `checkShippingLabelEligibility`, `createReturnDraft`, `createReturnShippingLabel`, `deleteReturnDraftFile`, `getReturnDraft`, `getReturnDraftFiles`, `getReturnEstimate`, `getReturnShippingLabel`, `markReturnRefundReceived`, `markReturnRefundSent`, `markReturnShipped`, `sendReturnShippingLabel`, `submitReturnFile`, `updateReturnDraft`, `updateShipmentTrackingInfo`, `uploadReturnDraftFile`, `voidShippingLabel` |
+
+### Renamed methods
+
+- **Commerce Notification** — `eBay.commerce.notification.test(subscriptionId)` is now
+  `eBay.commerce.notification.testSubscription(subscriptionId)`, matching eBay's `operationId`.
+
+### Changed behaviour
+
+- **`IEBayApiRequest` gained a required `patch` method.** If you pass a custom request implementation
+  (`new eBayApi(config, myRequest)`), add a `patch(url, data?, config?)` member. The bundled
+  `AxiosRequest` already has it. This is needed by `eBay.sell.accountV2.setUserPreferences`, eBay's
+  first `PATCH` operation.
+- **`eBay.commerce.media.uploadVideo`** now sends `Content-Type: application/octet-stream`, as the spec
+  requires, and takes an optional third `headers` argument so you can supply `Content-Range` /
+  `Content-Length` for resumable uploads.
+- **`eBay.sell.logistics.downloadLabelFile`** now requests `application/pdf` and returns the raw
+  buffer (`responseType: 'arraybuffer'`) instead of attempting to parse the PDF as JSON.
+- **Per-request headers now win over the client-wide defaults.** Previously the library's default
+  `Content-Type: application/json` overwrote the `multipart/form-data` header that the upload
+  endpoints set, so `createImageFromFile`, `uploadDocument`, `uploadPostOrderDocument`,
+  `sell.feed.uploadFile` and `sell.fulfillment.uploadEvidenceFile` were rejected by eBay. They work now.
+- **Sell Finances `filter` parameters accept an array.** `getPayouts`, `getPayoutSummary`,
+  `getTransactions`, `getTransactionSummary`, `getOrderEarnings`, `getOrderEarningsSummary` and
+  `getBillingActivities` all take `string | string[]` and join the list for you.
+  `getOrderEarningsSummary` now takes an options object (`{filter}`) like its siblings.
+- **Commerce Media** — the `InputStream` type was removed upstream; `uploadVideo` now accepts `any`
+  for its body.
+
+### New in v10
+
+- **Sell Stores API** (`eBay.sell.stores`) — manage the categories of a seller's eBay store.
+- **Sell Account API v2** (`eBay.sell.accountV2`) — rate tables, payout settings, combined shipping
+  rules and user preferences.
+- All RESTful OpenAPI specs were refreshed to eBay's latest published versions, which adds a number of
+  new methods (for example `eBay.buy.feed.getItemPriorityFeed` and 19 new Sell Metadata operations).
+
+## Install
 
 ```bash
 npm install ebay-api 
@@ -72,33 +172,6 @@ For more examples, check out the [examples directory](./examples).
 * [eBay API Explorer](https://developer.ebay.com/my/api_test_tool)
 * [eBay API Docs](https://developer.ebay.com/docs)
 * [eBay API Status](https://entwickler.ebay.de/support/api-status/production)
-
-## Changelog
-
-* `v9.6.0` is the latest release.
-* See [here](https://github.com/hendt/ebay-api/blob/master/CHANGELOG.md) for the full changelog.
-
-## Implementation status
-
-### RESTful API
-
-| API                | Implemented                                                                                                                                                                                                                                                                                                                                                                          |
-|:-------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Buy API**        | ✔ Browse API `v1.10.0`<br>✔  Deal API `v1.3.0`<br>✔ Feed API `v1.3.1`<br>✔ Marketing API `v1_beta.1.0`<br>✔ Offer API `v1_beta.0.0`<br>✔ Order API `v1_beta.20.0`<br>✔ Marketplace Insights API `v1_beta.2.2`                                                                                                                                                                        |
-| **Commerce API**   | ✔ Catalog API `v1_beta.3.1`<br>✔ Charity API `v1.2.0`<br>✔ Identity API `v1.0.0`<br>✔ Notification API `v1.2.0`<br>✔ Taxonomy API `v1.0.0`<br>✔ Translation API `v1_beta.1.4`<br>✔ Media API `v1_beta.1.0`<br>✔ Message API `v1.0.0`<br>✔ Feedback API `v1_beta.1.0.0`                                                                                                                                            |
-| **Developer API**  | ✔ Analytics API                                                                                                                                                                                                                                                                                                                                                                      |
-| **Post Order API** | ✔ Cancellation API<br>✔ Case Management API<br>✔ Inquiry API<br>✔ Return API                                                                                                                                                                                                                                                                                                         |
-| **Sell API**       | ✔ Account API `v1.9.0`<br>✔ Analytics API `v1.3.0`<br>✔ Compliance API `v1.4.1`<br>✔ Feed API `v1.3.1`<br>✔ Finance API `v1.9.0`<br>✔ Fulfillment API `v1.19.10`<br>✔ Inventory API `v1.18.0`<br>✔ Listing API `v1_beta.2.1`<br>✔ Logistics API `v1_beta.0.0`<br>✔ Marketing API `v1.17.0`<br>✔ Metadata API `v1.7.1`<br>✔ Negotiation API `v1.1.0`<br>✔ Recommendation API `v1.1.0` |
-
-### Traditional API
-
-| API                   | Implemented |
-|:----------------------|:------------|
-| **Shopping API**      | ✔           |
-| **Merchandising API** | ✔           |
-| **Trading API**       | ✔           |
-| **Client Alerts API** | ✔           |
-| **Feedback API**      | ✔           |
 
 ## Detailed Configuration
 
@@ -135,7 +208,7 @@ workers: [https://github.com/hendt/ebay-api/blob/master/proxy/worker.js](https:/
 
 Or use [CORS Anywhere](https://github.com/Rob--W/cors-anywhere) (a NodeJS proxy that works very well with heroku.com).
 
-#### ESM
+### ESM
 
 ```html
 
@@ -336,16 +409,15 @@ app.get('/orders/:id', async function (req, res) {
 ## Digital Signature
 Signatures are required when the call is made for EU- or UK-domiciled sellers, and only for the following APIs/methods:
 
-* All methods in the Finances API -> (`eBay.finances.XXX.sign.YYY()`)
+* All methods in the Finances API -> (`eBay.sell.finances.sign.XXX()`)
 * issueRefund in the Fulfillment API -> (`eBay.sell.fulfillment.sign.issueRefund()`)
 * GetAccount in the Trading API -> (`eBay.trading.GetAccount(null, { sign: true }))`)
 * The following methods in the Post-Order API:
   - Issue Inquiry Refund -> (`eBay.postOrder.inquiry.sign.issueInquiryRefund()`)
-  - Issue case refund -> (`eBay.postOrder.inquiry.sign.issueCaseRefund()`)
-  - Issue return refund -> (`eBay.postOrder.inquiry.sign.issueReturnRefund()`)
-  - Process Return Request -> (`eBay.postOrder.inquiry.sign.processReturnRequest()`)
-  - Create Cancellation Request -> (`eBay.postOrder.inquiry.sign.createCancellation()`)
-  - Approve Cancellation Request -> (`eBay.postOrder.inquiry.sign.approveCancellationRequest()`)
+  - Issue return refund -> (`eBay.postOrder.return.sign.issueReturnRefund()`)
+  - Process Return Request -> (`eBay.postOrder.return.sign.processReturnRequest()`)
+  - Create Cancellation Request -> (`eBay.postOrder.cancellation.sign.createCancellation()`)
+  - Approve Cancellation Request -> (`eBay.postOrder.cancellation.sign.approveCancellationRequest()`)
 
 ### How to use Digital Signature
 ```typescript
@@ -430,8 +502,9 @@ eBay.OAuth2.on('refreshClientToken', (token) => {
 });
 ```
 
-To manual refresh the auth token use `eBay.OAuth2.refreshAuthToken()` and for the client
-token use `eBay.OAuth2.refreshClientToken()`.
+To manually refresh the user access token use `eBay.OAuth2.refreshUserAccessToken()`, and for the
+client token use `eBay.OAuth2.obtainApplicationAccessToken()`. `eBay.OAuth2.refreshToken()` picks the
+right one for you based on the credentials that are set.
 Keep in mind that you need the 'refresh_token' value set.
 
 ```typescript
@@ -477,7 +550,9 @@ eBay.trading.AddFixedPriceItem({
 });
 ```
 
-### Low level: use the Axios interceptor to manipulate the request
+### Low level: add extra headers with the Axios interceptor
+
+If you want to add a header to every request you can use the Axios interceptor.
 
 ```typescript
 import eBayApi from 'ebay-api';
@@ -490,6 +565,7 @@ eBay.req.instance.interceptors.request.use((request) => {
   return request;
 });
 ```
+
 
 ### Handle JSON GZIP response e.g fetchItemAspects
 
@@ -685,45 +761,6 @@ eBay.postOrder.return.getReturn('5132021997').then(a => {
 });
 ```
 
-### Finding - findItemsByProduct \(use XML attributes and value\)
-
-```js
-eBay.finding.findItemsByProduct({
-  productId: {
-    '@_type': 'ReferenceID',
-    '#value': '53039031'
-  }
-});
-
-// will produce:
-// <productId type="ReferenceID">53039031</productId>
-```
-
-### Finding - findItemsIneBayStores
-
-```js
-eBay.finding.findItemsIneBayStores({
-  storeName: 'HENDT'
-}, {raw: true}).then(result => {
-  // Return raw XML
-  console.log(result);
-});
-```
-
-### Finding - findItemsAdvanced \(findItemsByKeywords\)
-
-```js
-eBay.finding.findItemsAdvanced({
-  itemFilter: [{
-    name: 'Seller',
-    value: 'hendt_de'
-  }],
-  keywords: 'katze'
-}).then(result => {
-  console.log(result);
-});
-```
-
 ### Trading - GetMyeBaySelling
 
 ```js
@@ -758,6 +795,7 @@ and [Node Example here](https://github.com/hendt/ebay-api/blob/master/examples/t
 
 4. itemAffiliateWebUrl is missing in eBay.buy.browse.search call
    You have to set `endUserCtx`.
+
 
 ## Contribution
 

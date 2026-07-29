@@ -1,5 +1,11 @@
-import {CreateVideoRequest, InputStream} from '../../../../types/index.js';
+import {
+  CreateVideoRequest,
+  CreateImageFromUrlRequest,
+  CreateDocumentRequest,
+  CreateDocumentFromUrlRequest
+} from '../../../../types/index.js';
 import {operations} from '../../../../types/restful/specs/commerce_media_v1_beta_oas3.js';
+import {multipartHeader, octetStreamHeader} from '../../../../request.js';
 import Restful, {OpenApi} from '../../index.js';
 
 /**
@@ -16,6 +22,35 @@ export default class Media extends Restful implements OpenApi<operations> {
 
   get subdomain(): string {
     return 'apim';
+  }
+
+  /**
+   * This method creates an image from a file upload.
+   * @param body The image file to upload
+   */
+  async createImageFromFile(body?: any) {
+    return this.post('/image/create_image_from_file', body, {
+      headers: {
+        ...multipartHeader
+      }
+    });
+  }
+
+  /**
+   * This method creates an image from a URL.
+   * @param body The image URL request
+   */
+  async createImageFromUrl(body?: CreateImageFromUrlRequest) {
+    return this.post('/image/create_image_from_url', body);
+  }
+
+  /**
+   * This method retrieves an image's metadata and content given a specified image ID.
+   * @param imageId The unique identifier of the image to be retrieved.
+   */
+  async getImage(imageId: string) {
+    imageId = encodeURIComponent(imageId);
+    return this.get(`/image/${imageId}`);
   }
 
   /**
@@ -40,9 +75,86 @@ export default class Media extends Restful implements OpenApi<operations> {
    *
    * @param videoId The unique identifier of the video to be uploaded.
    * @param body The request payload for this method is the input stream for the video source. The input source must be an .mp4 file of the type MPEG-4 Part 10 or Advanced Video Coding (MPEG-4 AVC).
+   * @param headers Optional additional headers. Pass <b>Content-Length</b> and <b>Content-Range</b> here to resume an interrupted upload.
    */
-  async uploadVideo(videoId: string, body?: InputStream) {
+  async uploadVideo(videoId: string, body?: any, headers: Record<string, string> = {}) {
     videoId = encodeURIComponent(videoId);
-    return this.post(`/video/${videoId}/upload`, body);
+    return this.post(`/video/${videoId}/upload`, body, {
+      headers: {
+        ...octetStreamHeader,
+        ...headers
+      }
+    });
+  }
+
+  /**
+   * This method creates a document.
+   * @param body The document creation request
+   */
+  async createDocument(body?: CreateDocumentRequest) {
+    return this.post('/document', body);
+  }
+
+  /**
+   * This method creates a document from a URL.
+   * @param body The document URL request
+   */
+  async createDocumentFromUrl(body?: CreateDocumentFromUrlRequest) {
+    return this.post('/document/create_document_from_url', body);
+  }
+
+  /**
+   * This method retrieves a document's metadata and content given a specified document ID.
+   * @param documentId The unique identifier of the document to be retrieved.
+   */
+  async getDocument(documentId: string) {
+    documentId = encodeURIComponent(documentId);
+    return this.get(`/document/${documentId}`);
+  }
+
+  /**
+   * This method associates the specified file with the specified document ID and uploads the input file.
+   * @param documentId The unique identifier of the document to be uploaded.
+   * @param body The document file to upload
+   */
+  async uploadDocument(documentId: string, body?: any) {
+    documentId = encodeURIComponent(documentId);
+    return this.post(`/document/${documentId}/upload`, body, {
+      headers: {
+        ...multipartHeader
+      }
+    });
+  }
+
+  /**
+   * This method uploads a post-order document.
+   * @param body The post-order document file to upload.
+   */
+  async uploadPostOrderDocument(body?: any) {
+    return this.post('/post_order/document', body, {
+      headers: {
+        ...multipartHeader
+      }
+    });
+  }
+
+  /**
+   * This method downloads a post-order document's content given a specified document ID.
+   * @param documentId The unique identifier of the post-order document to be downloaded.
+   */
+  async downloadPostOrderDocument(documentId: string) {
+    documentId = encodeURIComponent(documentId);
+    return this.get(`/post_order/document/${documentId}`, {
+      responseType: 'arraybuffer'
+    });
+  }
+
+  /**
+   * This method removes a post-order document given a specified document ID.
+   * @param documentId The unique identifier of the post-order document to be removed.
+   */
+  async removePostOrderDocument(documentId: string) {
+    documentId = encodeURIComponent(documentId);
+    return this.delete(`/post_order/document/${documentId}`);
   }
 }

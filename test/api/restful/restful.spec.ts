@@ -16,6 +16,10 @@ class TestApi extends Restful {
       }
     });
   }
+
+  deleteThing(body: any) {
+    return this.delete('/things', {data: body});
+  }
 }
 
 describe('Restful API', () => {
@@ -41,6 +45,7 @@ describe('Restful API', () => {
       get: sinon.stub(),
       delete: sinon.stub(),
       put: sinon.stub(),
+      patch: sinon.stub(),
       post: sinon.stub(),
       postForm: sinon.stub().returns(Promise.resolve({
         data: {access_token: 'new_access_token'}
@@ -108,6 +113,81 @@ describe('Restful API', () => {
         'Cache-Control': 'no-cache',
         'Accept-Encoding': 'application/gzip',
         'X-HEADER': 'X-HEADER'
+      }
+    });
+  });
+
+  it('lets a per-request header override the default Content-Type', async () => {
+    // @ts-ignore
+    const api = new TestApi(config, req, {
+      getHeaderAuthorization: sinon.stub().returns({'Authorization': 'Authorization'})
+    });
+
+    const {headers} = await api.enrichRequestConfig({
+      method: 'post',
+      path: '/',
+      config: {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    });
+
+    expect(headers['Content-Type']).to.equal('multipart/form-data');
+  });
+
+  it('lets a per-request header override the app config headers', async () => {
+    // @ts-ignore
+    const api = new TestApi(config, req, {
+      getHeaderAuthorization: sinon.stub().returns({'Authorization': 'Authorization'})
+    }, {headers: {'Content-Type': 'application/json'}});
+
+    const {headers} = await api.enrichRequestConfig({
+      method: 'post',
+      path: '/',
+      config: {
+        headers: {
+          'Content-Type': 'application/octet-stream'
+        }
+      }
+    });
+
+    expect(headers['Content-Type']).to.equal('application/octet-stream');
+  });
+
+  it('signs the body of a delete request', async () => {
+    const del = sinon.stub().returns({data: {}});
+    const api = new TestApi(config, {...req, delete: del}).api({sign: true});
+    api.auth.OAuth2.setCredentials(cred);
+    const getDigitalSignatureHeaders = sinon.stub().returns({});
+    // @ts-ignore
+    api.getDigitalSignatureHeaders = getDigitalSignatureHeaders;
+
+    const body = {moveToCategoryId: '42'};
+    await api.deleteThing(body);
+
+    // second argument is the payload the signature is computed over
+    expect(getDigitalSignatureHeaders.args[0][1]).to.eql(body);
+    expect(del.args[0][1].data).to.eql(body);
+  });
+
+  it('keeps non-header request config alongside the merged headers', async () => {
+    // @ts-ignore
+    const api = new TestApi(config, req, {
+      getHeaderAuthorization: sinon.stub().returns({'Authorization': 'Authorization'})
+    });
+
+    expect(await api.enrichRequestConfig({
+      method: 'get',
+      path: '/',
+      config: {
+        responseType: 'arraybuffer'
+      }
+    })).to.eql({
+      responseType: 'arraybuffer',
+      headers: {
+        ...defaultApiHeaders,
+        'Authorization': 'Authorization'
       }
     });
   });

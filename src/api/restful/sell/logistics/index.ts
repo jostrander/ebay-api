@@ -1,3 +1,7 @@
+import {
+  ShippingQuoteRequest,
+  CreateShipmentFromQuoteRequest
+} from '../../../../types/index.js';
 import {operations} from '../../../../types/restful/specs/sell_logistics_v1_oas3.js';
 import Restful, {OpenApi} from '../../index.js';
 
@@ -17,7 +21,7 @@ export default class Logistics extends Restful implements OpenApi<operations> {
    *
    * @param data The ShippingQuoteRequest
    */
-  public createShippingQuote(data: any) {
+  public createShippingQuote(data: ShippingQuoteRequest) {
     return this.post('/shipping_quote', data);
   }
 
@@ -36,7 +40,7 @@ export default class Logistics extends Restful implements OpenApi<operations> {
    *
    * @param data The CreateShipmentFromQuoteRequest
    */
-  public createFromShippingQuote(data: any) {
+  public createFromShippingQuote(data: CreateShipmentFromQuoteRequest) {
     return this.post('/shipment/create_from_shipping_quote', data);
   }
 
@@ -45,7 +49,8 @@ export default class Logistics extends Restful implements OpenApi<operations> {
    *
    * @param shipmentId This path parameter specifies the unique eBay-assigned ID of the shipment you want to retrieve.
    */
-  public getShipment(shipmentId: any) {
+  public getShipment(shipmentId: string) {
+    shipmentId = encodeURIComponent(shipmentId);
     return this.get(`/shipment/${shipmentId}`);
   }
 
@@ -54,8 +59,14 @@ export default class Logistics extends Restful implements OpenApi<operations> {
    *
    * @param shipmentId This path parameter specifies the unique eBay-assigned ID of the shipment associated with the shipping label you want to download.
    */
-  public downloadLabelFile(shipmentId: any) {
-    return this.get(`/shipment/${shipmentId}/download_label_file`);
+  public downloadLabelFile(shipmentId: string) {
+    shipmentId = encodeURIComponent(shipmentId);
+    return this.get(`/shipment/${shipmentId}/download_label_file`, {
+      responseType: 'arraybuffer',
+      headers: {
+        Accept: 'application/pdf'
+      }
+    });
   }
 
   /**
@@ -63,7 +74,8 @@ export default class Logistics extends Restful implements OpenApi<operations> {
    *
    * @param shipmentId This path parameter specifies the unique eBay-assigned ID of the shipment to be canceled.
    */
-  public cancelShipment(shipmentId: any) {
+  public cancelShipment(shipmentId: string) {
+    shipmentId = encodeURIComponent(shipmentId);
     return this.post(`/shipment/${shipmentId}/cancel`);
   }
 }

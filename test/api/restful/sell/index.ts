@@ -2,7 +2,6 @@ import {
   AccountV1,
   AccountV2,
   Analytics,
-  Compliance,
   Feed,
   Finances,
   Fulfillment,
@@ -12,7 +11,8 @@ import {
   Marketing,
   Metadata,
   Negotiation,
-  Recommendation
+  Recommendation,
+  Stores
 } from '../../../../src/api/restful/sell/index.js';
 import {readSpecs} from '../../jsonfile.js';
 
@@ -20,7 +20,6 @@ const tests = new Map<any, any>();
 tests.set(AccountV1, readSpecs( 'sell_account_v1_oas3.json', import.meta.url));
 tests.set(AccountV2, readSpecs( 'sell_account_v2_oas3.json', import.meta.url));
 tests.set(Analytics, readSpecs( 'sell_analytics_v1_oas3.json', import.meta.url));
-tests.set(Compliance, readSpecs( 'sell_compliance_v1_oas3.json', import.meta.url));
 tests.set(Fulfillment, readSpecs( 'sell_fulfillment_v1_oas3.json', import.meta.url));
 tests.set(Inventory, readSpecs( 'sell_inventory_v1_oas3.json', import.meta.url));
 tests.set(Marketing, readSpecs( 'sell_marketing_v1_oas3.json', import.meta.url));
@@ -31,5 +30,6 @@ tests.set(Feed, readSpecs( 'sell_feed_v1_oas3.json', import.meta.url));
 tests.set(Logistics, readSpecs( 'sell_logistics_v1_oas3.json', import.meta.url));
 tests.set(Negotiation, readSpecs( 'sell_negotiation_v1_oas3.json', import.meta.url));
 tests.set(Listing, readSpecs( 'sell_listing_v1_beta_oas3.json', import.meta.url));
+tests.set(Stores, readSpecs( 'sell_stores_v1_oas3.json', import.meta.url));
 
 export default tests;

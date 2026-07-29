@@ -21,6 +21,7 @@ describe('Traditional', () => {
     get: sinon.stub(),
     delete: sinon.stub(),
     put: sinon.stub(),
+    patch: sinon.stub(),
     post: sinon.stub(),
     postForm: sinon.stub(),
     instance: sinon.stub()
@@ -43,6 +44,7 @@ describe('Traditional', () => {
       get: sinon.stub(),
       delete: sinon.stub(),
       put: sinon.stub(),
+      patch: sinon.stub(),
       post,
       postForm: sinon.stub(),
       instance: sinon.stub()
@@ -67,6 +69,7 @@ describe('Traditional', () => {
       get: sinon.stub(),
       delete: sinon.stub(),
       put: sinon.stub(),
+      patch: sinon.stub(),
       post,
       postForm: sinon.stub(),
       instance: sinon.stub()
@@ -98,6 +101,7 @@ describe('Traditional', () => {
       get: sinon.stub(),
       delete: sinon.stub(),
       put: sinon.stub(),
+      patch: sinon.stub(),
       post,
       postForm: sinon.stub(),
       instance: sinon.stub()
@@ -130,6 +134,7 @@ describe('Traditional', () => {
       get: sinon.stub(),
       delete: sinon.stub(),
       put: sinon.stub(),
+      patch: sinon.stub(),
       post,
       postForm: sinon.stub(),
       instance: sinon.stub()
@@ -154,6 +159,7 @@ describe('Traditional', () => {
       get: sinon.stub(),
       delete: sinon.stub(),
       put: sinon.stub(),
+      patch: sinon.stub(),
       post,
       postForm: sinon.stub(),
       instance: sinon.stub()
