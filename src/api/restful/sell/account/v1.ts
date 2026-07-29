@@ -5,8 +5,6 @@ import {
   CustomPolicyRequest,
   FulfillmentPolicyRequest,
   FulfillmentSellAccountProgram,
-  InventoryLocation,
-  InventoryLocationFull,
   PaymentPolicyRequest,
   ReturnPolicyRequest,
   SalesTaxBase
@@ -449,86 +447,6 @@ export default class AccountV1 extends Restful implements OpenApi<operations> {
         program_types: programTypes
       }
     });
-  }
-
-  /**
-   * This call retrieves all defined details of the inventory location that is specified by the <b>merchantLocationKey</b> path parameter.
-   * @param merchantLocationKey A unique merchant-defined key (ID) for an inventory location.
-   */
-  public getInventoryLocation(merchantLocationKey: string) {
-    merchantLocationKey = encodeURIComponent(merchantLocationKey);
-    return this.get(`/location/${merchantLocationKey}`);
-  }
-
-
-  /**
-   * <p>Use this call to create a new inventory location.
-   * @param merchantLocationKey A unique, merchant-defined key (ID) for an inventory location.
-   * @param body Inventory Location details
-   */
-  public createInventoryLocation(merchantLocationKey: string, body: InventoryLocationFull) {
-    merchantLocationKey = encodeURIComponent(merchantLocationKey);
-    return this.post(`/location/${merchantLocationKey}`, body);
-  }
-
-  /**
-   * <p>This call deletes the inventory location that is specified in the <code>merchantLocationKey</code> path parameter.
-   * @param merchantLocationKey
-   */
-  public deleteInventoryLocation(merchantLocationKey: string) {
-    merchantLocationKey = encodeURIComponent(merchantLocationKey);
-    return this.delete(`/location/${merchantLocationKey}`);
-  }
-
-  /**
-   * <p>This call disables the inventory location that is specified in the <code>merchantLocationKey</code> path parameter.
-   * @param merchantLocationKey A unique merchant-defined key (ID) for an inventory location.
-   */
-  public disableInventoryLocation(merchantLocationKey: string) {
-    merchantLocationKey = encodeURIComponent(merchantLocationKey);
-    return this.post(`/location/${merchantLocationKey}/disable`);
-  }
-
-  /**
-   * <p>This call enables a disabled inventory location that is specified in the <code>merchantLocationKey</code> path parameter.
-   * @param merchantLocationKey A unique merchant-defined key (ID) for an inventory location.
-   */
-  public enableInventoryLocation(merchantLocationKey: string) {
-    merchantLocationKey = encodeURIComponent(merchantLocationKey);
-    return this.post(`/location/${merchantLocationKey}/enable`);
-  }
-
-  /**
-   * This call retrieves all defined details for every inventory location associated with the seller's account.
-   * @param limit The value passed in this query parameter sets the maximum number of records to return per page of data.
-   * @param offset Specifies the number of locations to skip in the result set before returning the first location in the paginated response.
-   */
-  public getInventoryLocations({limit, offset}: { limit?: number, offset?: number } = {}) {
-    return this.get('/location', {
-      params: {
-        limit,
-        offset
-      }
-    });
-  }
-
-  /**
-   * <p>Use this call to update non-physical location details for an existing inventory location.
-   * @param merchantLocationKey A unique merchant-defined key (ID) for an inventory location.
-   * @param body The inventory location details to be updated (other than the address and geo co-ordinates).
-   */
-  public updateInventoryLocation(merchantLocationKey: string, body: InventoryLocation) {
-    merchantLocationKey = encodeURIComponent(merchantLocationKey);
-    return this.post(`/location/${merchantLocationKey}/update_location_details`, body);
-  }
-
-  /**
-   * This method retrieves all the sales tax jurisdictions for the country that you specify in the <b>countryCode</b> path parameter.
-   * @param countryCode This path parameter specifies the two-letter <a href="https://www.iso.org/iso-3166-country-codes.html " title="https://www.iso.org " target="_blank">ISO 3166</a> country code for the country whose jurisdictions you want to retrieve. eBay provides sales tax jurisdiction information for Canada and the United States.
-   */
-  public getSalesTaxJurisdictions(countryCode: string) {
-    countryCode = encodeURIComponent(countryCode);
-    return this.get(`/country/${countryCode}/sales_tax_jurisdiction`);
   }
 
 }

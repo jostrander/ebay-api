@@ -134,11 +134,6 @@ export type DateTime = {
   value: string
 };
 
-export type ConfirmRefundRequest = {
-  refundDate?: DateTime,
-  unpaidOrder?: boolean
-};
-
 export type LineItem = {
   itemId: number,
   quantity: number,
@@ -160,11 +155,6 @@ export type RejectCancelRequest = {
 
 export type AppealRequest = {
   comments: Text
-};
-
-export type BuyerCloseCaseRequest = {
-  closeReason: boolean,
-  comments?: Text
 };
 
 export type CaseSearchParams = {
@@ -197,13 +187,6 @@ export type Address = {
   worldRegion?: string
 };
 
-export type ReturnAddressRequest = {
-  firstName?: string;
-  lastName?: string;
-  returnAddress?: Address
-  RMA?: string
-};
-
 export type Text = {
   content: string,
   language?: string,
@@ -213,26 +196,6 @@ export type Text = {
 
 export type Token = string;  // A string with normalized whitespace (e.g., dropped leading and trailing spaces).
 
-export type BuyerCloseInquiryRequest = {
-  closeReason?: Token,
-  comments?: Text
-};
-
-export type CheckInquiryEligibilityRequest = {
-  itemId: string,
-  transactionId: string
-};
-
-
-export type CreateInquiryRequest = {
-  claimQuantity?: number,
-  comments?: Text;
-  desiredOutcome?: Token,
-  itemId: string,
-  transactionId: string
-};
-
-
 export type EscalateInquiryRequest = {
   comments?: Text,
   escalateInquiryReason: Token
@@ -240,10 +203,6 @@ export type EscalateInquiryRequest = {
 
 export type InquiryVoluntaryRefundRequest = {
   comments?: Text
-};
-
-export type SellerProvideRefundInfoRequest = {
-  message: Text
 };
 
 export type ShipmentInfoRequest = {
@@ -272,19 +231,6 @@ export type SendMessageRequest = {
   message: Text
 };
 
-export type CheckEligibilityRequest = {
-  checkTypes: Token[];
-  itemId: string;
-  reason: Token;
-  returnQuantity?: number;
-  transactionId: string;
-};
-
-export type CloseReturnRequest = {
-  buyerCloseReason?: Token,
-  comments?: Text
-};
-
 export type ReturnRequestType = {
   carrier?: ShippingCarrier | `${ShippingCarrier}`;
   comments?: Text;
@@ -293,7 +239,7 @@ export type ReturnRequestType = {
   requestType: RequestType | `${RequestType}`;
   returnQuantity?: number;
   transactionId: string;
-  type?: ReturnType | `${ReturnType}`
+  type?: ReturnType | `${ReturnType}`;
 };
 
 export type CreateReturnRequest = {
@@ -322,24 +268,8 @@ export type EscalateRequest = {
   reason: EscalateReason | `${EscalateReason}`
 };
 
-export type GetEstimateRequest = {
-  itemId: string,
-  reason?: ReturnReason | `${ReturnReason}`,
-  returnQuantity?: number;
-  transactionId: string;
-};
-
 export type MarkAsReceivedRequest = {
   comments?: Text
-};
-
-export type MarkAsShippedRequest = {
-  carrierEnum?: ShippingCarrier | `${ShippingCarrier}`;
-  carrierName?: string;
-  carrierUsed?: string;
-  comments?: Text;
-  shippedDate?: DateTime;
-  trackingNumber: string;
 };
 
 export type ItemizedRefundDetailType = {
@@ -350,12 +280,6 @@ export type ItemizedRefundDetailType = {
 export type  RefundDetailType = {
   itemizedRefundDetail: ItemizedRefundDetailType;
   totalAmount: Amount
-};
-
-export type MarkRefundSentRequest = {
-  comments?: Text;
-  partialRefundAmount?: Amount;
-  refundDetail: RefundDetailType;
 };
 
 export type Comments = {
@@ -410,28 +334,10 @@ export type SearchReturnParams = {
   transaction_id?: string
 };
 
-export type SetReturnCreationSessionRequest = {
-  returnRequest: ReturnRequestType
-};
-
-export type UpdateTrackingRequest = {
-  newCarrierEnum?: ShippingCarrier | `${ShippingCarrier}`;
-  newCarrierName?: string;
-  newTrackingNumber?: string;
-  usedCarrierEnum?: ShippingCarrier | `${ShippingCarrier}`;
-  usedCarrierName?: string;
-  usedTrackingNumber?: string;
-};
-
 export type UploadFileRequest = {
   data: any,
   fileName?: string;
   filePurpose: FilePurpose | `${FilePurpose}`
-};
-
-export type VoidLabelRequest = {
-  comments?: Text;
-  labelId: string
 };
 
 // OpenApi
@@ -473,7 +379,6 @@ export type CouponRequest = buyOrder['schemas']['CouponRequest']
 export type ShippingAddressImpl = buyOrder['schemas']['ShippingAddressImpl']
 export type UpdateQuantity = buyOrder['schemas']['UpdateQuantity']
 export type UpdateShippingOption = buyOrder['schemas']['UpdateShippingOption']
-
 
 export type CustomPolicyCreateRequest = sellAccountV1['schemas']['CustomPolicyCreateRequest'];
 export type CustomPolicyRequest = sellAccountV1['schemas']['CustomPolicyRequest'];
@@ -597,5 +502,4 @@ export type AddStoreCategoryRequest = sellStores['schemas']['AddStoreCategoryReq
 export type RenameStoreCategoryRequest = sellStores['schemas']['RenameStoreCategoryRequestType']
 export type DeleteStoreCategoryRequest = sellStores['schemas']['DeleteStoreCategoryRequestType']
 export type MoveStoreCategoryRequest = sellStores['schemas']['MoveStoreCategoryRequestType']
-
 

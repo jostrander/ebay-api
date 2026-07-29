@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import 'mocha';
 // @ts-ignore
 import sinon from 'sinon';
+import Restful from '../../../src/api/restful/index.js';
 import Auth from '../../../src/auth/index.js';
 import type {IEBayApiRequest} from '../../../src/request.js';
 
@@ -31,6 +32,26 @@ function createReq(): IEBayApiRequest<any> {
     postForm: sinon.stub().returns(Promise.resolve({data: {}})),
     instance: sinon.stub().returns(Promise.resolve({data: {}}))
   };
+}
+
+/**
+ * Method names declared on the Restful base class. These are infrastructure, not eBay operations,
+ * so they are never expected to appear in a spec.
+ */
+const inheritedMembers = new Set(Object.getOwnPropertyNames(Restful.prototype));
+
+/**
+ * The public methods an API class declares itself, ignoring getters such as `basePath`.
+ */
+function declaredMethods(RestfulApi: any): string[] {
+  const {prototype} = RestfulApi;
+  return Object.getOwnPropertyNames(prototype).filter(name => {
+    if (name === 'constructor' || inheritedMembers.has(name)) {
+      return false;
+    }
+    const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
+    return typeof descriptor?.value === 'function';
+  });
 }
 
 const request = createReq();
@@ -65,6 +86,25 @@ describe('Open API Tests', () => {
             );
           });
         }
+
+        it(`"${name}:${RestfulApi.name}" should not implement methods that are absent from the spec`, () => {
+          const operationIds = new Set<string>();
+          Object.values(Oas.paths).forEach((endpoint: any) => {
+            Object.values(endpoint).forEach((call: any) => {
+              if (call && call.operationId) {
+                operationIds.add(call.operationId);
+              }
+            });
+          });
+
+          const orphaned = declaredMethods(RestfulApi).filter(method => !operationIds.has(method));
+
+          expect(orphaned).to.eql(
+            [],
+            `AssertionError: "${RestfulApi.name}" implements [${orphaned.join(', ')}], which eBay no longer ` +
+            'publishes. Remove the method, or restore the operation to the spec if it is still supported.'
+          );
+        });
 
         Object.keys(Oas.paths).forEach((path: any) => {
           Object.keys(Oas.paths[path]).forEach(method => {

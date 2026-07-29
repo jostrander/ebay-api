@@ -152,15 +152,6 @@ export default class Marketing extends Restful implements OpenApi<operations> {
   }
 
   /**
-   * This method launches a Promoted Listings Advanced campaign.
-   * @param campaignId teh campaign id
-   */
-  public launchCampaign(campaignId: string) {
-    campaignId = encodeURIComponent(campaignId);
-    return this.post(`/ad_campaign/${campaignId}/launch`);
-  }
-
-  /**
    * This method retrieves all the ads for the specified campaign.
    *
    * @param campaignId A unique eBay-assigned ID for an ad campaign that's generated when a campaign is created. Get

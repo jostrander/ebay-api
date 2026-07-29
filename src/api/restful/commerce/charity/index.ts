@@ -45,17 +45,4 @@ export default class Charity extends Restful implements OpenApi<operations> {
       }
     });
   }
-
-  /**
-   * This call allows users to retrieve the details for a specific charitable organization using its legacy charity ID, which has also been referred to as the charity number, external ID, and PayPal Giving Fund ID.
-   *
-   * @param legacyCharityOrgId The legacy ID of the charitable organization.
-   */
-  public getCharityOrgByLegacyId(legacyCharityOrgId: string) {
-    return this.get('/charity_org/get_charity_org_by_legacy_id', {
-      params: {
-        legacy_charity_org_id: legacyCharityOrgId
-      }
-    });
-  }
 }

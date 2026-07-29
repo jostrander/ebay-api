@@ -112,17 +112,4 @@ export default class Browse extends Restful implements OpenApi<operations> {
     const id = encodeURIComponent(itemId);
     return this.post(`/item/${id}/check_compatibility`, body);
   }
-
-  //
-  // Shopping Cart
-  //
-
-  /**
-   * This is an experimental method. This method retrieves all the items in the eBay member's cart;
-   * items added to the cart while on ebay.com as well as items added to the cart using the Browse API.
-   */
-  public getShoppingCart() {
-    return this.get('/shopping_cart/');
-  }
-
 }
