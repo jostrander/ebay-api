@@ -196,8 +196,5 @@
   "files": [
     "lib",
     "dist"
-  ],
-  "publishConfig": {
-    "tag": "next"
-  }
+  ]
 }
