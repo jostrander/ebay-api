@@ -17,7 +17,7 @@ index.html
 .travis.yml
 rollup.config.js
 .babelrc
-.mocharc.json
+vitest.config.ts
 .versionrc.json
 tsconfig.cjs.json
 CHANGELOG.md

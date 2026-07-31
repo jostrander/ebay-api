@@ -1,7 +1,4 @@
-import {expect} from 'chai';
-import 'mocha';
-// @ts-ignore
-import sinon from 'sinon';
+import {describe, expect, it, vi} from 'vitest';
 import Restful from '../../../src/api/restful/index.js';
 import Auth from '../../../src/auth/index.js';
 import type {IEBayApiRequest} from '../../../src/request.js';
@@ -24,13 +21,13 @@ const appConfig = {appId: 'appId', certId: 'certId', sandbox: false, siteId: 77}
 
 function createReq(): IEBayApiRequest<any> {
   return {
-    get: sinon.stub().returns(Promise.resolve({data: {}})),
-    delete: sinon.stub().returns(Promise.resolve({data: {}})),
-    put: sinon.stub().returns(Promise.resolve({data: {}})),
-    patch: sinon.stub().returns(Promise.resolve({data: {}})),
-    post: sinon.stub().returns(Promise.resolve({data: {}})),
-    postForm: sinon.stub().returns(Promise.resolve({data: {}})),
-    instance: sinon.stub().returns(Promise.resolve({data: {}}))
+    get: vi.fn().mockResolvedValue({data: {}}),
+    delete: vi.fn().mockResolvedValue({data: {}}),
+    put: vi.fn().mockResolvedValue({data: {}}),
+    patch: vi.fn().mockResolvedValue({data: {}}),
+    post: vi.fn().mockResolvedValue({data: {}}),
+    postForm: vi.fn().mockResolvedValue({data: {}}),
+    instance: vi.fn().mockResolvedValue({data: {}})
   };
 }
 
@@ -68,20 +65,20 @@ describe('Open API Tests', () => {
     describe('API > restful > ' + name, () => {
       tests.forEach((Oas, RestfulApi) => {
         it('should match name with id', () => {
-          expect(RestfulApi.id).to.equal(RestfulApi.name);
+          expect(RestfulApi.id).toBe(RestfulApi.name);
         });
 
         const api = new RestfulApi(appConfig, request, auth);
 
         if (Oas.servers) {
           it('"' + name + ':' + RestfulApi.name + '" should return url', () => {
-            expect(api.baseUrl).to.oneOf(
+            expect(
               Oas.servers.map((server: any) => server.url.replace('{basePath}', server.variables.basePath.default))
-            );
+            ).toContain(api.baseUrl);
           });
 
           it('"' + name + ':' + RestfulApi.name + '" should return correct path', () => {
-            expect(api.basePath).to.equal(
+            expect(api.basePath).toBe(
               Oas.servers[0].variables.basePath.default
             );
           });
@@ -99,11 +96,11 @@ describe('Open API Tests', () => {
 
           const orphaned = declaredMethods(RestfulApi).filter(method => !operationIds.has(method));
 
-          expect(orphaned).to.eql(
-            [],
-            `AssertionError: "${RestfulApi.name}" implements [${orphaned.join(', ')}], which eBay no longer ` +
+          expect(
+            orphaned,
+            `"${RestfulApi.name}" implements [${orphaned.join(', ')}], which eBay no longer ` +
             'publishes. Remove the method, or restore the operation to the spec if it is still supported.'
-          );
+          ).toEqual([]);
         });
 
         Object.keys(Oas.paths).forEach((path: any) => {
@@ -134,23 +131,21 @@ describe('Open API Tests', () => {
             const restApi = new RestfulApi(appConfig, req, auth);
 
             it(`"${name}:${RestfulApi.name}" should implement this method (${path}). `, () => {
-              expect(restApi[call.operationId]).to.be.a(
-                'function',
-                'AssertionError: expected to have "' +
-                call.operationId +
-                '" implemented.'
-              );
+              expect(
+                restApi[call.operationId],
+                'expected to have "' + call.operationId + '" implemented.'
+              ).toBeTypeOf('function');
             });
 
             it(`"${name}:${RestfulApi.name}:${call.operationId}" call correct method ${method} (${path}).`, () => {
               return restApi[call.operationId](...args).then(() => {
-                expect(req[method].calledOnce).to.be.true;
+                expect(req[method]).toHaveBeenCalledOnce();
               });
             });
 
             it(`"${name}:${RestfulApi.name}:${call.operationId}" calls correct url (${path}).`, () => {
               return restApi[call.operationId](...args).then(() => {
-                expect(decodeURI(req[method].args[0][0])).to.equal(decodeURI(encodeURI(restApi.baseUrl + path)));
+                expect(decodeURI(req[method].mock.calls[0][0])).toBe(decodeURI(encodeURI(restApi.baseUrl + path)));
               });
             });
           });

@@ -6,17 +6,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm run build        # Full build: clean → tsc (ESM) → tsc (CJS) → rollup bundles
-npm run test         # Run all tests with mocha
+npm run test         # Run all tests with vitest
 npm run lint         # ESLint check
 npm run lint:fix     # ESLint auto-fix
-npm run report       # Run tests with c8 coverage
+npm run report       # Run tests with v8 coverage
 npm run release      # Bump version + update CHANGELOG (standard-version)
 npm run gen-openapi  # Regenerate TypeScript types from OpenAPI specs
 ```
 
 **Run a single test file:**
 ```bash
-npx mocha --reporter=dot test/api/factory.spec.ts
+npx vitest run test/api/factory.spec.ts
 ```
 
 **Debug HTTP requests:**
@@ -63,11 +63,12 @@ Base (config + req)
 
 **`returnResponse`**: By default, only `response.data` is returned. Pass `returnResponse: true` in `apiConfig` to get the full Axios response.
 
+**Tests**: vitest with `globals` disabled — every spec imports `describe`/`it`/`expect`/`vi` from `vitest`. Test doubles are `vi.fn()` mocks implementing `IEBayApiRequest`.
+
 **`apix` / `apiz`**: Convenience getters on `Restful` to switch the API subdomain for specific eBay endpoints that use `apix.ebay.com` or `apiz.ebay.com`.
 
 ## TypeScript Constraints
 
-- All imports of interfaces and type aliases **must** use `import type` (or inline `type` modifier) in test files. The mocha 11 + Node.js v24 loader chain resolves `.js` extensions synchronously, bypassing ts-node for transitive imports — runtime will throw if a type-only named export is imported as a value.
 - TypeScript `noUnusedLocals` and `noUnusedParameters` are enabled — all declared variables/parameters must be used.
 - OpenAPI-generated type files in `src/types/restful/specs/` are excluded from the main `tsconfig.json`'s `include` array but are referenced directly by the API classes.
 
