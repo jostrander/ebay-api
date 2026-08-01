@@ -1,20 +1,17 @@
-import {expect} from 'chai';
-import 'mocha';
-// @ts-ignore
-import sinon from 'sinon';
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 
 import XMLRequest, {type XMLReqConfig} from '../../../src/api/traditional/XMLRequest.js';
 import type {IEBayApiRequest} from '../../../src/request.js';
 
 function createReq(apiResponse: string): IEBayApiRequest<any> {
   return {
-    get: sinon.stub().returns(Promise.resolve({})),
-    delete: sinon.stub().returns(Promise.resolve({})),
-    put: sinon.stub().returns(Promise.resolve({})),
-    patch: sinon.stub().returns(Promise.resolve({})),
-    post: sinon.stub().returns(Promise.resolve({data: apiResponse})),
-    postForm: sinon.stub().returns(Promise.resolve({})),
-    instance: sinon.stub()
+    get: vi.fn().mockResolvedValue({}),
+    delete: vi.fn().mockResolvedValue({}),
+    put: vi.fn().mockResolvedValue({}),
+    patch: vi.fn().mockResolvedValue({}),
+    post: vi.fn().mockResolvedValue({data: apiResponse}),
+    postForm: vi.fn().mockResolvedValue({}),
+    instance: vi.fn()
   };
 }
 
@@ -39,13 +36,13 @@ describe('XMLRequestTest', () => {
   });
 
   afterEach(() => {
-    sinon.reset();
+    vi.clearAllMocks();
   });
 
   it('Return Raw Response XML', () => {
     const request = new XMLRequest('CALL', {}, config, req);
     return request.request().then(result => {
-      expect(result).to.equal(apiResponse);
+      expect(result).toBe(apiResponse);
     });
   });
 
@@ -53,7 +50,7 @@ describe('XMLRequestTest', () => {
     const request = new XMLRequest('CALL', {Param: 'Param'}, config, req);
     return request.request().then(() => {
       // @ts-ignore
-      expect(req.post.args[0][0]).to.equal('endpoint');
+      expect(req.post.mock.calls[0][0]).toBe('endpoint');
     });
   });
 
@@ -61,7 +58,7 @@ describe('XMLRequestTest', () => {
     const request = new XMLRequest('CALL', {Param: 'Param'}, config, req);
     return request.request().then(() => {
       // @ts-ignore
-      expect(req.post.args[0][1]).to.equal([
+      expect(req.post.mock.calls[0][1]).toBe([
         '<?xml version="1.0" encoding="utf-8"?>',
         '<CALLRequest xmlns="xmlns">',
         '<RequesterCredentials><eBayAuthToken>eBayAuthToken</eBayAuthToken></RequesterCredentials>',
@@ -80,7 +77,7 @@ describe('XMLRequestTest', () => {
     }, config, req);
     return request.request().then(() => {
       // @ts-ignore
-      expect(req.post.args[0][1]).to.equal([
+      expect(req.post.mock.calls[0][1]).toBe([
         '<?xml version="1.0" encoding="utf-8"?>',
         '<CALLRequest xmlns="xmlns">',
         '<RequesterCredentials><eBayAuthToken>eBayAuthToken</eBayAuthToken></RequesterCredentials>',
@@ -101,7 +98,7 @@ describe('XMLRequestTest', () => {
     }, config, req);
     return request.request().then(() => {
       // @ts-ignore
-      expect(req.post.args[0][1]).to.equal([
+      expect(req.post.mock.calls[0][1]).toBe([
         '<?xml version="1.0" encoding="utf-8"?>',
         '<CALLRequest xmlns="xmlns">',
         '<RequesterCredentials><eBayAuthToken>eBayAuthToken</eBayAuthToken></RequesterCredentials>',
@@ -117,12 +114,12 @@ describe('XMLRequestTest', () => {
   <Item>Item</Item>
 </CALLResponse>`;
 
-    req.post = sinon.stub().returns(Promise.resolve({data: xml}));
+    req.post = vi.fn().mockResolvedValue({data: xml});
     const request = new XMLRequest('CALL', {}, {...config, raw: false}, req);
     return request.request().then(result => {
       expect({
         Item: 'Item'
-      }).to.deep.equal(result);
+      }).toEqual(result);
     });
   });
 
@@ -132,7 +129,7 @@ describe('XMLRequestTest', () => {
   <Price currency="EUR" total="false">2.99</Price>
 </CALLResponse>`;
 
-    req.post = sinon.stub().returns(Promise.resolve({data: xml}));
+    req.post = vi.fn().mockResolvedValue({data: xml});
     const request = new XMLRequest('CALL', {}, {...config, raw: false}, req);
     return request.request().then(result => {
       expect({
@@ -141,7 +138,7 @@ describe('XMLRequestTest', () => {
           value: 2.99,
           total: false
         }
-      }).to.deep.equal(result);
+      }).toEqual(result);
     });
   });
 
@@ -160,7 +157,7 @@ describe('XMLRequestTest', () => {
    </ActiveList>
 </CALLResponse>`;
 
-    req.post = sinon.stub().returns(Promise.resolve({data: xml}));
+    req.post = vi.fn().mockResolvedValue({data: xml});
     const request = new XMLRequest('CALL', {}, {...config, raw: false}, req);
     return request.request().then(result => {
       expect({
@@ -181,7 +178,7 @@ describe('XMLRequestTest', () => {
             }]
           }
         }
-      }).to.deep.equal(result);
+      }).toEqual(result);
     });
   });
 
@@ -200,7 +197,7 @@ describe('XMLRequestTest', () => {
          </NotificationEnable>
     </UserDeliveryPreferenceArray>
 </CALLRequest>`.replace(/>\s+</g, '><');
-    req.post = sinon.stub().returnsArg(1)
+    req.post = vi.fn().mockImplementation((_endpoint, body) => Promise.resolve(body))
     const request = new XMLRequest('CALL', {
       UserDeliveryPreferenceArray: [{
         NotificationEnable: {
@@ -215,13 +212,13 @@ describe('XMLRequestTest', () => {
       }]
     }, {...config, returnResponse: true, xmlBuilderOptions: { oneListGroup: true }}, req);
     return request.request().then(result => {
-      expect(result).to.equal(xml);
+      expect(result).toBe(xml);
     });
   });
 
   describe('request', () => {
     it('call custom body function and headers', () => {
-      const post = sinon.stub().returns(Promise.resolve({data: apiResponse}));
+      const post = vi.fn().mockResolvedValue({data: apiResponse});
       const request = new XMLRequest('CALL', {},
         {
           ...config,
@@ -236,13 +233,13 @@ describe('XMLRequestTest', () => {
         {...req, post});
 
       return request.request().then(result => {
-        expect(post.args[0][1]).to.eql('custom');
-        expect(post.args[0][2].headers).to.eql({
+        expect(post.mock.calls[0][1]).toEqual('custom');
+        expect(post.mock.calls[0][2].headers).toEqual({
           'CALL': 'CALL',
           'Content-Type': 'multipart/form-data',
           'X_-HEADER': 'header'
         });
-        expect(result).to.equal(apiResponse);
+        expect(result).toBe(apiResponse);
       });
     });
   });

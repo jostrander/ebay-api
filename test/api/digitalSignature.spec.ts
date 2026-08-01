@@ -1,7 +1,4 @@
-import {expect} from 'chai';
-import 'mocha';
-// @ts-ignore
-import sinon from 'sinon';
+import {describe, expect, it} from 'vitest';
 import {generateContentDigestValue, generateSignature, generateSignatureInput} from '../../src/api/digitalSignature.js';
 
 const privateKey = `
@@ -12,18 +9,18 @@ MC4CAQAwBQYDK2VwBCIEIJ+DYvh6SEqVTm50DFtMDoQikTmiCqirVv9mWG9qfSnF
 describe('Digital Signature', () => {
   it('should be able to generate \'signature-input\' header when request has payload', () => {
     const signatureInput = generateSignatureInput({}, 123);
-    expect(signatureInput).to.eql('sig1=("content-digest" "x-ebay-signature-key" "@method" "@path" "@authority");created=123');
+    expect(signatureInput).toBe('sig1=("content-digest" "x-ebay-signature-key" "@method" "@path" "@authority");created=123');
   });
 
   it('should be able to generate \'signature-input\' header when request has no payload', () => {
     const signatureInput = generateSignatureInput(null, 123);
-    expect(signatureInput).to.eql('sig1=("x-ebay-signature-key" "@method" "@path" "@authority");created=123');
+    expect(signatureInput).toBe('sig1=("x-ebay-signature-key" "@method" "@path" "@authority");created=123');
   });
 
   it('should be able to generate \'Signature\' header', () => {
     const payload = '{"hello": "world"}';
     const contentDigest = generateContentDigestValue(payload);
-    expect(contentDigest).to.eql('sha-256=:X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=:');
+    expect(contentDigest).toBe('sha-256=:X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=:');
     const signature = generateSignature({
       'content-digest': contentDigest,
       'signature-input': 'sig1=("content-digest" "x-ebay-signature-key" "@method" "@path" "@authority");created=1663459378',
@@ -33,7 +30,7 @@ describe('Digital Signature', () => {
       authority: 'localhost:8080',
       path: '/test'
     }, payload, 1663459378);
-    expect(signature).to.eql('sig1=:gkk7dqudw21DFHDVBoRUWe/F6/2hTEmWRFDBxiN6COD4PjozXziiDFML1nFHu+0UcMXC/niltxzABjnugu4DCA==:');
+    expect(signature).toBe('sig1=:gkk7dqudw21DFHDVBoRUWe/F6/2hTEmWRFDBxiN6COD4PjozXziiDFML1nFHu+0UcMXC/niltxzABjnugu4DCA==:');
   });
 
   it('should throw an error if content-digest is not in the header', () => {
@@ -41,7 +38,7 @@ describe('Digital Signature', () => {
       method: 'POST',
       authority: 'localhost:8080',
       path: '/test'
-    }, {}, 1663459378)).to.throw(/content-digest/);
+    }, {}, 1663459378)).toThrowError('Error calculating signature base: Header content-digest not included in message');
   });
 
   it('should throw an error pseudo header is not known', () => {
@@ -49,6 +46,6 @@ describe('Digital Signature', () => {
       method: 'POST',
       authority: 'localhost:8080',
       path: '/test'
-    }, {}, 1663459378)).to.throw(/content-digest/);
+    }, {}, 1663459378)).toThrow(/content-digest/);
   });
 });

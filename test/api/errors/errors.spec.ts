@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import {describe, expect, it} from 'vitest';
 import {
   checkEBayTraditionalResponse,
   EbayApiError,
@@ -8,6 +8,15 @@ import {
   handleEBayError
 } from '../../../src/errors/index.js';
 import {readJSONSync} from '../jsonfile.js';
+
+function catchError(fn: () => void): unknown {
+  try {
+    fn();
+  } catch (error) {
+    return error;
+  }
+  throw new Error('Expected the call to throw');
+}
 
 describe('eBay Errors', () => {
   const errors = readJSONSync('./errors.json', import.meta.url);
@@ -21,31 +30,35 @@ describe('eBay Errors', () => {
       };
 
       const {message, description} = extractEBayError(result);
-      expect(message).to.equal('Error Message');
+      expect(message).toBe('Error Message');
       if (description) {
-        expect(description).to.equal('description');
+        expect(description).toBe('description');
       }
     });
   });
 
   it('Throw correct error chain', () => {
-    expect(() => handleEBayError({
+    const traditional = catchError(() => handleEBayError({
       response: {
         data: errors.traditional
       }
-    })).to.throw(EBayApiError).with.property('errorCode', 930);
+    }));
+    expect(traditional).toBeInstanceOf(EBayApiError);
+    expect(traditional).toHaveProperty('errorCode', 930);
 
     expect(() => handleEBayError({
       response: {
         data: errors.oauth
       }
-    })).to.throw(EbayApiError);
-    expect(() => handleEBayError({
+    })).toThrow(EbayApiError);
+
+    const restful = catchError(() => handleEBayError({
       response: {
         data: errors.restful
       }
-    })).to.throw(EBayError)
-      .with.property('errorCode', 1);
+    }));
+    expect(restful).toBeInstanceOf(EBayError);
+    expect(restful).toHaveProperty('errorCode', 1);
   });
 
   it('Does not throw if the error is warning', () => {
@@ -61,7 +74,7 @@ describe('eBay Errors', () => {
       },
       'Version': 1177,
       'Build': 'E1177_CORE_APIMSG_19110890_R1'
-    })).to.not.throw();
+    })).not.toThrow();
   })
 
 });

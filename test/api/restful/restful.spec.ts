@@ -1,6 +1,4 @@
-// @ts-ignore
-import {expect} from 'chai';
-import sinon from 'sinon';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import Restful, {defaultApiHeaders} from '../../../src/api/restful/index.js';
 import {MarketplaceId} from '../../../src/enums/index.js';
 
@@ -42,15 +40,15 @@ describe('Restful API', () => {
 
   beforeEach(() => {
     req = {
-      get: sinon.stub(),
-      delete: sinon.stub(),
-      put: sinon.stub(),
-      patch: sinon.stub(),
-      post: sinon.stub(),
-      postForm: sinon.stub().returns(Promise.resolve({
+      get: vi.fn(),
+      delete: vi.fn(),
+      put: vi.fn(),
+      patch: vi.fn(),
+      post: vi.fn(),
+      postForm: vi.fn().mockResolvedValue({
         data: {access_token: 'new_access_token'}
-      })),
-      instance: sinon.stub()
+      }),
+      instance: vi.fn()
     };
   });
 
@@ -61,19 +59,19 @@ describe('Restful API', () => {
       const apiz = new TestApi(config, req).apiz;
       const apiy = new TestApi(config, req).api({subdomain: 'apiy'});
 
-      expect(api.baseUrl).to.equal('https://api.sandbox.ebay.com/basePath');
-      expect(apix.baseUrl).to.equal('https://apix.sandbox.ebay.com/basePath');
-      expect(apiz.baseUrl).to.equal('https://apiz.sandbox.ebay.com/basePath');
-      expect(apiy.baseUrl).to.equal('https://apiy.sandbox.ebay.com/basePath');
+      expect(api.baseUrl).toBe('https://api.sandbox.ebay.com/basePath');
+      expect(apix.baseUrl).toBe('https://apix.sandbox.ebay.com/basePath');
+      expect(apiz.baseUrl).toBe('https://apiz.sandbox.ebay.com/basePath');
+      expect(apiy.baseUrl).toBe('https://apiy.sandbox.ebay.com/basePath');
     });
 
     it('extends headers', async () => {
-      const post = sinon.stub().returns({item: '1'});
+      const post = vi.fn().mockReturnValue({item: '1'});
       const api = new TestApi(config, {...req, post}).api({headers: {'X-HEADER': 'X-HEADER'}});
       api.auth.OAuth2.setCredentials(cred);
 
       await api.updateThings();
-      expect(post.args[0][2].headers).to.eql({
+      expect(post.mock.calls[0][2].headers).toEqual({
         ...defaultApiHeaders,
         'Authorization': 'Bearer access_token',
         'X-HEADER': 'X-HEADER'
@@ -87,7 +85,7 @@ describe('Restful API', () => {
       marketplaceId: MarketplaceId.EBAY_DE
     }, req);
 
-    expect(api.additionalHeaders).to.eql({
+    expect(api.additionalHeaders).toEqual({
       'X-EBAY-C-MARKETPLACE-ID': MarketplaceId.EBAY_DE
     });
   });
@@ -95,7 +93,7 @@ describe('Restful API', () => {
   it('returns correct RequestConfig', async () => {
     // @ts-ignore
     const api = new TestApi(config, req, {
-      getHeaderAuthorization: sinon.stub().returns({'Authorization': 'Authorization'})
+      getHeaderAuthorization: vi.fn().mockReturnValue({'Authorization': 'Authorization'})
     });
 
     expect(await api.enrichRequestConfig({
@@ -106,7 +104,7 @@ describe('Restful API', () => {
           'X-HEADER': 'X-HEADER'
         }
       }
-    })).to.eql({
+    })).toEqual({
       headers: {
         'Authorization': 'Authorization',
         'Content-Type': 'application/json',
@@ -120,7 +118,7 @@ describe('Restful API', () => {
   it('lets a per-request header override the default Content-Type', async () => {
     // @ts-ignore
     const api = new TestApi(config, req, {
-      getHeaderAuthorization: sinon.stub().returns({'Authorization': 'Authorization'})
+      getHeaderAuthorization: vi.fn().mockReturnValue({'Authorization': 'Authorization'})
     });
 
     const {headers} = await api.enrichRequestConfig({
@@ -133,13 +131,13 @@ describe('Restful API', () => {
       }
     });
 
-    expect(headers['Content-Type']).to.equal('multipart/form-data');
+    expect(headers['Content-Type']).toBe('multipart/form-data');
   });
 
   it('lets a per-request header override the app config headers', async () => {
     // @ts-ignore
     const api = new TestApi(config, req, {
-      getHeaderAuthorization: sinon.stub().returns({'Authorization': 'Authorization'})
+      getHeaderAuthorization: vi.fn().mockReturnValue({'Authorization': 'Authorization'})
     }, {headers: {'Content-Type': 'application/json'}});
 
     const {headers} = await api.enrichRequestConfig({
@@ -152,14 +150,14 @@ describe('Restful API', () => {
       }
     });
 
-    expect(headers['Content-Type']).to.equal('application/octet-stream');
+    expect(headers['Content-Type']).toBe('application/octet-stream');
   });
 
   it('signs the body of a delete request', async () => {
-    const del = sinon.stub().returns({data: {}});
+    const del = vi.fn().mockReturnValue({data: {}});
     const api = new TestApi(config, {...req, delete: del}).api({sign: true});
     api.auth.OAuth2.setCredentials(cred);
-    const getDigitalSignatureHeaders = sinon.stub().returns({});
+    const getDigitalSignatureHeaders = vi.fn().mockReturnValue({});
     // @ts-ignore
     api.getDigitalSignatureHeaders = getDigitalSignatureHeaders;
 
@@ -167,14 +165,14 @@ describe('Restful API', () => {
     await api.deleteThing(body);
 
     // second argument is the payload the signature is computed over
-    expect(getDigitalSignatureHeaders.args[0][1]).to.eql(body);
-    expect(del.args[0][1].data).to.eql(body);
+    expect(getDigitalSignatureHeaders.mock.calls[0][1]).toEqual(body);
+    expect(del.mock.calls[0][1].data).toEqual(body);
   });
 
   it('keeps non-header request config alongside the merged headers', async () => {
     // @ts-ignore
     const api = new TestApi(config, req, {
-      getHeaderAuthorization: sinon.stub().returns({'Authorization': 'Authorization'})
+      getHeaderAuthorization: vi.fn().mockReturnValue({'Authorization': 'Authorization'})
     });
 
     expect(await api.enrichRequestConfig({
@@ -183,7 +181,7 @@ describe('Restful API', () => {
       config: {
         responseType: 'arraybuffer'
       }
-    })).to.eql({
+    })).toEqual({
       responseType: 'arraybuffer',
       headers: {
         ...defaultApiHeaders,
@@ -194,30 +192,30 @@ describe('Restful API', () => {
 
   describe('restful response test', () => {
     it('returns data', async () => {
-      const post = sinon.stub().returns({data: {item: '1'}});
+      const post = vi.fn().mockReturnValue({data: {item: '1'}});
       const api = new TestApi(config, {...req, post});
 
       const response = await api.updateThings();
-      expect(response).to.eql({item: '1'});
+      expect(response).toEqual({item: '1'});
     });
 
     it('returns response', async () => {
-      const post = sinon.stub().returns({data: {item: '1'}});
+      const post = vi.fn().mockReturnValue({data: {item: '1'}});
       const api = new TestApi(config, {...req, post}, undefined, {returnResponse: true});
 
       const response = await api.updateThings();
-      expect(response).to.eql({data: {item: '1'}});
+      expect(response).toEqual({data: {item: '1'}});
     });
   });
 
   it('refresh the token if invalid token returned', async () => {
-    const post = sinon.stub().onCall(0).rejects({
+    const post = vi.fn().mockRejectedValueOnce({
       response: {
         data: {
           error: 'Invalid access token'
         }
       }
-    }).onCall(1).resolves({data: {updateThings: 'ok'}});
+    }).mockResolvedValueOnce({data: {updateThings: 'ok'}});
 
     const api = new TestApi({
       ...config,
@@ -225,23 +223,23 @@ describe('Restful API', () => {
     }, {
       ...req,
       post,
-      postForm: sinon.stub().resolves(cred)
+      postForm: vi.fn().mockResolvedValue(cred)
     });
 
     api.auth.OAuth2.setCredentials(cred);
 
     const result = await api.updateThings();
 
-    expect(post.callCount).to.equal(2);
-    expect(result).to.eql({updateThings: 'ok'});
+    expect(post).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({updateThings: 'ok'});
   });
 
   it('refresh the token on PostOrder call if response is 401', async () => {
-    const post = sinon.stub().onCall(0).rejects({
+    const post = vi.fn().mockRejectedValueOnce({
       response: {
         status: 401
       }
-    }).onCall(1).resolves({data: {updateThings: 'ok'}});
+    }).mockResolvedValueOnce({data: {updateThings: 'ok'}});
 
     const api = new TestApi({
       ...config,
@@ -249,7 +247,7 @@ describe('Restful API', () => {
     }, {
       ...req,
       post,
-      postForm: sinon.stub().resolves(cred)
+      postForm: vi.fn().mockResolvedValue(cred)
     }, undefined, {
       basePath: '/post-order/v2'
     });
@@ -258,16 +256,16 @@ describe('Restful API', () => {
 
     const result = await api.updateThings();
 
-    expect(post.callCount).to.equal(2);
-    expect(result).to.eql({updateThings: 'ok'});
+    expect(post).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({updateThings: 'ok'});
   });
 
   it('refresh the token on Inventory call if response is 403', async () => {
-    const post = sinon.stub().onCall(0).rejects({
+    const post = vi.fn().mockRejectedValueOnce({
       response: {
         status: 403
       }
-    }).onCall(1).resolves({data: {updateThings: 'ok'}});
+    }).mockResolvedValueOnce({data: {updateThings: 'ok'}});
 
     const api = new TestApi({
       ...config,
@@ -275,7 +273,7 @@ describe('Restful API', () => {
     }, {
       ...req,
       post,
-      postForm: sinon.stub().resolves(cred)
+      postForm: vi.fn().mockResolvedValue(cred)
     }, undefined, {
       basePath: '/sell/inventory/v1'
     });
@@ -284,8 +282,8 @@ describe('Restful API', () => {
 
     const result = await api.updateThings();
 
-    expect(post.callCount).to.equal(2);
-    expect(result).to.eql({updateThings: 'ok'});
+    expect(post).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({updateThings: 'ok'});
   });
 
 });

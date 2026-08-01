@@ -1,7 +1,4 @@
-import {expect} from 'chai';
-import 'mocha';
-// @ts-ignore
-import sinon from 'sinon';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import ApiFactory from '../../src/api/apiFactory.js';
 import type {IEBayApiRequest} from '../../src/request.js';
 import type {eBayConfig} from '../../src/types/index.js';
@@ -9,13 +6,13 @@ import type {eBayConfig} from '../../src/types/index.js';
 describe('FactoryTest', () => {
   let config: eBayConfig;
   const request: IEBayApiRequest<any> = {
-    get: sinon.stub(),
-    delete: sinon.stub(),
-    put: sinon.stub(),
-    patch: sinon.stub(),
-    post: sinon.stub(),
-    postForm: sinon.stub(),
-    instance: sinon.stub()
+    get: vi.fn(),
+    delete: vi.fn(),
+    put: vi.fn(),
+    patch: vi.fn(),
+    post: vi.fn(),
+    postForm: vi.fn(),
+    instance: vi.fn()
   };
 
   beforeEach(() => {
@@ -25,6 +22,6 @@ describe('FactoryTest', () => {
   it('Throws an error if siteId is not defined', () => {
     delete config.siteId;
     const factory = new ApiFactory(config, request);
-    expect(factory.createTradingApi.bind(factory)).to.throw(/siteId/);
+    expect(factory.createTradingApi.bind(factory)).toThrowError(new Error('siteId is required for trading API.'));
   });
 });
