@@ -41,11 +41,13 @@ describe('Digital Signature', () => {
     }, {}, 1663459378)).toThrowError('Error calculating signature base: Header content-digest not included in message');
   });
 
-  it('should throw an error pseudo header is not known', () => {
+  it('should throw an error if x-ebay-signature-key is not in the header', () => {
+    // without a payload 'content-digest' is not a signature param, so the key header is checked first
     expect(() => generateSignature({}, privateKey, {
       method: 'POST',
       authority: 'localhost:8080',
       path: '/test'
-    }, {}, 1663459378)).toThrow(/content-digest/);
+    }, null, 1663459378))
+      .toThrowError('Error calculating signature base: Header x-ebay-signature-key not included in message');
   });
 });
