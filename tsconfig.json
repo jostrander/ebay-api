@@ -17,8 +17,5 @@
     "removeComments": true
   },
   "exclude": ["src/index.ts"],
-  "include": ["src"],
-  "ts-node": {
-    "esm": true
-  }
+  "include": ["src"]
 }

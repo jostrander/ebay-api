@@ -1,10 +1,5 @@
 # How to run the examples
 
-## Node 20
-```bash
-node --loader ts-node/esm examples/restful/buy/items.getItem.ts
-```
-
 ## Set the environments variables:
 EBAY_APP_ID=
 EBAY_CERT_ID=
@@ -14,5 +9,5 @@ DEBUGX=ebay:*;
 
 ## Run
 ```bash
-ts-node examples/restful/buy/items.getItem.ts
+npx tsx examples/restful/buy/items.getItem.ts
 ```
